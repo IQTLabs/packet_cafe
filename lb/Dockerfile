@@ -11,4 +11,5 @@ HEALTHCHECK --interval=15s --timeout=30s \
   CMD curl --silent --fail http://localhost:80/v1 || exit 1
 
 COPY supervisord.conf /etc/supervisord.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 CMD ["supervisord", "-c", "/etc/supervisord.conf", "-n"]
