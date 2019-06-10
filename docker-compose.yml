@@ -1,0 +1,57 @@
+version: '3.7'
+services:
+  web:
+    restart: always
+    build:
+      context: web
+      dockerfile: Dockerfile
+    image: 'cyberreboot/packet_cafe_web:latest'
+    ports:
+      - 8000
+    networks:
+      - frontend
+      - loadbalancer
+    deploy:
+      replicas: 3
+  lb:
+    restart: always
+    build:
+      context: lb
+      dockerfile: Dockerfile
+    image: 'cyberreboot/packet_cafe_lb:latest'
+    ports:
+      - 80:80
+    volumes:
+      - ./lb/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - loadbalancer
+  messenger:
+    restart: always
+    build:
+      context: messenger
+      dockerfile: Dockerfile
+    image: 'cyberreboot/packet_cafe_messenger:latest'
+    ports:
+      - 15672:15672
+    networks:
+      - frontend
+      - backend
+  workers:
+    restart: always
+    build:
+      context: workers
+      dockerfile: Dockerfile
+    image: 'cyberreboot/packet_cafe_workers:latest'
+    networks:
+      - backend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      replicas: 3
+networks:
+  frontend:
+    name: frontend
+  backend:
+    name: backend
+  loadbalancer:
+    name: loadbalancer
