@@ -21,8 +21,6 @@ services:
     image: 'cyberreboot/packet_cafe_lb:latest'
     ports:
       - 80:80
-    volumes:
-      - ./lb/nginx.conf:/etc/nginx/nginx.conf
     networks:
       - loadbalancer
   messenger:
