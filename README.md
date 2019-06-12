@@ -5,7 +5,7 @@ Large open domain-specific datasets have proven to achieve new analytical abilit
 1.	Build a platform for easy-to-use automated network traffic analysis.
 2.	Grow a sizable labeled dataset of network traffic data using that platform to push machine learning forward in the cybersecurity domain.
 
-For more documents related to this project, check out the [wiki](https://va-vsrv-github.a.internal/CyberReboot/packet_cafe/wiki)
+For more documents related to this project, check out the [wiki](https://va-vsrv-github.a.internal/CyberReboot/packet_cafe/wiki).
 
 ## Platform Architecture
 <img src="/docs/img/packet_cafe_diagram.png"/>
