@@ -1,6 +1,13 @@
 # Packet Café
 
-## Architecture
+## Background
+Large open domain-specific datasets have proven to achieve new analytical abilities in their respective fields using machine learning. Now is the time to move that needle forward for cybersecurity. To do this, this project has two primary goals:
+1.	Build a platform for easy-to-use automated network traffic analysis.
+2.	Grow a sizable labeled dataset of network traffic data using that platform to push machine learning forward in the cybersecurity domain.
+
+For more documents related to this project, check out the [wiki](https://va-vsrv-github.a.internal/CyberReboot/packet_cafe/wiki)
+
+## Platform Architecture
 <img src="/docs/img/packet_cafe_diagram.png"/>
 
 ## Get up and running
@@ -15,7 +22,7 @@ Using kubernetes (assuming your default orchestrator is set to k8s for stacks):
 docker stack deploy -c docker-compose.yml packet_cafe
 ```
 
-## Testing using ApacheBench:
+## Testing using ApacheBench
 
 ```
 ab -n 100 -c 10 http://0.0.0.0/v1/start/eyJpbWFnZSI6ImJmaXJzaC9yZXRpY3VsYXRlLXNwbGluZXMiLCAiYmFyIjogImJsYWgifQ==
