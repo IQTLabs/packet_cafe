@@ -13,7 +13,7 @@ This project is a bootstrapped using [create-react-app](https://github.com/faceb
 Here are quick scripts to get started:
 
 - `npm install`: Install Node dependencies
-- `npm start`: Start the hot reloading development server.
+- `npm start`: Start the hot reloading development server inside the `ui` folder
 - `npm test`: Run the test suit and watch for changes.
 - `npm build`: Build a production optimized bundle of the app.
 
