@@ -22,3 +22,6 @@ Here are quick scripts to get started:
 - `src/components` contains modular components to each page
 
 - `src/pages` contains page layouts for each view
+
+## Resources
+- [Dropzone Mechanic](https://malcoded.com/posts/react-dropzone/).

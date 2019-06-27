@@ -83,3 +83,33 @@ class Stop(object):
         resp.body = 'stopped' + req_id
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
+
+class Upload(object):
+    
+    def on_post(self, req, resp):
+        """
+        POST METHOD
+        """
+        # Retrieve input_file
+        input_file = req.get_param('file')
+
+        # Test if the file was uploaded
+        if input_file.filename:
+            # Retrieve filename
+            filename = input_file.filename
+
+            # Define file_path
+            file_path = os.path.join(self._storage_path, filename)
+
+            # Write to a temporary file to prevent incomplete files
+            # from being used.
+            temp_file_path = file_path + '~'
+
+            open(temp_file_path, 'wb').write(input_file.file.read())
+
+            # Now that we know the file has been fully saved to disk
+            # move it into place.
+            os.rename(temp_file_path, file_path)
+
+        resp.status = falcon.HTTP_201
+
