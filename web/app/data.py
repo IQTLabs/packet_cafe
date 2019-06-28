@@ -87,9 +87,7 @@ class Stop(object):
 class Upload(object):
     
     def on_post(self, req, resp):
-        """
-        POST METHOD
-        """
+        
         # Retrieve input_file
         input_file = req.get_param('file')
 
@@ -97,19 +95,22 @@ class Upload(object):
         if input_file.filename:
             # Retrieve filename
             filename = input_file.filename
+            print(filename)
 
             # Define file_path
             file_path = os.path.join(self._storage_path, filename)
+            print(file_path)
 
-            # Write to a temporary file to prevent incomplete files
-            # from being used.
+            # Write to a temporary file to prevent incomplete files from being used
             temp_file_path = file_path + '~'
+            print(temp_file_path)
 
             open(temp_file_path, 'wb').write(input_file.file.read())
 
-            # Now that we know the file has been fully saved to disk
-            # move it into place.
+            # know the file has been  saved to disk, move it into place.
             os.rename(temp_file_path, file_path)
+        else:
+            print("Error")
 
         resp.status = falcon.HTTP_201
 
