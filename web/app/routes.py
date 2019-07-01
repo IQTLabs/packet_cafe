@@ -1,5 +1,5 @@
 def routes():
-    from .data import Endpoints, Info, Start, Status, Stop , Upload
+    from .data import Endpoints, Info, Start, Status, Stop, Upload
     endpoints = Endpoints()
     p = paths()
     info = Info()
@@ -7,7 +7,7 @@ def routes():
     status = Status()
     stop = Stop()
     upload = Upload()
-    funcs = [endpoints, info, start, status, stop, upload ]
+    funcs = [endpoints, info, start, status, stop, upload]
     return dict(zip(p, funcs))
 
 
