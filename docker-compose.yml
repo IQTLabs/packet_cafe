@@ -1,5 +1,18 @@
 version: '3.7'
 services:
+  ui:
+    restart: always
+    build:
+      context: ui
+      dockerfile: Dockerfile
+    image: 'cyberreboot/packet_cafe_ui:latest'
+    ports:
+      - 5000
+    networks:
+      - frontend
+      - loadbalancer
+    deploy:
+      replicas: 3
   web:
     restart: always
     build:
