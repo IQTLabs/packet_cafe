@@ -11,22 +11,6 @@ from .routes import paths
 from .routes import version
 
 
-def max_body(limit):
-
-    def hook(req, resp, resource, params):
-        length = req.content_length
-        print(limit)
-        print(length)
-        if length is not None and length > limit:
-            msg = ('The size of the request is too large. The body must not '
-                   'exceed ' + str(limit) + ' bytes in length.')
-
-            raise falcon.HTTPPayloadTooLarge(
-                'Request body is too large', msg)
-
-    return hook
-
-
 class Endpoints(object):
 
     def on_get(self, req, resp):
@@ -103,15 +87,13 @@ class Stop(object):
 
 class Upload(object):
 
-    @falcon.before(max_body(100 * 1024 * 1024))
     def on_options(self, req, resp):
         resp.set_header('Access-Control-Allow-Headers', 'Content-Type')
+        resp.status = falcon.HTTP_OK
 
-    @falcon.before(max_body(100 * 1024 * 1024))
     def on_post(self, req, resp):
 
         # Retrieve input_file
-        print(req.has_param('file'))
         input_file = req.get_param('file')
 
         # Test if the file was uploaded
@@ -135,5 +117,6 @@ class Upload(object):
         else:
             print("Error")
 
+        resp.body = ''
+        resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_201
-
