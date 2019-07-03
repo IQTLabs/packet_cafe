@@ -33,7 +33,7 @@ app.post('/express-upload', upload.single("file"), function(req, res) {
     }
   };
 
-  request.post({url:'http://localhost/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
+  request.post({url:'http://web:8000/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
     if (err) {
       return console.error('upload failed:', err);
     }
@@ -45,19 +45,6 @@ app.post('/express-upload', upload.single("file"), function(req, res) {
 
 });
 
-app.listen({ port: process.env.PORT || 9000 },() =>{
-  console.log(`Express App listening on port ${process.env.PORT}!`)
+app.listen(5000,() =>{
+  console.log(`Express App listening on port ${5000}!`)
 });
-
-/*app.listen(9000,() =>{
-  console.log(`Express App listening on port ${9000}!`)
-});*/
-
-//Multer
-//https://scotch.io/tutorials/express-file-uploads-with-multer
-
-//Pipe a uploaded file
-//https://stackoverflow.com/questions/32138748/pipe-a-uploaded-file-to-a-remote-server-with-node-ideally-with-same-filename
-
-//Request
-//https://github.com/request/request#forms
