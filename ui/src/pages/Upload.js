@@ -74,7 +74,9 @@ class Upload extends React.Component{
             const formData = new FormData();
             formData.append("file", file, file.name);
 
-            req.open("POST", "http://0.0.0.0/v1/upload");
+            //req.open("POST", "http://0.0.0.0/v1/upload");
+            //req.open("POST", "http://localhost:5000/express-upload");
+            req.open("POST", "/express-upload");
             req.send(formData);
         });
     }
