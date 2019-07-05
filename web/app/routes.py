@@ -1,5 +1,5 @@
 def routes():
-    from .data import Endpoints, Info, Start, Status, Stop, Upload
+    from .data import Endpoints, Info, Status, Stop, Upload
     endpoints = Endpoints()
     p = paths()
     info = Info()
