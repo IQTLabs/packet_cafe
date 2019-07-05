@@ -28,7 +28,7 @@ app.post('/express-upload', upload.single("file"), function(req, res) {
     file: {
       value:  fs.createReadStream(file.path),
       options: {
-        filename: file.originalFilename
+        filename: file.originalname
       }
     }
   };

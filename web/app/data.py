@@ -1,4 +1,3 @@
-import base64
 import json
 import os
 import socket
@@ -9,6 +8,44 @@ import pika
 
 from .routes import paths
 from .routes import version
+
+
+class Start(object):
+
+    def setup_rabbit(self):
+        params = pika.ConnectionParameters(host='messenger', port=5672)
+        self.connection = pika.BlockingConnection(params)
+        self.channel = self.connection.channel()
+        self.channel.queue_declare(queue='task_queue', durable=True)
+
+    def request(self, pipeline):
+        failed = False
+        image = None
+        filepath = None
+        response = {}
+        try:
+            if 'image' in pipeline:
+                image = pipeline['image']
+            else:
+                failed = True
+            if 'filepath' in pipeline:
+                filepath = pipeline['filepath']
+            else:
+                failed = True
+            self.setup_rabbit()
+            self.channel.basic_publish(exchange='',
+                                       routing_key='task_queue',
+                                       body=json.dumps(pipeline),
+                                       properties=pika.BasicProperties(
+                                       delivery_mode=2,
+                                       ))
+            response['status'] = 'Success'
+            response['uuid'] = pipline['id']
+        except Exception as e:  # pragma: no cover
+            response['status'] = 'Error'
+            response['error'] = str(e)
+
+        return response
 
 
 class Endpoints(object):
@@ -31,45 +68,6 @@ class Info(object):
         resp.status = falcon.HTTP_200
 
 
-class Start(object):
-
-    def setup_rabbit(self):
-        params = pika.ConnectionParameters(host='messenger', port=5672)
-        self.connection = pika.BlockingConnection(params)
-        self.channel = self.connection.channel()
-        self.channel.queue_declare(queue='task_queue', durable=True)
-
-    def on_get(self, req, resp, pipeline):
-        uid = str(uuid.uuid4()).replace('-', '')
-        failed = False
-        image = None
-        filepath = None
-        try:
-            pipeline = json.loads(base64.urlsafe_b64decode(pipeline).decode('utf-8'))
-            pipeline['id'] = uid
-            if 'image' in pipeline:
-                image = pipeline['image']
-            else:
-                failed = True
-            if 'filepath' in pipeline:
-                filepath = pipeline['filepath']
-            else:
-                failed = True
-            self.setup_rabbit()
-            self.channel.basic_publish(exchange='',
-                                       routing_key='task_queue',
-                                       body=json.dumps(pipeline),
-                                       properties=pika.BasicProperties(
-                                       delivery_mode=2,
-                                       ))
-        except Exception as e:  # pragma: no cover
-            print(str(e))
-
-        resp.body = 'id: {0}'.format(uid)
-        resp.content_type = falcon.MEDIA_TEXT
-        resp.status = falcon.HTTP_200
-
-
 class Status(object):
 
     def on_get(self, req, resp, req_id):
@@ -84,6 +82,7 @@ class Stop(object):
         resp.body = 'stopped' + req_id
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
+
 
 class Upload(object):
 
@@ -100,23 +99,27 @@ class Upload(object):
         if input_file.filename:
             # Retrieve filename
             filename = input_file.filename
-            print(filename)
 
             # Define file_path
             file_path = os.path.join('/files', filename)
-            print(file_path)
 
             # Write to a temporary file to prevent incomplete files from being used
             temp_file_path = file_path + '~'
-            print(temp_file_path)
-
             open(temp_file_path, 'wb').write(input_file.file.read())
 
             # know the file has been  saved to disk, move it into place.
             os.rename(temp_file_path, file_path)
-        else:
-            print("Error")
+            uid = str(uuid.uuid4()).replace('-', '')
 
-        resp.body = ''
-        resp.content_type = falcon.MEDIA_TEXT
-        resp.status = falcon.HTTP_201
+            # make request to start
+            # get list of images to spin up
+            pipeline =  {'image': 'bfirsh/reticulate-splines', 'id': uid, 'filepath': file_path}
+            response = Start().request(pipeline)
+            # TODO
+            # check response
+
+            resp.media = {'filename': filename, 'uuid': uid, 'status': 'Success'}
+            resp.status = falcon.HTTP_201
+        else:
+            resp.media = {'status': 'Error'}
+            resp.status = falcon.HTTP_500

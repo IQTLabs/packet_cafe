@@ -24,6 +24,8 @@ docker stack deploy -c docker-compose.yml packet_cafe
 
 ## Testing using ApacheBench
 
+** this endpoint is no longer exposed as it is triggered by uploading a file and shouldn't be exposed to end users directly **
+
 ```
 ab -n 100 -c 10 http://0.0.0.0/v1/start/eyJpbWFnZSI6ImJmaXJzaC9yZXRpY3VsYXRlLXNwbGluZXMiLCAiYmFyIjogImJsYWgifQ==
 ```
@@ -72,14 +74,4 @@ Percentage of the requests served within a certain time (ms)
   98%    547
   99%    620
  100%    620 (longest request)
-```
-
-## FAQ
-
-Creating the url-encoded payload with Python:
-```
->>> import base64
->>> b = base64.urlsafe_b64encode(b'{"image":"bfirsh/reticulate-splines", "bar": "blah"}')
->>> b
-b'eyJpbWFnZSI6ImJmaXJzaC9yZXRpY3VsYXRlLXNwbGluZXMiLCAiYmFyIjogImJsYWgifQ=='
 ```
