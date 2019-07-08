@@ -37,7 +37,7 @@ app.post('/express-upload', upload.single("file"), function(req, res) {
     if (err) {
       return console.error('upload failed:', err);
     }
-    console.log('Upload successful!  Server responded with:', body);
+    console.log('Uploaded file, server responded with:', body);
   });
 
   console.log(req.file);
