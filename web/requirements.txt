@@ -4,3 +4,4 @@ falcon-multipart==0.2.0
 gevent==1.4.0
 gunicorn==19.9.0
 pika==1.0.1
+python-magic==0.4.15

@@ -10,8 +10,10 @@ def callback(ch, method, properties, body):
     """Callback that has the message that was received"""
     d = setup_docker()
     pipeline = json.loads(body.decode('utf-8'))
-    if 'id' in pipeline and 'image' in pipeline:
-        d.containers.run(pipeline['image'], detach=True)
+    if 'id' in pipeline and 'file_type' in pipeline:
+        # TODO attach volume to file path
+        # TODO get list of container images to start
+        #d.containers.run(pipeline['image'], detach=True)
         print(" [O] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                      method.routing_key,
                                      pipeline))
