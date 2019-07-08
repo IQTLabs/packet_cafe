@@ -7,6 +7,7 @@ COPY requirements.txt requirements.txt
 RUN apk add --update \
     curl \
     gcc \
+    libmagic \
     linux-headers \
     musl-dev \
     nginx \

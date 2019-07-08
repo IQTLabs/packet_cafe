@@ -13,7 +13,7 @@ class Upload extends React.Component{
             uploadProgress: {},
             successfullUploaded: false
         };
-    
+
         this.onFilesAdded = this.onFilesAdded.bind(this);
         this.uploadFiles = this.uploadFiles.bind(this);
         this.sendRequest = this.sendRequest.bind(this);
@@ -25,7 +25,7 @@ class Upload extends React.Component{
             files: prevState.files.concat(files)
         }));
     }
-    
+
     async uploadFiles() {
         this.setState({ uploadProgress: {}, uploading: true });
         const promises = [];
@@ -41,7 +41,7 @@ class Upload extends React.Component{
             this.setState({ successfullUploaded: true, uploading: false });
         }
     }
-    
+
     sendRequest(file) {
         return new Promise((resolve, reject) => {
             const req = new XMLHttpRequest();
@@ -78,7 +78,7 @@ class Upload extends React.Component{
             req.send(formData);
         });
     }
-    
+
     renderProgress(file) {
         const uploadProgress = this.state.uploadProgress[file.name];
         if (this.state.uploading || this.state.successfullUploaded) {
@@ -98,7 +98,7 @@ class Upload extends React.Component{
             );
         }
     }
-    
+
     renderActions() {
         if (this.state.successfullUploaded) {
             return (
@@ -127,7 +127,7 @@ class Upload extends React.Component{
             <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
                 <Grid.Column style={{ maxWidth: 450 }}>
                 <Header as='h2' color='teal' textAlign='center'>
-                    Upload tcpdump/*.pcap files
+                    Upload tcpdump/*.pcap/pcapng files
                 </Header>
                 <Form size='large'>
                     <Segment stacked>

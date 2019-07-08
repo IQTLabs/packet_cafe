@@ -4,11 +4,14 @@ import socket
 import uuid
 
 import falcon
+import magic
 import pika
 
 from .routes import paths
 from .routes import version
 
+
+ACCEPTED_FILE_TYPES = ['pcap', 'pcapng']
 
 class Start(object):
 
@@ -19,19 +22,8 @@ class Start(object):
         self.channel.queue_declare(queue='task_queue', durable=True)
 
     def request(self, pipeline):
-        failed = False
-        image = None
-        filepath = None
         response = {}
         try:
-            if 'image' in pipeline:
-                image = pipeline['image']
-            else:
-                failed = True
-            if 'filepath' in pipeline:
-                filepath = pipeline['filepath']
-            else:
-                failed = True
             self.setup_rabbit()
             self.channel.basic_publish(exchange='',
                                        routing_key='task_queue',
@@ -111,15 +103,23 @@ class Upload(object):
             os.rename(temp_file_path, file_path)
             uid = str(uuid.uuid4()).replace('-', '')
 
-            # make request to start
-            # get list of images to spin up
-            pipeline =  {'image': 'bfirsh/reticulate-splines', 'id': uid, 'filepath': file_path}
-            response = Start().request(pipeline)
-            # TODO
-            # check response
+            # check if file is pcap or pcapng
+            file_type = magic.from_file(file_path)
+            file_type = file_type.split()[0]
 
-            resp.media = {'filename': filename, 'uuid': uid, 'status': 'Success'}
-            resp.status = falcon.HTTP_201
+            # make request to start
+            if file_type in ACCEPTED_FILE_TYPES:
+                pipeline =  {'file_type': file_type, 'id': uid, 'file_path': file_path}
+                response = Start().request(pipeline)
+                # TODO
+                # check response
+
+                resp.media = {'filename': filename, 'uuid': uid, 'status': 'Success'}
+                resp.status = falcon.HTTP_201
+            else:
+                os.remove(file_path)
+                resp.media = {'status': 'Error', 'error': 'Invalid file type. Acceptable file formats are {0}'.format(ACCEPTED_FILE_TYPES)}
+                resp.status = falcon.HTTP_200
         else:
             resp.media = {'status': 'Error'}
             resp.status = falcon.HTTP_500
