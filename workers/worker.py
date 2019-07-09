@@ -1,6 +1,7 @@
 import datetime
 import json
 import time
+import uuid
 
 import docker
 import pika
@@ -8,12 +9,16 @@ import pika
 
 def callback(ch, method, properties, body):
     """Callback that has the message that was received"""
+    workers = load_workers()
     d = setup_docker()
     pipeline = json.loads(body.decode('utf-8'))
     if 'id' in pipeline and 'file_type' in pipeline:
-        # TODO attach volume to file path
-        # TODO get list of container images to start
-        #d.containers.run(pipeline['image'], detach=True)
+        for worker in workers['workers']:
+            if pipeline['file_type'] in worker['inputs']:
+                # TODO attach volume to file path
+                uid = str(uuid.uuid4()).split('-')[-1]
+                name = worker['name'] + '_' + uid
+                d.containers.run(worker['image'], name=name, detach=True)
         print(" [O] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                      method.routing_key,
                                      pipeline))
@@ -48,6 +53,13 @@ def main(queue_name, host):
 
 def setup_docker():
     return docker.from_env()
+
+
+def load_workers():
+    with open('workers.json') as json_file:
+        workers = json.load(json_file)
+    return workers
+
 
 if __name__ == "__main__":
     queue_name = 'task_queue'

@@ -1,0 +1,40 @@
+{
+  "workers": [
+    {
+      "name": "test0",
+      "image": "bfirsh/reticulate-splines:latest",
+      "labels": "",
+      "stage": "preprocessing",
+      "outputs": [
+        "file"
+      ],
+      "inputs": [
+        "pcap"
+      ]
+    },
+    {
+      "name": "test1",
+      "image": "bfirsh/reticulate-splines:latest",
+      "labels": "",
+      "stage": "labeling",
+      "outputs": [
+        "rabbitmq"
+      ],
+      "inputs": [
+        "pcap"
+      ]
+    },
+    {
+      "name": "test2",
+      "image": "bfirsh/reticulate-splines:latest",
+      "labels": "",
+      "stage": "analysis",
+      "outputs": [
+        "stdout"
+      ],
+      "inputs": [
+        "pcapng"
+      ]
+    }
+  ]
+}
