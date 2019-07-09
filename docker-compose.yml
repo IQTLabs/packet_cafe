@@ -19,8 +19,6 @@ services:
       context: web
       dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_web:latest'
-    ports:
-      - 8000
     networks:
       - frontend
       - loadbalancer
