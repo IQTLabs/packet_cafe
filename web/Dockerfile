@@ -1,7 +1,6 @@
 FROM alpine:3.9
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
-RUN mkdir /files
 COPY requirements.txt requirements.txt
 
 RUN apk add --update \

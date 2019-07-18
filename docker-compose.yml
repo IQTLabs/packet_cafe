@@ -10,7 +10,6 @@ services:
       - 5000
     networks:
       - frontend
-      - loadbalancer
     deploy:
       replicas: 3
   web:
@@ -21,9 +20,11 @@ services:
     image: 'cyberreboot/packet_cafe_web:latest'
     networks:
       - frontend
-      - loadbalancer
     deploy:
       replicas: 3
+    volumes:
+      - files:/files
+      - id:/id
   lb:
     restart: always
     build:
@@ -33,7 +34,8 @@ services:
     ports:
       - 80:80
     networks:
-      - loadbalancer
+      - frontend
+      - results
   messenger:
     restart: always
     build:
@@ -45,6 +47,7 @@ services:
     networks:
       - frontend
       - backend
+      - analysis
   workers:
     restart: always
     build:
@@ -53,6 +56,7 @@ services:
     image: 'cyberreboot/packet_cafe_workers:latest'
     networks:
       - backend
+      - results
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
@@ -62,5 +66,10 @@ networks:
     name: frontend
   backend:
     name: backend
-  loadbalancer:
-    name: loadbalancer
+  analysis:
+    name: analysis
+  results:
+    name: results
+volumes:
+  files:
+  id:

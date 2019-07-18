@@ -33,7 +33,7 @@ app.post('/express-upload', upload.single("file"), function(req, res) {
     }
   };
 
-  request.post({url:'http://web:8000/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
+  request.post({url:'http://lb/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
     if (err) {
       return console.error('upload failed:', err);
     }
