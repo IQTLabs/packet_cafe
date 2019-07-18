@@ -1,3 +1,4 @@
+import errno
 import json
 import os
 import socket
@@ -12,6 +13,17 @@ from .routes import version
 
 
 ACCEPTED_FILE_TYPES = ['pcap', 'pcapng']
+
+
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
+
 
 class Start(object):
 
@@ -32,7 +44,7 @@ class Start(object):
                                        delivery_mode=2,
                                        ))
             response['status'] = 'Success'
-            response['uuid'] = pipline['id']
+            response['uuid'] = pipeline['id']
         except Exception as e:  # pragma: no cover
             response['status'] = 'Error'
             response['error'] = str(e)
@@ -58,6 +70,38 @@ class Info(object):
         resp.body = json.dumps({'version': 'v0.1.0', 'hostname': socket.gethostname()})
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
+
+
+class Results(object):
+
+    def on_options(self, req, resp, tool, counter, req_id):
+        resp.set_header('Access-Control-Allow-Headers', 'Content-Type')
+        resp.status = falcon.HTTP_OK
+
+    def on_get(self, req, resp, tool, counter, req_id):
+        # if counter is 0, get all of them
+        # TODO
+        resp.media = ''
+        resp.status = falcon.HTTP_200
+
+    def on_post(self, req, resp, tool, counter, req_id):
+        message = req.media
+
+        # Define file_path
+        file_dir = '/id/{0}/{1}/{2}'.format(message['id'], message['results']['tool'], message['results']['counter'])
+        file_path = os.path.join(file_dir, message['img_path'].split('/')[-1])
+
+        mkdir_p(file_dir)
+
+        # Write to a temporary file to prevent incomplete files from being used
+        temp_file_path = file_path + '~'
+        open(temp_file_path, 'wb').write(message['data'].encode('utf-8'))
+
+        # know the file has been  saved to disk, move it into place.
+        os.rename(temp_file_path, file_path)
+
+        resp.media = {'message': message}
+        resp.status = falcon.HTTP_201
 
 
 class Status(object):
@@ -92,8 +136,11 @@ class Upload(object):
             # Retrieve filename
             filename = input_file.filename
 
+            uid = str(uuid.uuid4()).replace('-', '')
+            file_dir = '/files/id/{0}'.format(uid)
+            mkdir_p(file_dir)
             # Define file_path
-            file_path = os.path.join('/files', filename)
+            file_path = os.path.join(file_dir, filename)
 
             # Write to a temporary file to prevent incomplete files from being used
             temp_file_path = file_path + '~'
@@ -101,7 +148,6 @@ class Upload(object):
 
             # know the file has been  saved to disk, move it into place.
             os.rename(temp_file_path, file_path)
-            uid = str(uuid.uuid4()).replace('-', '')
 
             # check if file is pcap or pcapng
             file_type = magic.from_file(file_path)

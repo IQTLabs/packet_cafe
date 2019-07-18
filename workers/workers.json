@@ -2,7 +2,7 @@
   "workers": [
     {
       "name": "test0",
-      "image": "bfirsh/reticulate-splines:latest",
+      "image": "pcapplot:latest",
       "labels": "",
       "stage": "preprocessing",
       "outputs": [
