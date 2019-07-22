@@ -21,7 +21,7 @@
         "rabbitmq"
       ],
       "inputs": [
-        "pcap"
+        "none"
       ]
     },
     {
@@ -33,7 +33,7 @@
         "stdout"
       ],
       "inputs": [
-        "pcapng"
+        "none"
       ]
     }
   ]

@@ -27,19 +27,23 @@ def callback(ch, method, properties, body):
                                      network='analysis',
                                      volumes={'packet_cafe_files': {'bind': '/pcaps', 'mode': 'ro'}},
                                      environment=pipeline,
+                                     remove=True,
                                      command=["/pcaps/id/{0}".format(pipeline['id']), "-r"],
                                      detach=True)
                 except Exception as e:  # pragma: no cover
-                    # currently a bug in docker-py causing this:
-                    # 400 Client Error: Bad Request ("OCI runtime create failed: container_linux.go:345: starting container process caused "exec: \"/pcaps/id/17f05bbcdcf447799c4ee9a378ce18c7\": permission denied": unknown")
-                    # but it still works, so need to ignore the thrown exception
-                    pass
-    elif 'id' in pipeline and 'results' in pipeline:
+                    print('failed: {0}'.format(str(e)))
+    elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'data':
         print(" [A] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
         r = requests.post('http://lb/v1/results/pcapplot/{0}/{1}'.format(pipeline['results']['counter'], pipeline['id']), data=json.dumps(pipeline))
+    elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'metadata':
+        print(" [A] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
+                                        method.routing_key,
+                                        pipeline['id'],
+                                        pipeline['results']))
+        r = requests.post('http://lb/v1/results/pcapplot/{0}/{1}'.format(0, pipeline['id']), data=json.dumps(pipeline))
     else:
         print(" [X] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                      method.routing_key,
