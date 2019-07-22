@@ -1,0 +1,23 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+table {
+	font-size: 1em;
+}
+
+.ui-draggable, .ui-droppable {
+	background-position: top;
+}
+
+#wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+#first {
+    width: 200px;
+    float:left;
+}
+#second {
+    overflow: hidden;
+}

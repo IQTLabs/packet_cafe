@@ -1,8 +1,11 @@
 import errno
+import base64
 import json
 import os
 import socket
 import uuid
+
+from string import Template
 
 import falcon
 import magic
@@ -64,6 +67,14 @@ class Endpoints(object):
         resp.status = falcon.HTTP_200
 
 
+class Id(object):
+    def on_get(self, req, resp, req_id, tool, counter, filename):
+        with open('/id/{0}/{1}/{2}/{3}'.format(req_id, tool, counter, filename), 'rb') as f:
+            resp.body = base64.decodestring(f.read())
+        resp.content_type = falcon.MEDIA_PNG
+        resp.status = falcon.HTTP_200
+
+
 class Info(object):
 
     def on_get(self, req, resp):
@@ -80,25 +91,153 @@ class Results(object):
 
     def on_get(self, req, resp, tool, counter, req_id):
         # if counter is 0, get all of them
-        # TODO
-        resp.media = ''
+        # TODO move this to tool specific functions, currently just defaulting to pcapplots
+        # TODO actually use the counter param
+        packets = 'Unknown'
+        capture_time = 'Unknown'
+        host = 'Unknown'
+        filename = 'Unknown'
+        asn_file_path = ''
+        private_file_path = ''
+        src_file_path = ''
+        dest_file_path = ''
+        asn_file = ''
+        private_file = ''
+        src_file = ''
+        dest_file = ''
+        try:
+            with open('/id/{0}/{1}/metadata.json'.format(req_id, tool)) as f:
+                metadata = json.load(f)
+            for rec in metadata:
+                filename = rec
+            packets, capture_time, host = metadata[filename]
+            asn_file_path = '/id/{0}/{1}/1/map_ASN-{2}.png'.format(req_id, tool, filename)
+            private_file_path = '/id/{0}/{1}/2/map_Private_RFC_1918-{2}.png'.format(req_id, tool, filename)
+            src_file_path = '/id/{0}/{1}/3/map_Source_Ports-{2}.png'.format(req_id, tool, filename)
+            dest_file_path = '/id/{0}/{1}/4/map_Destination_Ports-{2}.png'.format(req_id, tool, filename)
+            with open(asn_file_path, 'r') as f:
+                asn_file = f.read()
+            with open(private_file_path, 'r') as f:
+                private_file = f.read()
+            with open(src_file_path, 'r') as f:
+                src_file = f.read()
+            with open(dest_file_path, 'r') as f:
+                dest_file = f.read()
+        except Exception as e:  # pragma: no cover
+            print('failed: {0}'.format(str(e)))
+
+        html_str = '''\
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PCAP Plot</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/tools/pcapplot/css/style.css">
+  <link rel="stylesheet" href="/tools/pcapplot/css/jquery.fancybox.min.css">
+  <style>
+  body {
+   background-image: url("/tools/pcapplot/img/grey.png");
+   background-color: #636363;
+  }
+  #sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+  #sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
+  html>body #sortable li { height: 352px; line-height: 1.2em; }
+  .ui-state-highlight { height: 352px; line-height: 1.2em; }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="/tools/pcapplot/js/jquery.fancybox.min.js"></script>
+  <script>
+  $( function() {
+    $( "#sortable" ).sortable({
+      placeholder: "ui-state-highlight"
+    });
+    $( "#sortable" ).disableSelection();
+  } );
+  </script>
+</head>
+<body>
+<p align="right"><font color="yellow"><a href="/" style="color:yellow">Home</a></font></p>
+<p><font color="white">Showing maps for the latest capture of each device type, click on a device name to see all maps for that device type. Click and drag rows to reorder them.</font></p>
+<p><font color="white">Maps are laid out left to right, top to bottom.  ASN is 1-65536, RFC 1918 is 10.0.0.0/8 followed by 172.16.0.0/12 followed by 192.168.0.0/16 (each square is a /24), Source and Destination Ports are 1-65536.</font></p>
+<p><font color="white">Blue is inbound traffic, Red is outbound traffic, Green is mostly bidirectional traffic.</font></p>
+<ul id="sortable">
+
+  <li class="ui-state-default" style="background-color: #999999">
+      <div id="wrapper">
+      <div id="first"><p><b>Host:</b> $host<br /><b>Filename:</b> $filename<br /><b>Packets:</b> $packets<br /><b>Time Window:</b> $capture_time<br /><br /><b>Left to right:</b><br /><br />&emsp;&bull;&nbsp;Public ASN<br />&emsp;&bull;&nbsp;Private RFC 1918<br />&emsp;&bull;&nbsp;Source Ports<br />&emsp;&bull;&nbsp;Destination Ports</p></div>
+      <div id="second">
+      <a data-fancybox="gallery"
+         data-srcset="data:image/png;base64,$asn_file"
+         data-width="2561"
+         data-height="2561"
+         data-caption="&lt;b&gt;ASN&lt;/b&gt;&lt;br /&gt; Capture: $filename"
+         href="$asn_file_path"><img src="data:image/png;base64,$asn_file" alt="" height="350" width="350">
+      </a>
+      <a data-fancybox="gallery"
+         data-srcset="data:image/png;base64,$private_file"
+         data-width="2891"
+         data-height="2891"
+         data-caption="&lt;b&gt;Private RFC 1918&lt;/b&gt;&lt;br /&gt; Capture: $filename"
+         href="$private_file_path"><img src="data:image/png;base64,$private_file" alt="" height="350" width="350">
+      </a>
+      <a data-fancybox="gallery"
+         data-srcset="data:image/png;base64,$src_file"
+         data-width="2561"
+         data-height="2561"
+         data-caption="&lt;b&gt;Source Ports&lt;/b&gt;&lt;br /&gt; Capture: $filename"
+         href="$src_file_path"><img src="data:image/png;base64,$src_file" alt="" height="350" width="350">
+      </a>
+      <a data-fancybox="gallery"
+         data-srcset="data:image/png;base64,$dest_file"
+         data-width="2561"
+         data-height="2561"
+         data-caption="&lt;b&gt;Destination Ports&lt;/b&gt;&lt;br /&gt; Capture: $filename"
+         href="$dest_file_path"><img src="data:image/png;base64,$dest_file" alt="" height="350" width="350">
+      </a>
+      </div>
+      </div>
+  </li>
+
+</ul>
+
+</body>
+</html>
+'''
+        resp.body = Template(html_str).safe_substitute(asn_file=asn_file, asn_file_path=asn_file_path, private_file=private_file, private_file_path=private_file_path, src_file=src_file, src_file_path=src_file_path, dest_file=dest_file, dest_file_path=dest_file_path, host=host, filename=filename, packets=packets, capture_time=capture_time)
+        resp.content_type = falcon.MEDIA_HTML
         resp.status = falcon.HTTP_200
 
     def on_post(self, req, resp, tool, counter, req_id):
         message = req.media
 
-        # Define file_path
-        file_dir = '/id/{0}/{1}/{2}'.format(message['id'], message['results']['tool'], message['results']['counter'])
-        file_path = os.path.join(file_dir, message['img_path'].split('/')[-1])
+        if message['type'] == 'data':
+            # Define file_path
+            file_dir = '/id/{0}/{1}/{2}'.format(message['id'], message['results']['tool'], message['results']['counter'])
+            file_path = os.path.join(file_dir, message['img_path'].split('/')[-1])
 
-        mkdir_p(file_dir)
+            mkdir_p(file_dir)
 
-        # Write to a temporary file to prevent incomplete files from being used
-        temp_file_path = file_path + '~'
-        open(temp_file_path, 'wb').write(message['data'].encode('utf-8'))
+            # Write to a temporary file to prevent incomplete files from being used
+            temp_file_path = file_path + '~'
+            open(temp_file_path, 'wb').write(message['data'].encode('utf-8'))
 
-        # know the file has been  saved to disk, move it into place.
-        os.rename(temp_file_path, file_path)
+            # know the file has been  saved to disk, move it into place.
+            os.rename(temp_file_path, file_path)
+        else:
+            file_dir = '/id/{0}/{1}'.format(message['id'], message['results']['tool'])
+            file_path = os.path.join(file_dir, 'metadata.json')
+            mkdir_p(file_dir)
+
+            # Write to a temporary file to prevent incomplete files from being used
+            temp_file_path = file_path + '~'
+            with open(temp_file_path, 'w') as outfile:
+                json.dump(message['data'], outfile)
+
+            # know the file has been  saved to disk, move it into place.
+            os.rename(temp_file_path, file_path)
 
         resp.media = {'message': message}
         resp.status = falcon.HTTP_201
