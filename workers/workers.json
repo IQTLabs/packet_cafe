@@ -2,7 +2,7 @@
   "workers": [
     {
       "name": "test0",
-      "image": "pcapplot:latest",
+      "image": "cyberreboot/pcapplot:latest",
       "labels": "",
       "stage": "preprocessing",
       "outputs": [
