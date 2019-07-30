@@ -294,7 +294,7 @@ class Upload(object):
 
             # make request to start
             if file_type in ACCEPTED_FILE_TYPES:
-                pipeline =  {'file_type': file_type, 'id': uid, 'file_path': file_path}
+                pipeline =  {'file_type': file_type, 'id': uid, 'file_path': file_path, 'rabbit': 'true'}
                 response = Start().request(pipeline)
                 # TODO
                 # check response

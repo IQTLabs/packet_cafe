@@ -1,39 +1,94 @@
 {
   "workers": [
     {
-      "name": "test0",
-      "image": "cyberreboot/pcapplot:latest",
+      "name": "pcapplot",
+      "image": "cyberreboot/pcapplot",
+      "version": "v0.1.1",
+      "labels": "",
+      "stage": "analysis",
+      "outputs": [
+        "file"
+      ],
+      "inputs": [
+        "pcap-splitter"
+      ]
+    },
+    {
+      "name": "pcap-splitter",
+      "image": "cyberreboot/vent-plugins-pcap-to-node-pcap",
+      "version": "v0.1.2",
       "labels": "",
       "stage": "preprocessing",
       "outputs": [
-        "file"
+        "pcap"
+      ],
+      "inputs": [
+        "pcap-dot1q"
+      ]
+    },
+    {
+      "name": "pcap-dot1q",
+      "image": "cyberreboot/vent-plugins-tcprewrite-dot1q",
+      "version": "v0.1.2",
+      "labels": "",
+      "stage": "preprocessing",
+      "outputs": [
+        "pcap"
       ],
       "inputs": [
         "pcap"
       ]
     },
     {
-      "name": "test1",
-      "image": "bfirsh/reticulate-splines:latest",
+      "name": "poseidon",
+      "image": "cyberreboot/poseidon",
+      "version": "v0.6.4",
       "labels": "",
-      "stage": "labeling",
+      "stage": "analysis",
+      "outputs": [
+        "redis"
+      ],
+      "inputs": [
+        "pcap..."
+      ]
+    },
+    {
+      "name": "poseidon-api",
+      "image": "cyberreboot/poseidon-api",
+      "version": "v0.6.4",
+      "labels": "",
+      "stage": "analysis",
+      "outputs": [
+        "endpoint"
+      ],
+      "inputs": [
+        "poseidon"
+      ]
+    },
+    {
+      "name": "crviz",
+      "image": "cyberreboot/crviz",
+      "version": "v0.3.6",
+      "labels": "",
+      "stage": "analysis",
+      "outputs": [
+        "endpoint"
+      ],
+      "inputs": [
+        "poseidon-api"
+      ]
+    },
+    {
+      "name": "networkml",
+      "image": "cyberreboot/networkml",
+      "version": "v0.3.4",
+      "labels": "",
+      "stage": "analysis",
       "outputs": [
         "rabbitmq"
       ],
       "inputs": [
-        "none"
-      ]
-    },
-    {
-      "name": "test2",
-      "image": "bfirsh/reticulate-splines:latest",
-      "labels": "",
-      "stage": "analysis",
-      "outputs": [
-        "stdout"
-      ],
-      "inputs": [
-        "none"
+        "pcap-splitter"
       ]
     }
   ]
