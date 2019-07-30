@@ -165,11 +165,11 @@ class Results(object):
          href="$asn_file_path"><img src="$asn_file_path" alt="" height="350" width="350">
       </a>
       <a data-fancybox="gallery"
-         data-srcset="data:image/png;base64,$private_file"
+         data-srcset="$private_file_path"
          data-width="2891"
          data-height="2891"
          data-caption="&lt;b&gt;Private RFC 1918&lt;/b&gt;&lt;br /&gt; Capture: $filename"
-         href="$private_file_path"><img src="data:image/png;base64,$private_file" alt="" height="350" width="350">
+         href="$private_file_path"><img src="$private_file_path" alt="" height="350" width="350">
       </a>
       <a data-fancybox="gallery"
          data-srcset="$src_file_path"
