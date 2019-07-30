@@ -101,10 +101,6 @@ class Results(object):
         private_file_path = ''
         src_file_path = ''
         dest_file_path = ''
-        asn_file = ''
-        private_file = ''
-        src_file = ''
-        dest_file = ''
         try:
             with open('/id/{0}/{1}/metadata.json'.format(req_id, tool)) as f:
                 metadata = json.load(f)
@@ -115,14 +111,6 @@ class Results(object):
             private_file_path = '/id/{0}/{1}/2/map_Private_RFC_1918-{2}.png'.format(req_id, tool, filename)
             src_file_path = '/id/{0}/{1}/3/map_Source_Ports-{2}.png'.format(req_id, tool, filename)
             dest_file_path = '/id/{0}/{1}/4/map_Destination_Ports-{2}.png'.format(req_id, tool, filename)
-            with open(asn_file_path, 'r') as f:
-                asn_file = f.read()
-            with open(private_file_path, 'r') as f:
-                private_file = f.read()
-            with open(src_file_path, 'r') as f:
-                src_file = f.read()
-            with open(dest_file_path, 'r') as f:
-                dest_file = f.read()
         except Exception as e:  # pragma: no cover
             print('failed: {0}'.format(str(e)))
 
@@ -170,11 +158,11 @@ class Results(object):
       <div id="first"><p><b>Host:</b> $host<br /><b>Filename:</b> $filename<br /><b>Packets:</b> $packets<br /><b>Time Window:</b> $capture_time<br /><br /><b>Left to right:</b><br /><br />&emsp;&bull;&nbsp;Public ASN<br />&emsp;&bull;&nbsp;Private RFC 1918<br />&emsp;&bull;&nbsp;Source Ports<br />&emsp;&bull;&nbsp;Destination Ports</p></div>
       <div id="second">
       <a data-fancybox="gallery"
-         data-srcset="data:image/png;base64,$asn_file"
+         data-srcset="$asn_file_path"
          data-width="2561"
          data-height="2561"
          data-caption="&lt;b&gt;ASN&lt;/b&gt;&lt;br /&gt; Capture: $filename"
-         href="$asn_file_path"><img src="data:image/png;base64,$asn_file" alt="" height="350" width="350">
+         href="$asn_file_path"><img src="$asn_file_path" alt="" height="350" width="350">
       </a>
       <a data-fancybox="gallery"
          data-srcset="$private_file_path"
@@ -184,18 +172,18 @@ class Results(object):
          href="$private_file_path"><img src="$private_file_path" alt="" height="350" width="350">
       </a>
       <a data-fancybox="gallery"
-         data-srcset="data:image/png;base64,$src_file"
+         data-srcset="$src_file_path"
          data-width="2561"
          data-height="2561"
          data-caption="&lt;b&gt;Source Ports&lt;/b&gt;&lt;br /&gt; Capture: $filename"
-         href="$src_file_path"><img src="data:image/png;base64,$src_file" alt="" height="350" width="350">
+         href="$src_file_path"><img src="$src_file_path" alt="" height="350" width="350">
       </a>
       <a data-fancybox="gallery"
-         data-srcset="data:image/png;base64,$dest_file"
+         data-srcset="$dest_file_path"
          data-width="2561"
          data-height="2561"
          data-caption="&lt;b&gt;Destination Ports&lt;/b&gt;&lt;br /&gt; Capture: $filename"
-         href="$dest_file_path"><img src="data:image/png;base64,$dest_file" alt="" height="350" width="350">
+         href="$dest_file_path"><img src="$dest_file_path" alt="" height="350" width="350">
       </a>
       </div>
       </div>
@@ -206,7 +194,8 @@ class Results(object):
 </body>
 </html>
 '''
-        resp.body = Template(html_str).safe_substitute(asn_file=asn_file, asn_file_path=asn_file_path, private_file=private_file, private_file_path=private_file_path, src_file=src_file, src_file_path=src_file_path, dest_file=dest_file, dest_file_path=dest_file_path, host=host, filename=filename, packets=packets, capture_time=capture_time)
+        resp.body = Template(html_str).safe_substitute(asn_file_path=asn_file_path, private_file_path=private_file_path, src_file_path=src_file_path, \
+          dest_file_path=dest_file_path, host=host, filename=filename, packets=packets, capture_time=capture_time)
         resp.content_type = falcon.MEDIA_HTML
         resp.status = falcon.HTTP_200
 

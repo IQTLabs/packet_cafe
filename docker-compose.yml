@@ -12,6 +12,8 @@ services:
       - frontend
     deploy:
       replicas: 3
+    volumes:
+      - id:/id
   web:
     restart: always
     build:
