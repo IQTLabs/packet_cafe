@@ -48,6 +48,7 @@ services:
       - frontend
       - backend
       - analysis
+      - preprocessing
   workers:
     restart: always
     build:
@@ -68,6 +69,8 @@ networks:
     name: backend
   analysis:
     name: analysis
+  preprocessing:
+    name: preprocessing
   results:
     name: results
 volumes:

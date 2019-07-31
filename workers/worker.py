@@ -21,14 +21,20 @@ def callback(ch, method, properties, body):
             if pipeline['file_type'] in worker['inputs']:
                 uid = str(uuid.uuid4()).split('-')[-1]
                 name = worker['name'] + '_' + uid
+                image = worker['image']
+                if 'version' in worker:
+                    image += ':' + worker['version']
+                command = [""]
+                if 'command' in worker:
+                    command = worker['command']
                 try:
-                    d.containers.run(image=worker['image'],
+                    d.containers.run(image=image,
                                      name=name,
-                                     network='analysis',
-                                     volumes={'packet_cafe_files': {'bind': '/pcaps', 'mode': 'ro'}},
+                                     network=worker['stage'],
+                                     volumes={'packet_cafe_files': {'bind': '/files', 'mode': 'rw'}},
                                      environment=pipeline,
-                                     remove=True,
-                                     command=["/pcaps/id/{0}".format(pipeline['id']), "-r"],
+                                     #remove=True,
+                                     command=[pipeline['file_path']],
                                      detach=True)
                 except Exception as e:  # pragma: no cover
                     print('failed: {0}'.format(str(e)))
@@ -48,6 +54,32 @@ def callback(ch, method, properties, body):
         print(" [X] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                      method.routing_key,
                                      pipeline))
+    for worker in workers['workers']:
+        if 'id' in pipeline and 'results' in pipeline and pipeline['results']['tool'] in worker['inputs']:
+            print(" [O] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
+                                         method.routing_key,
+                                         pipeline))
+            uid = str(uuid.uuid4()).split('-')[-1]
+            name = worker['name'] + '_' + uid
+            image = worker['image']
+            if 'version' in worker:
+                image += ':' + worker['version']
+            command = [""]
+            if 'command' in worker:
+                command = worker['command']
+            if 'rabbit' not in pipeline:
+                pipeline['rabbit'] = 'true'
+            try:
+                d.containers.run(image=image,
+                                 name=name,
+                                 network=worker['stage'],
+                                 volumes={'packet_cafe_files': {'bind': '/files', 'mode': 'rw'}},
+                                 environment=pipeline,
+                                 #remove=True,
+                                 command=[pipeline['file_path']],
+                                 detach=True)
+            except Exception as e:  # pragma: no cover
+                print('failed: {0}'.format(str(e)))
 
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
