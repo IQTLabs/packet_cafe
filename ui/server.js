@@ -32,15 +32,16 @@ app.get('/results/:id/:tool', function(req, res) {
 // render images from tools
 app.get('/id/:id/:tool/:counter/:file', function(req, res) {
   var url = 'http://lb/v1/id/' + req.params['id'] + '/' + req.params['tool'] + '/' + req.params['counter'] + '/' + req.params['file']
-  console.log(url);
-  console.log(req.headers);
 
-  request.get({url:url}, function optionalCallback(err, httpResponse, body) {
+  request.get({url:url, encoding: null}, function optionalCallback(err, httpResponse, body) {
+
     if (err) {
       return console.error('failed:', err);
     }
+    const img = new Buffer(body, 'binary');
     res.set('Content-Type', 'image/png');
-    res.send([body]);
+    res.set('Content-Length', img.length);
+    res.send(img);
   });
 
 });
