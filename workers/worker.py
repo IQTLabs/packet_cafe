@@ -33,7 +33,7 @@ def callback(ch, method, properties, body):
                                      network=worker['stage'],
                                      volumes={'packet_cafe_files': {'bind': '/files', 'mode': 'rw'}},
                                      environment=pipeline,
-                                     #remove=True,
+                                     remove=True,
                                      command=[pipeline['file_path']],
                                      detach=True)
                 except Exception as e:  # pragma: no cover
@@ -75,7 +75,7 @@ def callback(ch, method, properties, body):
                                  network=worker['stage'],
                                  volumes={'packet_cafe_files': {'bind': '/files', 'mode': 'rw'}},
                                  environment=pipeline,
-                                 #remove=True,
+                                 remove=True,
                                  command=[pipeline['file_path']],
                                  detach=True)
             except Exception as e:  # pragma: no cover
