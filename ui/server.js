@@ -64,16 +64,15 @@ app.post('/express-upload', upload.single("file"), function(req, res) {
     }
   };
 
+  let uuid = null;
+
   request.post({url:'http://lb/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
     if (err) {
       return console.error('upload failed:', err);
     }
     console.log('Uploaded file, server responded with:', body);
+    uuid = body.uuid;
   });
-
-  console.log(req.file);
-
-
 });
 
 app.listen(5000,() =>{
