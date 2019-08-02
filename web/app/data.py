@@ -13,6 +13,7 @@ import pika
 
 from .routes import paths
 from .routes import version
+from .helpers import load_tools
 
 
 ACCEPTED_FILE_TYPES = ['pcap', 'pcapng']
@@ -239,6 +240,13 @@ class Status(object):
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
+class Tools(object):
+
+    def on_get(self, req, resp):
+        tools = load_tools()
+        resp.body = json.dumps(tools)
+        resp.content_type = falcon.MEDIA_TEXT
+        resp.status = falcon.HTTP_200
 
 class Stop(object):
 

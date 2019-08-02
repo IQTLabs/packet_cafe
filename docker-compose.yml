@@ -15,8 +15,8 @@ services:
   web:
     restart: always
     build:
-      context: web
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./web/Dockerfile
     image: 'cyberreboot/packet_cafe_web:latest'
     networks:
       - frontend
@@ -52,8 +52,8 @@ services:
   workers:
     restart: always
     build:
-      context: workers
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./workers/Dockerfile
     image: 'cyberreboot/packet_cafe_workers:latest'
     networks:
       - backend
