@@ -94,7 +94,7 @@
       "command": ["-p"],
       "environment": {
         "POSEIDON_PUBLIC_SESSIONS":"1",
-        "RABBIT":"True"
+        "RABBIT": "True"
       },
       "outputs": [
         "rabbitmq"
