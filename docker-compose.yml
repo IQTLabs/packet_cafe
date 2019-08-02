@@ -6,8 +6,6 @@ services:
       context: ui
       dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_ui:latest'
-    ports:
-      - 5000
     networks:
       - frontend
     deploy:

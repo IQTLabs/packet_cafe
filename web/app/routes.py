@@ -18,4 +18,4 @@ def paths():
 
 
 def version():
-    return '/v1'
+    return '/api/v1'

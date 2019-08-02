@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.get('/results/:id/:tool', function(req, res) {
   // '/0/' is the counter of results for that tool
   // if '0' it means return all results from that tool
-  var url = 'http://lb/v1/results/' + req.params['tool'] + '/0/' + req.params['id']
+  var url = 'http://lb/api/v1/results/' + req.params['tool'] + '/0/' + req.params['id']
 
   request.get({url:url}, function optionalCallback(err, httpResponse, body) {
     if (err) {
@@ -31,7 +31,7 @@ app.get('/results/:id/:tool', function(req, res) {
 
 // render images from tools
 app.get('/id/:id/:tool/:counter/:file', function(req, res) {
-  var url = 'http://lb/v1/id/' + req.params['id'] + '/' + req.params['tool'] + '/' + req.params['counter'] + '/' + req.params['file']
+  var url = 'http://lb/api/v1/id/' + req.params['id'] + '/' + req.params['tool'] + '/' + req.params['counter'] + '/' + req.params['file']
 
   request.get({url:url, encoding: null}, function optionalCallback(err, httpResponse, body) {
 
@@ -66,7 +66,7 @@ app.post('/express-upload', upload.single("file"), function(req, res) {
 
   let uuid = null;
 
-  request.post({url:'http://lb/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
+  request.post({url:'http://lb/api/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
     if (err) {
       return console.error('upload failed:', err);
     }

@@ -50,13 +50,13 @@ def callback(ch, method, properties, body):
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
-        r = requests.post('http://lb/v1/results/pcapplot/{0}/{1}'.format(pipeline['results']['counter'], pipeline['id']), data=json.dumps(pipeline))
+        r = requests.post('http://lb/api/v1/results/pcapplot/{0}/{1}'.format(pipeline['results']['counter'], pipeline['id']), data=json.dumps(pipeline))
     elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'metadata':
         print(" [M] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
-        r = requests.post('http://lb/v1/results/pcapplot/{0}/{1}'.format(0, pipeline['id']), data=json.dumps(pipeline))
+        r = requests.post('http://lb/api/v1/results/pcapplot/{0}/{1}'.format(0, pipeline['id']), data=json.dumps(pipeline))
     else:
         print(" [X] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                      method.routing_key,
