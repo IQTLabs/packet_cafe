@@ -13,39 +13,46 @@ def callback(ch, method, properties, body):
     workers = load_workers()
     d = setup_docker()
     pipeline = json.loads(body.decode('utf-8'))
-    if 'id' in pipeline and 'file_type' in pipeline:
-        print(" [O] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
-                                     method.routing_key,
-                                     pipeline))
-        for worker in workers['workers']:
-            if pipeline['file_type'] in worker['inputs']:
-                uid = str(uuid.uuid4()).split('-')[-1]
-                name = worker['name'] + '_' + uid
-                image = worker['image']
-                if 'version' in worker:
-                    image += ':' + worker['version']
-                command = [""]
-                if 'command' in worker:
-                    command = worker['command']
-                try:
-                    d.containers.run(image=image,
-                                     name=name,
-                                     network=worker['stage'],
-                                     volumes={'packet_cafe_files': {'bind': '/files', 'mode': 'rw'}},
-                                     environment=pipeline,
-                                     remove=True,
-                                     command=[pipeline['file_path']],
-                                     detach=True)
-                except Exception as e:  # pragma: no cover
-                    print('failed: {0}'.format(str(e)))
-    elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'data':
-        print(" [A] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
+    for worker in workers['workers']:
+        if 'id' in pipeline and (('results' in pipeline and pipeline['results']['tool'] in worker['inputs']) or ('file_type' in pipeline and pipeline['file_type'] in worker['inputs'])):
+            uid = str(uuid.uuid4()).split('-')[-1]
+            name = worker['name'] + '_' + uid
+            image = worker['image']
+            if 'version' in worker:
+                image += ':' + worker['version']
+            command = []
+            if 'command' in worker:
+                command = worker['command']
+            command.append(pipeline['file_path'])
+            environment = pipeline
+            if 'environment' in worker:
+                environment.update(worker['environment'])
+            if 'rabbit' not in pipeline:
+                pipeline['rabbit'] = 'true'
+            try:
+                d.containers.run(image=image,
+                                 name=name,
+                                 network=worker['stage'],
+                                 volumes={'packet_cafe_files': {'bind': '/files', 'mode': 'rw'}},
+                                 environment=environment,
+                                 #remove=True,
+                                 command=command,
+                                 detach=True)
+            except Exception as e:  # pragma: no cover
+                print('failed: {0}'.format(str(e)))
+            print(" [C] %s UTC %r:%r:%r:%r" % (str(datetime.datetime.utcnow()),
+                                         method.routing_key,
+                                         pipeline['id'],
+                                         image,
+                                         pipeline))
+    if 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'data':
+        print(" [D] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
         r = requests.post('http://lb/v1/results/pcapplot/{0}/{1}'.format(pipeline['results']['counter'], pipeline['id']), data=json.dumps(pipeline))
     elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'metadata':
-        print(" [A] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
+        print(" [M] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
@@ -54,32 +61,6 @@ def callback(ch, method, properties, body):
         print(" [X] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                      method.routing_key,
                                      pipeline))
-    for worker in workers['workers']:
-        if 'id' in pipeline and 'results' in pipeline and pipeline['results']['tool'] in worker['inputs']:
-            print(" [O] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
-                                         method.routing_key,
-                                         pipeline))
-            uid = str(uuid.uuid4()).split('-')[-1]
-            name = worker['name'] + '_' + uid
-            image = worker['image']
-            if 'version' in worker:
-                image += ':' + worker['version']
-            command = [""]
-            if 'command' in worker:
-                command = worker['command']
-            if 'rabbit' not in pipeline:
-                pipeline['rabbit'] = 'true'
-            try:
-                d.containers.run(image=image,
-                                 name=name,
-                                 network=worker['stage'],
-                                 volumes={'packet_cafe_files': {'bind': '/files', 'mode': 'rw'}},
-                                 environment=pipeline,
-                                 remove=True,
-                                 command=[pipeline['file_path']],
-                                 detach=True)
-            except Exception as e:  # pragma: no cover
-                print('failed: {0}'.format(str(e)))
 
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
