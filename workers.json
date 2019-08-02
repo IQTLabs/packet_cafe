@@ -91,6 +91,11 @@
       "labels": "",
       "stage": "analysis",
       "viewableOutput": false,
+      "command": ["-p"],
+      "environment": {
+        "POSEIDON_PUBLIC_SESSIONS":"1",
+        "RABBIT":"True"
+      },
       "outputs": [
         "rabbitmq"
       ],
