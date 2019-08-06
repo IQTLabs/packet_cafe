@@ -35,4 +35,4 @@ ENV PYTHONUNBUFFERED 0
 
 EXPOSE 8000
 
-CMD (nginx) & (gunicorn -b localhost:8001 -k gevent -w 4 --access-logfile /var/log/access.log --keep-alive 10 --reload app.app)
+CMD (nginx) & (gunicorn -b localhost:8001 -k gevent -w 4 --access-logfile /var/log/access.log --keep-alive 10 --reload app.app --timeout 600)

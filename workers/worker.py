@@ -13,6 +13,7 @@ def callback(ch, method, properties, body):
     workers = load_workers()
     d = setup_docker()
     pipeline = json.loads(body.decode('utf-8'))
+    worker_found = False
     for worker in workers['workers']:
         if 'id' in pipeline and (('results' in pipeline and pipeline['results']['tool'] in worker['inputs']) or ('file_type' in pipeline and pipeline['file_type'] in worker['inputs'])):
             uid = str(uuid.uuid4()).split('-')[-1]
@@ -45,19 +46,20 @@ def callback(ch, method, properties, body):
                                          pipeline['id'],
                                          image,
                                          pipeline))
+            worker_found = True
     if 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'data':
         print(" [D] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
-        r = requests.post('http://lb/api/v1/results/pcapplot/{0}/{1}'.format(pipeline['results']['counter'], pipeline['id']), data=json.dumps(pipeline))
+        r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}'.format(pipeline['results']['tool'], pipeline['results']['counter'], pipeline['id']), data=json.dumps(pipeline))
     elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'metadata':
         print(" [M] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
-        r = requests.post('http://lb/api/v1/results/pcapplot/{0}/{1}'.format(0, pipeline['id']), data=json.dumps(pipeline))
-    else:
+        r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}'.format(pipeline['results']['tool'], 0, pipeline['id']), data=json.dumps(pipeline))
+    elif not worker_found:
         print(" [X] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                      method.routing_key,
                                      pipeline))
