@@ -52,6 +52,7 @@ app.get('/*', function(req, res) {
 
 app.post('/express-upload', upload.single("file"), function(req, res) {
   console.log('receiving data ...');
+  req.connection.setTimeout(600000);
 
   var file = req.file
 
