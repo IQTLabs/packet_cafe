@@ -54,11 +54,16 @@ def callback(ch, method, properties, body):
                                         pipeline['results']))
         r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}'.format(pipeline['results']['tool'], pipeline['results']['counter'], pipeline['id']), data=json.dumps(pipeline))
     elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'metadata':
-        print(" [M] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
-                                        method.routing_key,
-                                        pipeline['id'],
-                                        pipeline['results']))
-        r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}'.format(pipeline['results']['tool'], 0, pipeline['id']), data=json.dumps(pipeline))
+        if 'data' in pipeline and pipeline['data'] != '':
+            print(" [M] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
+                                            method.routing_key,
+                                            pipeline['id'],
+                                            pipeline['results']))
+            r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}'.format(pipeline['results']['tool'], 0, pipeline['id']), data=json.dumps(pipeline))
+        else:
+            print(" [F] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
+                                         method.routing_key,
+                                         pipeline))
     elif not worker_found:
         print(" [X] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                      method.routing_key,
