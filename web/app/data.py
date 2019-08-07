@@ -86,14 +86,8 @@ class Info(object):
 
 class Results(object):
 
-    def on_options(self, req, resp, tool, counter, req_id):
-        resp.set_header('Access-Control-Allow-Headers', 'Content-Type')
-        resp.status = falcon.HTTP_OK
-
-    def on_get(self, req, resp, tool, counter, req_id):
-        # if counter is 0, get all of them
-        # TODO move this to tool specific functions, currently just defaulting to pcapplots
-        # TODO actually use the counter param
+    def pcapplot(self, req_id):
+        tool = 'pcapplot'
         packets = 'Unknown'
         capture_time = 'Unknown'
         host = 'Unknown'
@@ -195,9 +189,28 @@ class Results(object):
 </body>
 </html>
 '''
-        resp.body = Template(html_str).safe_substitute(asn_file_path=asn_file_path, private_file_path=private_file_path, src_file_path=src_file_path, \
+        return Template(html_str).safe_substitute(asn_file_path=asn_file_path, private_file_path=private_file_path, src_file_path=src_file_path, \
           dest_file_path=dest_file_path, host=host, filename=filename, packets=packets, capture_time=capture_time)
-        resp.content_type = falcon.MEDIA_HTML
+
+    def on_options(self, req, resp, tool, counter, req_id):
+        resp.set_header('Access-Control-Allow-Headers', 'Content-Type')
+        resp.status = falcon.HTTP_OK
+
+    def on_get(self, req, resp, tool, counter, req_id):
+        # if counter is 0, get all of them
+        # TODO actually use the counter param
+        if tool == 'pcapplot':
+            body = self.pcapplot(req_id)
+            resp.body = body
+            resp.content_type = falcon.MEDIA_HTML
+        else:
+            try:
+                with open('/id/{0}/{1}/metadata.json'.format(req_id, tool)) as f:
+                    body = json.dumps(json.load(f))
+            except Exception as e:  # pragma: no cover
+                print('failed: {0}'.format(str(e)))
+            resp.body = body
+
         resp.status = falcon.HTTP_200
 
     def on_post(self, req, resp, tool, counter, req_id):
