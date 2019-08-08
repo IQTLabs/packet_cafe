@@ -3,7 +3,7 @@
     {
       "name": "pcapplot",
       "image": "cyberreboot/pcapplot",
-      "version": "v0.1.1",
+      "version": "latest",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,

@@ -197,6 +197,7 @@ class Results(object):
         resp.status = falcon.HTTP_OK
 
     def on_get(self, req, resp, tool, counter, req_id):
+        # check if id exists, and if the tool exists and has results
         # if counter is 0, get all of them
         # TODO actually use the counter param
         if tool == 'pcapplot':
@@ -234,13 +235,17 @@ class Results(object):
             file_path = os.path.join(file_dir, 'metadata.json')
             mkdir_p(file_dir)
 
-            # Write to a temporary file to prevent incomplete files from being used
-            temp_file_path = file_path + '~'
-            with open(temp_file_path, 'w') as outfile:
-                json.dump(message['data'], outfile)
-
-            # know the file has been  saved to disk, move it into place.
-            os.rename(temp_file_path, file_path)
+            try:
+                with open(file_path, 'r') as infile:
+                    existing = json.load(infile)
+                if isinstance(existing, list):
+                    existing.insert(0, message['data'])
+                else:
+                    existing = [message['data'], existing]
+            except Exception as e:  # pragma: no cover
+                existing = [message['data']]
+            with open(file_path, 'w') as outfile:
+                outfile.write(json.dumps(existing))
 
         resp.media = {'message': message}
         resp.status = falcon.HTTP_201
@@ -253,6 +258,7 @@ class Status(object):
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
+
 class Tools(object):
 
     def on_get(self, req, resp):
@@ -260,6 +266,7 @@ class Tools(object):
         resp.body = json.dumps(tools)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
+
 
 class Stop(object):
 
