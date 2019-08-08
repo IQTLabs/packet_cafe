@@ -14,7 +14,7 @@ def routes():
 
 
 def paths():
-    return ['', '/id/{req_id}/{tool}/{counter}/{filename}', '/info', '/results/{tool}/{counter}/{req_id}', '/status/{req_id}', '/stop/{req_id}', '/tools', '/upload']
+    return ['', '/id/{req_id}/{tool}/{pcap}/{counter}/{filename}', '/info', '/results/{tool}/{counter}/{req_id}', '/status/{req_id}', '/stop/{req_id}', '/tools', '/upload']
 
 
 def version():

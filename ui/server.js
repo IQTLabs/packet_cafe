@@ -30,8 +30,8 @@ app.get('/results/:id/:tool', function(req, res) {
 });
 
 // render images from tools
-app.get('/id/:id/:tool/:counter/:file', function(req, res) {
-  var url = 'http://lb/api/v1/id/' + req.params['id'] + '/' + req.params['tool'] + '/' + req.params['counter'] + '/' + req.params['file']
+app.get('/id/:id/:tool/:pcap/:counter/:file', function(req, res) {
+  var url = 'http://lb/api/v1/id/' + req.params['id'] + '/' + req.params['tool'] + '/' + req.params['pcap'] + '/' + req.params['counter'] + '/' + req.params['file']
 
   request.get({url:url, encoding: null}, function optionalCallback(err, httpResponse, body) {
 
