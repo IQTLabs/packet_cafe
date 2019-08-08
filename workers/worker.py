@@ -36,7 +36,7 @@ def callback(ch, method, properties, body):
                                  network=worker['stage'],
                                  volumes={'packet_cafe_files': {'bind': '/files', 'mode': 'rw'}},
                                  environment=environment,
-                                 #remove=True,
+                                 remove=True,
                                  command=command,
                                  detach=True)
             except Exception as e:  # pragma: no cover

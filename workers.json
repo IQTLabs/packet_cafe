@@ -90,7 +90,7 @@
       "version": "master",
       "labels": "",
       "stage": "analysis",
-      "viewableOutput": false,
+      "viewableOutput": true,
       "command": ["-p"],
       "environment": {
         "POSEIDON_PUBLIC_SESSIONS":"1",
