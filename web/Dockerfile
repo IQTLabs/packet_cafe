@@ -22,7 +22,7 @@ RUN apk add --update \
     && rm -rf /var/cache/apk/*
 
 HEALTHCHECK --interval=15s --timeout=15s \
-  CMD curl --silent --fail http://localhost:8000/v1 || exit 1
+  CMD curl --silent --fail http://localhost:8001/api/v1 || exit 1
 
 COPY ./web /app
 COPY web/nginx/default.conf /etc/nginx/conf.d/default.conf

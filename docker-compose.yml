@@ -31,6 +31,9 @@ services:
     image: 'cyberreboot/packet_cafe_lb:latest'
     ports:
       - 80:80
+    depends_on:
+      - "ui"
+      - "web"
     networks:
       - frontend
       - results
