@@ -184,7 +184,7 @@ class Results(object):
   </li>
 '''
                 list_obj = Template(list_obj).safe_substitute(asn_file_path=asn_file_path, private_file_path=private_file_path, src_file_path=src_file_path, \
-                  dest_file_path=dest_file_path, host=host, filename=filename, packets=packets, capture_time=capture_time)
+                  dest_file_path=dest_file_path, host=host, filename=filename[:40]+'...', packets=packets, capture_time=capture_time)
                 html_str += list_obj
         except Exception as e:  # pragma: no cover
             print('failed: {0}'.format(str(e)))

@@ -69,11 +69,13 @@ app.post('/express-upload', upload.single("file"), function(req, res) {
 
   request.post({url:'http://lb/api/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
     if (err) {
+      res.sendStatus(500)
       return console.error('upload failed:', err);
     }
     console.log('Uploaded file, server responded with:', body);
     uuid = body.uuid;
   });
+  res.sendStatus(200)
 });
 
 app.listen(5000,() =>{
