@@ -22,6 +22,12 @@ Using kubernetes (assuming your default orchestrator is set to k8s for stacks):
 docker stack deploy -c docker-compose.yml packet_cafe
 ```
 
+## Testing POST requests with curl and datamash
+
+```
+time for i in {1..5};do curl -s -w "%{time_total}\n" -o /dev/null -X POST -F 'file=@merged.pcap' -L http://0.0.0.0/express-upload; done | datamash max 1 min 1 mean 1 median 1
+```
+
 ## Testing using ApacheBench
 
 ```
