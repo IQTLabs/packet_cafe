@@ -261,7 +261,17 @@ class Results(object):
 class Status(object):
 
     def on_get(self, req, resp, req_id):
+        # TODO
         resp.body = 'status' + req_id
+        resp.content_type = falcon.MEDIA_TEXT
+        resp.status = falcon.HTTP_200
+
+
+class Stop(object):
+
+    def on_get(self, req, resp, req_id):
+        # TODO
+        resp.body = 'stopped' + req_id
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -271,14 +281,6 @@ class Tools(object):
     def on_get(self, req, resp):
         tools = load_tools()
         resp.body = json.dumps(tools, indent=4)
-        resp.content_type = falcon.MEDIA_TEXT
-        resp.status = falcon.HTTP_200
-
-
-class Stop(object):
-
-    def on_get(self, req, resp, req_id):
-        resp.body = 'stopped' + req_id
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
