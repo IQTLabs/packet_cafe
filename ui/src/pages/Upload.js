@@ -11,7 +11,8 @@ class Upload extends React.Component{
             files: [],
             uploading: false,
             uploadProgress: {},
-            successfullUploaded: false
+            successfullUploaded: false,
+            resultId: null,
         };
 
         this.onFilesAdded = this.onFilesAdded.bind(this);
@@ -47,6 +48,8 @@ class Upload extends React.Component{
             const req = new XMLHttpRequest();
 
             req.upload.addEventListener("progress", event => {
+                console.log("progress event: %o", event );
+                console.log("request: %o", req)
             if (event.lengthComputable) {
                 const copy = { ...this.state.uploadProgress };
                 copy[file.name] = {
@@ -58,6 +61,8 @@ class Upload extends React.Component{
             });
 
             req.upload.addEventListener("load", event => {
+                console.log("load event: %o", event );
+                console.log("request: %o", req)
             const copy = { ...this.state.uploadProgress };
             copy[file.name] = { state: "done", percentage: 100 };
             this.setState({ uploadProgress: copy });

@@ -236,7 +236,18 @@ class Results(object):
 class Status(object):
 
     def on_get(self, req, resp, req_id):
-        resp.body = 'status' + req_id
+        tools = load_tools()
+        statuses = []
+        for tool in tools:
+            if tool.viewableOutput :
+                tool_status = {
+                'name': tool.name,
+                'uri': f'/{req_id}/results/{tool.name}',
+                'status': complete
+                }
+                statuses.push(tool_status)
+
+        resp.body = json.dumps(statuses)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 

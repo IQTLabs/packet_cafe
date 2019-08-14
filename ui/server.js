@@ -10,6 +10,16 @@ const UPLOAD_PATH = 'uploads';
 const upload = multer({ dest: `${UPLOAD_PATH}/`});
 const app = express();
 
+const upload_file = async (formData) => {
+    request.post({url:'http://lb/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
+      if (err) {
+        return console.error('upload failed:', err);
+      }
+      console.log('Uploaded file, server responded with:', body);
+      return body.uuid;
+  });
+}
+
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'build')));
@@ -50,7 +60,7 @@ app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.post('/express-upload', upload.single("file"), function(req, res) {
+app.post('/express-upload', upload.single("file"), async function(req, res) {
   console.log('receiving data ...');
 
   var file = req.file
@@ -64,15 +74,11 @@ app.post('/express-upload', upload.single("file"), function(req, res) {
     }
   };
 
-  let uuid = null;
-
-  request.post({url:'http://lb/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
-    if (err) {
-      return console.error('upload failed:', err);
-    }
-    console.log('Uploaded file, server responded with:', body);
-    uuid = body.uuid;
-  });
+  upload_file(formData)
+  .then(() => {
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify({uuid: uuid}));
+  })
 });
 
 app.listen(5000,() =>{
