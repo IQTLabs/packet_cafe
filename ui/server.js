@@ -24,6 +24,10 @@ app.get('/results/:id/:tool', function(req, res) {
     if (err) {
       return console.error('failed:', err);
     }
+    // TODO this should be pulled from workers.json
+    if(req.params['tool'] != 'pcapplot') {
+        res.set('Content-Type', 'application/json');
+    }
     res.send(body);
   });
 
