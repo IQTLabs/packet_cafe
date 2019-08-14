@@ -52,11 +52,11 @@ WEB (port 80):
 
 UI (port 80):
 ```
-/	main home page
-/express-upload	processing uploading a file
-/id/{req_id}/{tool}/{pcap}/{counter}/{file}	renders a results file
-/results/{req_id}/{tool}	renders results from a tool
-/*	redirects to main home page
+/	                                            main home page
+/express-upload	                              processing uploading a file
+/id/{req_id}/{tool}/{pcap}/{counter}/{file}	  renders a results file
+/results/{req_id}/{tool}	                    renders results from a tool
+/*                                            redirects to main home page
 ```
 
 ## Testing POST requests with curl and datamash
