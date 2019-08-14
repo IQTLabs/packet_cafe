@@ -63,7 +63,7 @@ class Endpoints(object):
         for path in paths():
             endpoints.append(version()+path)
 
-        resp.body = json.dumps(endpoints)
+        resp.body = json.dumps(endpoints, indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -79,7 +79,7 @@ class Id(object):
 class Info(object):
 
     def on_get(self, req, resp):
-        resp.body = json.dumps({'version': 'v0.1.0', 'hostname': socket.gethostname()})
+        resp.body = json.dumps({'version': 'v0.1.0', 'hostname': socket.gethostname()}, indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -212,10 +212,11 @@ class Results(object):
         else:
             try:
                 with open('/id/{0}/{1}/metadata.json'.format(req_id, tool)) as f:
-                    body = json.dumps(json.load(f))
+                    body = json.dumps(json.load(f), indent=4)
             except Exception as e:  # pragma: no cover
                 print('failed: {0}'.format(str(e)))
             resp.body = body
+            resp.content_type = falcon.MEDIA_TEXT
 
         resp.status = falcon.HTTP_200
 
@@ -269,7 +270,7 @@ class Tools(object):
 
     def on_get(self, req, resp):
         tools = load_tools()
-        resp.body = json.dumps(tools)
+        resp.body = json.dumps(tools, indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
