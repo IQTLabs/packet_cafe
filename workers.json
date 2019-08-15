@@ -3,7 +3,7 @@
     {
       "name": "pcapplot",
       "image": "cyberreboot/pcapplot",
-      "version": "latest",
+      "version": "v0.1.2",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -17,7 +17,7 @@
     {
       "name": "pcap-splitter",
       "image": "cyberreboot/vent-plugins-pcap-to-node-pcap",
-      "version": "v0.1.2",
+      "version": "v0.1.3",
       "labels": "",
       "stage": "preprocessing",
       "viewableOutput": false,
@@ -31,7 +31,7 @@
     {
       "name": "pcap-dot1q",
       "image": "cyberreboot/vent-plugins-tcprewrite-dot1q",
-      "version": "v0.1.2",
+      "version": "v0.1.3",
       "labels": "",
       "stage": "preprocessing",
       "viewableOutput": false,
@@ -39,7 +39,8 @@
         "pcap"
       ],
       "inputs": [
-        "pcap"
+        "pcap",
+        "pcapng"
       ]
     },
     {
@@ -87,7 +88,7 @@
     {
       "name": "networkml",
       "image": "cyberreboot/networkml",
-      "version": "master",
+      "version": "v0.3.5",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -100,6 +101,23 @@
         "RABBIT_ROUTING_KEY": "task_queue",
         "RABBIT_QUEUE": "True",
         "RABBIT_QUEUE_NAME": "task_queue"
+      },
+      "outputs": [
+        "rabbitmq"
+      ],
+      "inputs": [
+        "pcap-splitter"
+      ]
+    },
+    {
+      "name": "p0f",
+      "image": "cyberreboot/vent-plugins-p0f",
+      "version": "v0.1.3",
+      "labels": "",
+      "stage": "analysis",
+      "viewableOutput": true,
+      "environment": {
+        "redis": "false"
       },
       "outputs": [
         "rabbitmq"
