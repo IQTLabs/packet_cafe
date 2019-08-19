@@ -22,15 +22,19 @@ Using kubernetes (assuming your default orchestrator is set to k8s for stacks):
 docker stack deploy -c docker-compose.yml packet_cafe
 ```
 
+## Testing POST requests with curl and datamash
+
+```
+time for i in {1..5};do curl -s -w "%{time_total}\n" -o /dev/null -X POST -F 'file=@merged.pcap' -L http://0.0.0.0/express-upload; done | datamash max 1 min 1 mean 1 median 1
+```
+
 ## Testing using ApacheBench
 
-** this endpoint is no longer exposed as it is triggered by uploading a file and shouldn't be exposed to end users directly **
-
 ```
-ab -n 100 -c 10 http://0.0.0.0/v1/start/eyJpbWFnZSI6ImJmaXJzaC9yZXRpY3VsYXRlLXNwbGluZXMiLCAiYmFyIjogImJsYWgifQ==
+ab -n 100 -c 10 http://0.0.0.0/api/v1/
 ```
 
-Results should look somoething like the following:
+Results should look something like the following:
 ```
 This is ApacheBench, Version 2.3 <$Revision: 1826891 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
@@ -43,35 +47,36 @@ Server Software:        nginx/1.17.0
 Server Hostname:        0.0.0.0
 Server Port:            80
 
-Document Path:          /v1/start/eyJpbWFnZSI6ImJmaXJzaC9yZXRpY3VsYXRlLXNwbGluZXMiLCAiYmFyIjogImJsYWgifQ==
-Document Length:        36 bytes
+Document Path:          /api/v1/
+Document Length:        0 bytes
 
 Concurrency Level:      10
-Time taken for tests:   2.950 seconds
+Time taken for tests:   0.400 seconds
 Complete requests:      100
 Failed requests:        0
-Total transferred:      32400 bytes
-HTML transferred:       3600 bytes
-Requests per second:    33.89 [#/sec] (mean)
-Time per request:       295.034 [ms] (mean)
-Time per request:       29.503 [ms] (mean, across all concurrent requests)
-Transfer rate:          10.72 [Kbytes/sec] received
+Non-2xx responses:      100
+Total transferred:      15500 bytes
+HTML transferred:       0 bytes
+Requests per second:    250.17 [#/sec] (mean)
+Time per request:       39.974 [ms] (mean)
+Time per request:       3.997 [ms] (mean, across all concurrent requests)
+Transfer rate:          37.87 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        0    0   0.1      0       1
-Processing:    52  281 117.8    256     620
-Waiting:       52  281 117.8    256     620
-Total:         53  281 117.8    257     620
+Connect:        0    0   0.4      0       2
+Processing:     7   37  20.7     32     107
+Waiting:        6   37  20.7     32     107
+Total:          7   37  20.8     32     109
 
 Percentage of the requests served within a certain time (ms)
-  50%    257
-  66%    338
-  75%    359
-  80%    382
-  90%    440
-  95%    526
-  98%    547
-  99%    620
- 100%    620 (longest request)
+  50%     32
+  66%     42
+  75%     51
+  80%     56
+  90%     63
+  95%     86
+  98%     96
+  99%    109
+ 100%    109 (longest request)
 ```

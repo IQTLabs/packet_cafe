@@ -22,7 +22,7 @@ RUN apk add --update \
     && rm -rf /var/cache/apk/*
 
 HEALTHCHECK --interval=15s --timeout=15s \
-  CMD curl --silent --fail http://localhost:8000/v1 || exit 1
+  CMD curl --silent --fail http://localhost:8001/api/v1 || exit 1
 
 COPY ./web /app
 COPY web/nginx/default.conf /etc/nginx/conf.d/default.conf
@@ -35,4 +35,4 @@ ENV PYTHONUNBUFFERED 0
 
 EXPOSE 8000
 
-CMD (nginx) & (gunicorn -b localhost:8001 -k gevent -w 4 --access-logfile /var/log/access.log --keep-alive 10 --reload app.app)
+CMD (nginx) & (gunicorn -b localhost:8001 -k gevent -w 4 --access-logfile /var/log/access.log --keep-alive 10 --reload app.app --timeout 600)

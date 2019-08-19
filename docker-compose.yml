@@ -1,13 +1,24 @@
 version: '3.7'
 services:
+  admin:
+    restart: always
+    build:
+      context: admin
+      dockerfile: Dockerfile
+    image: 'cyberreboot/packet_cafe_admin:latest'
+    ports:
+      - 5001:5001
+    networks:
+      - admin
+    volumes:
+      - files:/files
+      - id:/id
   ui:
     restart: always
     build:
       context: ui
       dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_ui:latest'
-    ports:
-      - 5000
     networks:
       - frontend
     deploy:
@@ -33,6 +44,9 @@ services:
     image: 'cyberreboot/packet_cafe_lb:latest'
     ports:
       - 80:80
+    depends_on:
+      - "ui"
+      - "web"
     networks:
       - frontend
       - results
@@ -63,6 +77,8 @@ services:
     deploy:
       replicas: 3
 networks:
+  admin:
+    name: admin
   frontend:
     name: frontend
   backend:

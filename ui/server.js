@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.get('/results/:id/:tool', function(req, res) {
   // '/0/' is the counter of results for that tool
   // if '0' it means return all results from that tool
-  var url = 'http://lb/v1/results/' + req.params['tool'] + '/0/' + req.params['id']
+  var url = 'http://lb/api/v1/results/' + req.params['tool'] + '/0/' + req.params['id']
 
   request.get({url:url}, function optionalCallback(err, httpResponse, body) {
     if (err) {
@@ -40,8 +40,8 @@ app.get('/results/:id/:tool', function(req, res) {
 });
 
 // render images from tools
-app.get('/id/:id/:tool/:counter/:file', function(req, res) {
-  var url = 'http://lb/v1/id/' + req.params['id'] + '/' + req.params['tool'] + '/' + req.params['counter'] + '/' + req.params['file']
+app.get('/id/:id/:tool/:pcap/:counter/:file', function(req, res) {
+  var url = 'http://lb/api/v1/id/' + req.params['id'] + '/' + req.params['tool'] + '/' + req.params['pcap'] + '/' + req.params['counter'] + '/' + req.params['file']
 
   request.get({url:url, encoding: null}, function optionalCallback(err, httpResponse, body) {
 
@@ -62,6 +62,7 @@ app.get('/*', function(req, res) {
 
 app.post('/express-upload', upload.single("file"), async function(req, res) {
   console.log('receiving data ...');
+  req.connection.setTimeout(600000);
 
   var file = req.file
 
@@ -74,11 +75,16 @@ app.post('/express-upload', upload.single("file"), async function(req, res) {
     }
   };
 
-  upload_file(formData)
-  .then(() => {
-    res.set('Content-Type', 'application/json');
-    res.send(JSON.stringify({uuid: uuid}));
-  })
+  let uuid = null;
+  request.post({url:'http://lb/api/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
+    if (err) {
+      res.sendStatus(500)
+      return console.error('upload failed:', err);
+    }
+    console.log('Uploaded file, server responded with:', body);
+    uuid = body.uuid;
+  });
+  res.sendStatus(200)
 });
 
 app.listen(5000,() =>{

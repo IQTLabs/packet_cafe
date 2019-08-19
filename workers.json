@@ -3,7 +3,7 @@
     {
       "name": "pcapplot",
       "image": "cyberreboot/pcapplot",
-      "version": "v0.1.1",
+      "version": "latest",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -87,14 +87,19 @@
     {
       "name": "networkml",
       "image": "cyberreboot/networkml",
-      "version": "v0.3.4",
+      "version": "master",
       "labels": "",
       "stage": "analysis",
-      "viewableOutput": false,
+      "viewableOutput": true,
       "command": ["-p"],
       "environment": {
         "POSEIDON_PUBLIC_SESSIONS":"1",
-        "RABBIT":"True"
+        "RABBIT": "True",
+        "RABBIT_HOST": "messenger",
+        "RABBIT_EXCHANGE": "",
+        "RABBIT_ROUTING_KEY": "task_queue",
+        "RABBIT_QUEUE": "True",
+        "RABBIT_QUEUE_NAME": "task_queue"
       },
       "outputs": [
         "rabbitmq"

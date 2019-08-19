@@ -69,8 +69,8 @@ class Endpoints(object):
 
 
 class Id(object):
-    def on_get(self, req, resp, req_id, tool, counter, filename):
-        with open('/id/{0}/{1}/{2}/{3}'.format(req_id, tool, counter, filename), 'rb') as f:
+    def on_get(self, req, resp, req_id, tool, pcap, counter, filename):
+        with open('/id/{0}/{1}/{2}/{3}/{4}'.format(req_id, tool, pcap, counter, filename), 'rb') as f:
             resp.body = base64.decodestring(f.read())
         resp.content_type = falcon.MEDIA_PNG
         resp.status = falcon.HTTP_200
@@ -86,14 +86,8 @@ class Info(object):
 
 class Results(object):
 
-    def on_options(self, req, resp, tool, counter, req_id):
-        resp.set_header('Access-Control-Allow-Headers', 'Content-Type')
-        resp.status = falcon.HTTP_OK
-
-    def on_get(self, req, resp, tool, counter, req_id):
-        # if counter is 0, get all of them
-        # TODO move this to tool specific functions, currently just defaulting to pcapplots
-        # TODO actually use the counter param
+    def pcapplot(self, req_id):
+        tool = 'pcapplot'
         packets = 'Unknown'
         capture_time = 'Unknown'
         host = 'Unknown'
@@ -102,19 +96,6 @@ class Results(object):
         private_file_path = ''
         src_file_path = ''
         dest_file_path = ''
-        try:
-            with open('/id/{0}/{1}/metadata.json'.format(req_id, tool)) as f:
-                metadata = json.load(f)
-            for rec in metadata:
-                filename = rec
-            packets, capture_time, host = metadata[filename]
-            asn_file_path = '/id/{0}/{1}/1/map_ASN-{2}.png'.format(req_id, tool, filename)
-            private_file_path = '/id/{0}/{1}/2/map_Private_RFC_1918-{2}.png'.format(req_id, tool, filename)
-            src_file_path = '/id/{0}/{1}/3/map_Source_Ports-{2}.png'.format(req_id, tool, filename)
-            dest_file_path = '/id/{0}/{1}/4/map_Destination_Ports-{2}.png'.format(req_id, tool, filename)
-        except Exception as e:  # pragma: no cover
-            print('failed: {0}'.format(str(e)))
-
         html_str = '''\
 <!doctype html>
 <html lang="en">
@@ -153,7 +134,19 @@ class Results(object):
 <p><font color="white">Maps are laid out left to right, top to bottom.  ASN is 1-65536, RFC 1918 is 10.0.0.0/8 followed by 172.16.0.0/12 followed by 192.168.0.0/16 (each square is a /24), Source and Destination Ports are 1-65536.</font></p>
 <p><font color="white">Blue is inbound traffic, Red is outbound traffic, Green is mostly bidirectional traffic.</font></p>
 <ul id="sortable">
+'''
 
+        try:
+            with open('/id/{0}/{1}/metadata.json'.format(req_id, tool)) as f:
+                metadata = json.load(f)
+            for rec in metadata:
+                filename = rec['pcap']
+                packets, capture_time, host = rec[filename]
+                asn_file_path = '/id/{0}/{1}/{2}/1/map_ASN-{2}.png'.format(req_id, tool, rec['pcap'], filename)
+                private_file_path = '/id/{0}/{1}/{2}/2/map_Private_RFC_1918-{2}.png'.format(req_id, tool, rec['pcap'], filename)
+                src_file_path = '/id/{0}/{1}/{2}/3/map_Source_Ports-{2}.png'.format(req_id, tool, rec['pcap'], filename)
+                dest_file_path = '/id/{0}/{1}/{3}/4/map_Destination_Ports-{2}.png'.format(req_id, tool, rec['pcap'], filename)
+                list_obj = '''\
   <li class="ui-state-default" style="background-color: #999999">
       <div id="wrapper">
       <div id="first"><p><b>Host:</b> $host<br /><b>Filename:</b> $filename<br /><b>Packets:</b> $packets<br /><b>Time Window:</b> $capture_time<br /><br /><b>Left to right:</b><br /><br />&emsp;&bull;&nbsp;Public ASN<br />&emsp;&bull;&nbsp;Private RFC 1918<br />&emsp;&bull;&nbsp;Source Ports<br />&emsp;&bull;&nbsp;Destination Ports</p></div>
@@ -189,15 +182,41 @@ class Results(object):
       </div>
       </div>
   </li>
+'''
+                list_obj = Template(list_obj).safe_substitute(asn_file_path=asn_file_path, private_file_path=private_file_path, src_file_path=src_file_path, \
+                  dest_file_path=dest_file_path, host=host, filename=filename[:40]+'...', packets=packets, capture_time=capture_time)
+                html_str += list_obj
+        except Exception as e:  # pragma: no cover
+            print('failed: {0}'.format(str(e)))
 
+        html_str += '''\
 </ul>
 
 </body>
 </html>
 '''
-        resp.body = Template(html_str).safe_substitute(asn_file_path=asn_file_path, private_file_path=private_file_path, src_file_path=src_file_path, \
-          dest_file_path=dest_file_path, host=host, filename=filename, packets=packets, capture_time=capture_time)
-        resp.content_type = falcon.MEDIA_HTML
+        return html_str
+
+    def on_options(self, req, resp, tool, counter, req_id):
+        resp.set_header('Access-Control-Allow-Headers', 'Content-Type')
+        resp.status = falcon.HTTP_OK
+
+    def on_get(self, req, resp, tool, counter, req_id):
+        # check if id exists, and if the tool exists and has results
+        # if counter is 0, get all of them
+        # TODO actually use the counter param
+        if tool == 'pcapplot':
+            body = self.pcapplot(req_id)
+            resp.body = body
+            resp.content_type = falcon.MEDIA_HTML
+        else:
+            try:
+                with open('/id/{0}/{1}/metadata.json'.format(req_id, tool)) as f:
+                    body = json.dumps(json.load(f))
+            except Exception as e:  # pragma: no cover
+                print('failed: {0}'.format(str(e)))
+            resp.body = body
+
         resp.status = falcon.HTTP_200
 
     def on_post(self, req, resp, tool, counter, req_id):
@@ -205,7 +224,8 @@ class Results(object):
 
         if message['type'] == 'data':
             # Define file_path
-            file_dir = '/id/{0}/{1}/{2}'.format(message['id'], message['results']['tool'], message['results']['counter'])
+            # TODO validation
+            file_dir = '/id/{0}/{1}/{2}/{3}'.format(message['id'], message['results']['tool'], message['pcap'], message['results']['counter'])
             file_path = os.path.join(file_dir, message['img_path'].split('/')[-1])
 
             mkdir_p(file_dir)
@@ -221,13 +241,17 @@ class Results(object):
             file_path = os.path.join(file_dir, 'metadata.json')
             mkdir_p(file_dir)
 
-            # Write to a temporary file to prevent incomplete files from being used
-            temp_file_path = file_path + '~'
-            with open(temp_file_path, 'w') as outfile:
-                json.dump(message['data'], outfile)
-
-            # know the file has been  saved to disk, move it into place.
-            os.rename(temp_file_path, file_path)
+            try:
+                with open(file_path, 'r') as infile:
+                    existing = json.load(infile)
+                if isinstance(existing, list):
+                    existing.insert(0, message['data'])
+                else:
+                    existing = [message['data'], existing]
+            except Exception as e:  # pragma: no cover
+                existing = [message['data']]
+            with open(file_path, 'w') as outfile:
+                outfile.write(json.dumps(existing))
 
         resp.media = {'message': message}
         resp.status = falcon.HTTP_201
@@ -251,6 +275,7 @@ class Status(object):
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
+
 class Tools(object):
 
     def on_get(self, req, resp):
@@ -258,6 +283,7 @@ class Tools(object):
         resp.body = json.dumps(tools)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
+
 
 class Stop(object):
 
