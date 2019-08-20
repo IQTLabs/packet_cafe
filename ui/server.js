@@ -34,6 +34,10 @@ app.get('/results/:id/:tool', function(req, res) {
     if (err) {
       return console.error('failed:', err);
     }
+    // TODO this should be pulled from workers.json
+    if(req.params['tool'] != 'pcapplot') {
+        res.set('Content-Type', 'application/json');
+    }
     res.send(body);
   });
 
@@ -63,10 +67,11 @@ app.get('/*', function(req, res) {
 app.post('/express-upload', upload.single("file"), async function(req, res) {
   console.log('receiving data ...');
   req.connection.setTimeout(600000);
-
+  const sessionId = req.sessionId;
   var file = req.file
 
   var formData = {
+    sessionId: sessionId,
     file: {
       value:  fs.createReadStream(file.path),
       options: {

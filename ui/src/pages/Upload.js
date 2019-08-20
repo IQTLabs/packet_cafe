@@ -15,6 +15,8 @@ class Upload extends React.Component{
             resultId: null,
         };
 
+        console.log("constructor sessionId: %s", props.sessionId);
+
         this.onFilesAdded = this.onFilesAdded.bind(this);
         this.uploadFiles = this.uploadFiles.bind(this);
         this.sendRequest = this.sendRequest.bind(this);
@@ -77,8 +79,9 @@ class Upload extends React.Component{
             });
 
             const formData = new FormData();
+            formData.append("sessionId". this.props.sessionId);
             formData.append("file", file, file.name);
-
+            console.log("sessionId: %s", this.props.sessionId);
             req.open("POST", "/express-upload");
             req.send(formData);
         });

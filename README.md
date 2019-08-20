@@ -22,6 +22,43 @@ Using kubernetes (assuming your default orchestrator is set to k8s for stacks):
 docker stack deploy -c docker-compose.yml packet_cafe
 ```
 
+## Getting Started
+
+The load balancer will process requests for both the UI (frontend) and the WEB (API) containers. It is exposed on port 80 by default. Requests that prepend `/api` to the URL will route requests to the WEB container and all other URLs will be routed to the UI container.  Additionally there is an ADMIN container that is exposed on its own port (5001) and is not load balanced.
+
+Here are the following endpoints:
+
+ADMIN (port 5001):
+```
+/v1                enumerates the endpoints for this service
+/v1/id/files       returns all files that have been uploaded or created from those uploads
+/v1/id/results     returns all files that have been created as an output from uploaded files
+/v1/ids            return all of the IDs that have been created
+/v1/info           returns basic information about the service, such as version
+/v1/logs/{req_id}  returns the logs for a given ID
+```
+
+WEB (port 80):
+```
+/api/v1                                                 enumerates the endpoints for this service
+/api/v1/id/{req_id}/{tool}/{pcap}/{counter}/{filename}  returns a results file for rendering
+/api/v1/info                                            returns basic information about the service, such as version
+/api/v1/results/{tool}/{counter}/{req_id}               returns the results from a tool for rendering
+/api/v1/status/{req_id}                                 returns the status of an ID
+/api/v1/stop/{req_id}                                   stops jobs of an ID
+/api/v1/tools                                           returns list of available tools
+/api/v1/upload                                          writes uploaded files to disk
+```
+
+UI (port 80):
+```
+/                                            main home page
+/express-upload                              processing uploading a file
+/id/{req_id}/{tool}/{pcap}/{counter}/{file}  renders a results file
+/results/{req_id}/{tool}                     renders results from a tool
+/*                                           redirects to main home page
+```
+
 ## Testing POST requests with curl and datamash
 
 ```

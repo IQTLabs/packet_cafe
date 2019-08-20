@@ -63,7 +63,7 @@ class Endpoints(object):
         for path in paths():
             endpoints.append(version()+path)
 
-        resp.body = json.dumps(endpoints)
+        resp.body = json.dumps(endpoints, indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -79,7 +79,7 @@ class Id(object):
 class Info(object):
 
     def on_get(self, req, resp):
-        resp.body = json.dumps({'version': 'v0.1.0', 'hostname': socket.gethostname()})
+        resp.body = json.dumps({'version': 'v0.1.0', 'hostname': socket.gethostname()}, indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -212,10 +212,11 @@ class Results(object):
         else:
             try:
                 with open('/id/{0}/{1}/metadata.json'.format(req_id, tool)) as f:
-                    body = json.dumps(json.load(f))
+                    body = json.dumps(json.load(f), indent=4)
             except Exception as e:  # pragma: no cover
                 print('failed: {0}'.format(str(e)))
             resp.body = body
+            resp.content_type = falcon.MEDIA_TEXT
 
         resp.status = falcon.HTTP_200
 
@@ -276,19 +277,20 @@ class Status(object):
         resp.status = falcon.HTTP_200
 
 
-class Tools(object):
+class Stop(object):
 
-    def on_get(self, req, resp):
-        tools = load_tools()
-        resp.body = json.dumps(tools)
+    def on_get(self, req, resp, req_id):
+        # TODO
+        resp.body = 'stopped' + req_id
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
 
-class Stop(object):
+class Tools(object):
 
-    def on_get(self, req, resp, req_id):
-        resp.body = 'stopped' + req_id
+    def on_get(self, req, resp):
+        tools = load_tools()
+        resp.body = json.dumps(tools, indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -302,6 +304,8 @@ class Upload(object):
     def on_post(self, req, resp):
 
         # Retrieve input_file
+        session_id = req.get_param('sessionId')
+        print("session id: {0}".format(sessionId))
         input_file = req.get_param('file')
 
         # Test if the file was uploaded
