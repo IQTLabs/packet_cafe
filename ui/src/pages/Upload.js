@@ -15,8 +15,6 @@ class Upload extends React.Component{
             resultId: null,
         };
 
-        console.log("constructor sessionId: %s", props.sessionId);
-
         this.onFilesAdded = this.onFilesAdded.bind(this);
         this.uploadFiles = this.uploadFiles.bind(this);
         this.sendRequest = this.sendRequest.bind(this);
@@ -36,6 +34,7 @@ class Upload extends React.Component{
             promises.push(this.sendRequest(file));
         });
         try {
+            console.log("Awaiting Uploads");
             await Promise.all(promises);
 
             this.setState({ successfullUploaded: true, uploading: false });
@@ -46,12 +45,10 @@ class Upload extends React.Component{
     }
 
     sendRequest(file) {
+        const sessionId = this.props.sessionId;
         return new Promise((resolve, reject) => {
             const req = new XMLHttpRequest();
-
             req.upload.addEventListener("progress", event => {
-                console.log("progress event: %o", event );
-                console.log("request: %o", req)
             if (event.lengthComputable) {
                 const copy = { ...this.state.uploadProgress };
                 copy[file.name] = {
@@ -63,8 +60,6 @@ class Upload extends React.Component{
             });
 
             req.upload.addEventListener("load", event => {
-                console.log("load event: %o", event );
-                console.log("request: %o", req)
             const copy = { ...this.state.uploadProgress };
             copy[file.name] = { state: "done", percentage: 100 };
             this.setState({ uploadProgress: copy });
@@ -75,14 +70,16 @@ class Upload extends React.Component{
             const copy = { ...this.state.uploadProgress };
             copy[file.name] = { state: "error", percentage: 0 };
             this.setState({ uploadProgress: copy });
+            console.log("error event: %o", event);
             reject(req.response);
             });
-
+            console.log("sessionId: %o", sessionId);
             const formData = new FormData();
-            formData.append("sessionId". this.props.sessionId);
+            //
             formData.append("file", file, file.name);
-            console.log("sessionId: %s", this.props.sessionId);
+            formData.append("sessionId", sessionId);
             req.open("POST", "/express-upload");
+            // req.setRequestHeader("Content-Type", "multipart/form-data");
             req.send(formData);
         });
     }

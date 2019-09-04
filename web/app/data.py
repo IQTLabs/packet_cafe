@@ -69,8 +69,8 @@ class Endpoints(object):
 
 
 class Id(object):
-    def on_get(self, req, resp, req_id, tool, pcap, counter, filename):
-        with open('/id/{0}/{1}/{2}/{3}/{4}'.format(req_id, tool, pcap, counter, filename), 'rb') as f:
+    def on_get(self, req, resp, session_id, req_id, tool, pcap, counter, filename):
+        with open('/id/{0}/{1}/{2}/{3}/{4}/{5}'.format(session_id, req_id, tool, pcap, counter, filename), 'rb') as f:
             resp.body = base64.decodestring(f.read())
         resp.content_type = falcon.MEDIA_PNG
         resp.status = falcon.HTTP_200
@@ -86,7 +86,7 @@ class Info(object):
 
 class Results(object):
 
-    def pcapplot(self, req_id):
+    def pcapplot(self, session_id, req_id):
         tool = 'pcapplot'
         packets = 'Unknown'
         capture_time = 'Unknown'
@@ -137,15 +137,15 @@ class Results(object):
 '''
 
         try:
-            with open('/id/{0}/{1}/metadata.json'.format(req_id, tool)) as f:
+            with open('/id/{0}/{1}/{2}/metadata.json'.format(session_id, req_id, tool)) as f:
                 metadata = json.load(f)
             for rec in metadata:
                 filename = rec['pcap']
                 packets, capture_time, host = rec[filename]
-                asn_file_path = '/id/{0}/{1}/{2}/1/map_ASN-{2}.png'.format(req_id, tool, rec['pcap'], filename)
-                private_file_path = '/id/{0}/{1}/{2}/2/map_Private_RFC_1918-{2}.png'.format(req_id, tool, rec['pcap'], filename)
-                src_file_path = '/id/{0}/{1}/{2}/3/map_Source_Ports-{2}.png'.format(req_id, tool, rec['pcap'], filename)
-                dest_file_path = '/id/{0}/{1}/{3}/4/map_Destination_Ports-{2}.png'.format(req_id, tool, rec['pcap'], filename)
+                asn_file_path = '/id/{0}/{1}/{2}/{3}/1/map_ASN-{3}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
+                private_file_path = '/id/{0}/{1}/{2}/2/map_Private_RFC_1918-{3}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
+                src_file_path = '/id/{0}/{1}/{2}/3/map_Source_Ports-{3}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
+                dest_file_path = '/id/{0}/{1}/{3}/4/map_Destination_Ports-{3}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
                 list_obj = '''\
   <li class="ui-state-default" style="background-color: #999999">
       <div id="wrapper">
@@ -197,11 +197,11 @@ class Results(object):
 '''
         return html_str
 
-    def on_options(self, req, resp, tool, counter, req_id):
+    def on_options(self, req, resp, tool, counter, session_id, req_id):
         resp.set_header('Access-Control-Allow-Headers', 'Content-Type')
         resp.status = falcon.HTTP_OK
 
-    def on_get(self, req, resp, tool, counter, req_id):
+    def on_get(self, req, resp, tool, counter, session_id, req_id):
         # check if id exists, and if the tool exists and has results
         # if counter is 0, get all of them
         # TODO actually use the counter param
@@ -211,7 +211,7 @@ class Results(object):
             resp.content_type = falcon.MEDIA_HTML
         else:
             try:
-                with open('/id/{0}/{1}/metadata.json'.format(req_id, tool)) as f:
+                with open('/id/{0}/{1}/{2}metadata.json'.format(session_id, req_id, tool)) as f:
                     body = json.dumps(json.load(f), indent=4)
             except Exception as e:  # pragma: no cover
                 print('failed: {0}'.format(str(e)))
@@ -220,13 +220,13 @@ class Results(object):
 
         resp.status = falcon.HTTP_200
 
-    def on_post(self, req, resp, tool, counter, req_id):
+    def on_post(self, req, resp, tool, counter, session_id, req_id):
         message = req.media
 
         if message['type'] == 'data':
             # Define file_path
             # TODO validation
-            file_dir = '/id/{0}/{1}/{2}/{3}'.format(message['id'], message['results']['tool'], message['pcap'], message['results']['counter'])
+            file_dir = '/id/{0}/{1}/{2}/{3}/{4}'.format(session_id, message['id'], message['results']['tool'], message['pcap'], message['results']['counter'])
             file_path = os.path.join(file_dir, message['img_path'].split('/')[-1])
 
             mkdir_p(file_dir)
@@ -238,7 +238,7 @@ class Results(object):
             # know the file has been  saved to disk, move it into place.
             os.rename(temp_file_path, file_path)
         else:
-            file_dir = '/id/{0}/{1}'.format(message['id'], message['results']['tool'])
+            file_dir = '/id/{0}/{1}/{2}'.format(session_id, message['id'], message['results']['tool'])
             file_path = os.path.join(file_dir, 'metadata.json')
             mkdir_p(file_dir)
 
@@ -260,14 +260,14 @@ class Results(object):
 
 class Status(object):
 
-    def on_get(self, req, resp, req_id):
+    def on_get(self, req, resp, session_id, req_id):
         tools = load_tools()
         statuses = []
         for tool in tools:
             if tool.viewableOutput :
                 tool_status = {
                 'name': tool.name,
-                'uri': f'/{req_id}/results/{tool.name}',
+                'uri': f'/{session_id}/{req_id}/results/{tool.name}',
                 'status': complete
                 }
                 statuses.push(tool_status)
@@ -305,7 +305,6 @@ class Upload(object):
 
         # Retrieve input_file
         session_id = req.get_param('sessionId')
-        print("session id: {0}".format(sessionId))
         input_file = req.get_param('file')
 
         # Test if the file was uploaded
@@ -314,7 +313,7 @@ class Upload(object):
             filename = input_file.filename
 
             uid = str(uuid.uuid4()).replace('-', '')
-            file_dir = '/files/id/{0}'.format(uid)
+            file_dir = '/files/id/{0}/{1}'.format(session_id, uid)
             mkdir_p(file_dir)
             # Define file_path
             file_path = os.path.join(file_dir, filename)
