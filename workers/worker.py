@@ -15,16 +15,19 @@ def callback(ch, method, properties, body):
     pipeline = json.loads(body.decode('utf-8'))
     worker_found = False
     for worker in workers['workers']:
+        file_path = pipeline['file_path']
+        session_id = file_path.split('/')[3]
         if 'id' in pipeline and (('results' in pipeline and pipeline['results']['tool'] in worker['inputs']) or ('file_type' in pipeline and pipeline['file_type'] in worker['inputs'])):
             uid = str(uuid.uuid4()).split('-')[-1]
             name = worker['name'] + '_' + uid
             image = worker['image']
+            
             if 'version' in worker:
                 image += ':' + worker['version']
             command = []
             if 'command' in worker:
                 command = worker['command']
-            command.append(pipeline['file_path'])
+            command.append(file_path)
             environment = pipeline
             if 'environment' in worker:
                 environment.update(worker['environment'])
@@ -52,14 +55,14 @@ def callback(ch, method, properties, body):
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
-        r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}'.format(pipeline['results']['tool'], pipeline['results']['counter'], pipeline['id']), data=json.dumps(pipeline))
+        r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], pipeline['results']['counter'], session_id, pipeline['id']), data=json.dumps(pipeline))
     elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'metadata':
         if 'data' in pipeline and pipeline['data'] != '':
             print(" [M] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
                                             method.routing_key,
                                             pipeline['id'],
                                             pipeline['results']))
-            r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}'.format(pipeline['results']['tool'], 0, pipeline['id']), data=json.dumps(pipeline))
+            r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], 0, session_id, pipeline['id']), data=json.dumps(pipeline))
         else:
             print(" [F] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                          method.routing_key,

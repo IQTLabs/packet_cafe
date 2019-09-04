@@ -1,4 +1,5 @@
 const express = require('express');
+var bodyParser = require('body-parser');
 const path = require('path');
 const request = require('request');
 const multer = require('multer');
@@ -10,8 +11,20 @@ const UPLOAD_PATH = 'uploads';
 const upload = multer({ dest: `${UPLOAD_PATH}/`});
 const app = express();
 
+const upload_file = async (formData) => {
+    request.post({url:'http://lb/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
+      if (err) {
+        return console.error('upload failed:', err);
+      }
+      console.log('Uploaded file, server responded with:', body);
+      return body.uuid;
+  });
+}
+
 
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname, 'build')));
 
 // render results from tools
@@ -53,30 +66,29 @@ app.get('/id/:id/:tool/:pcap/:counter/:file', function(req, res) {
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-
-app.post('/express-upload', upload.single("file"), function(req, res) {
+//
+app.post('/express-upload', upload.single("file"), async function(req, res) {
   console.log('receiving data ...');
   req.connection.setTimeout(600000);
 
-  var file = req.file
-
-  var formData = {
+  var file = req.file;
+  const sessionId = req.body.sessionId;
+  var formData = { 
     file: {
       value:  fs.createReadStream(file.path),
       options: {
         filename: file.originalname
       }
-    }
+    },
+    sessionId: sessionId
   };
 
   let uuid = null;
-
   request.post({url:'http://lb/api/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
     if (err) {
       res.sendStatus(500)
       return console.error('upload failed:', err);
     }
-    console.log('Uploaded file, server responded with:', body);
     uuid = body.uuid;
   });
   res.sendStatus(200)
