@@ -4,11 +4,14 @@ import './App.css';
 import Upload from './pages/Upload';
 import Navbar from './components/Header';
 
+const uuidv4 = require('uuid/v4');
+const SESSION_ID = uuidv4();
+
 function App() {
   return (
     <>
       <Navbar/>
-      <Upload />
+      <Upload sessionId={SESSION_ID}/>
     </>
   );
 }

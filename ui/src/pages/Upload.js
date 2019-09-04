@@ -11,7 +11,8 @@ class Upload extends React.Component{
             files: [],
             uploading: false,
             uploadProgress: {},
-            successfullUploaded: false
+            successfullUploaded: false,
+            resultId: null,
         };
 
         this.onFilesAdded = this.onFilesAdded.bind(this);
@@ -33,6 +34,7 @@ class Upload extends React.Component{
             promises.push(this.sendRequest(file));
         });
         try {
+            console.log("Awaiting Uploads");
             await Promise.all(promises);
 
             this.setState({ successfullUploaded: true, uploading: false });
@@ -43,9 +45,9 @@ class Upload extends React.Component{
     }
 
     sendRequest(file) {
+        const sessionId = this.props.sessionId;
         return new Promise((resolve, reject) => {
             const req = new XMLHttpRequest();
-
             req.upload.addEventListener("progress", event => {
             if (event.lengthComputable) {
                 const copy = { ...this.state.uploadProgress };
@@ -68,13 +70,16 @@ class Upload extends React.Component{
             const copy = { ...this.state.uploadProgress };
             copy[file.name] = { state: "error", percentage: 0 };
             this.setState({ uploadProgress: copy });
+            console.log("error event: %o", event);
             reject(req.response);
             });
-
+            console.log("sessionId: %o", sessionId);
             const formData = new FormData();
+            //
             formData.append("file", file, file.name);
-
+            formData.append("sessionId", sessionId);
             req.open("POST", "/express-upload");
+            // req.setRequestHeader("Content-Type", "multipart/form-data");
             req.send(formData);
         });
     }
