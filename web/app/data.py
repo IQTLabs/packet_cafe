@@ -264,14 +264,15 @@ class Status(object):
     def on_get(self, req, resp, session_id, req_id):
         tools = load_tools()
         statuses = []
-        for tool in tools:
-            if tool.viewableOutput :
+        for tool in tools['workers']:
+            name = tool['name']
+            if tool['viewableOutput']:
                 tool_status = {
-                'name': tool.name,
-                'uri': f'/{session_id}/{req_id}/results/{tool.name}',
-                'status': complete
+                'name': name,
+                'uri': f'/{session_id}/{req_id}/results/{name}',
+                'status': 'TODO'
                 }
-                statuses.push(tool_status)
+                statuses.append(tool_status)
 
         resp.body = json.dumps(statuses)
         resp.content_type = falcon.MEDIA_TEXT
