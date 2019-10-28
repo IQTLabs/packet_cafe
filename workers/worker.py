@@ -21,7 +21,7 @@ def callback(ch, method, properties, body):
             uid = str(uuid.uuid4()).split('-')[-1]
             name = worker['name'] + '_' + uid
             image = worker['image']
-            
+
             if 'version' in worker:
                 image += ':' + worker['version']
             command = []

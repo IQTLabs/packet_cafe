@@ -17,7 +17,7 @@
     {
       "name": "pcap-splitter",
       "image": "cyberreboot/vent-plugins-pcap-to-node-pcap",
-      "version": "v0.1.3",
+      "version": "v0.1.4",
       "labels": "",
       "stage": "preprocessing",
       "viewableOutput": false,
@@ -31,7 +31,7 @@
     {
       "name": "pcap-dot1q",
       "image": "cyberreboot/vent-plugins-tcprewrite-dot1q",
-      "version": "v0.1.3",
+      "version": "v0.1.4",
       "labels": "",
       "stage": "preprocessing",
       "viewableOutput": false,
@@ -46,7 +46,7 @@
     {
       "name": "poseidon",
       "image": "cyberreboot/poseidon",
-      "version": "v0.6.4",
+      "version": "v0.7.6",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": false,
@@ -60,7 +60,7 @@
     {
       "name": "poseidon-api",
       "image": "cyberreboot/poseidon-api",
-      "version": "v0.6.4",
+      "version": "v0.7.6",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": false,
@@ -74,7 +74,7 @@
     {
       "name": "crviz",
       "image": "cyberreboot/crviz",
-      "version": "v0.3.6",
+      "version": "v0.3.13",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": false,
@@ -88,7 +88,7 @@
     {
       "name": "networkml",
       "image": "cyberreboot/networkml",
-      "version": "v0.3.5",
+      "version": "v0.4.0",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -100,7 +100,8 @@
         "RABBIT_EXCHANGE": "",
         "RABBIT_ROUTING_KEY": "task_queue",
         "RABBIT_QUEUE": "True",
-        "RABBIT_QUEUE_NAME": "task_queue"
+        "RABBIT_QUEUE_NAME": "task_queue",
+        "REDIS": "False"
       },
       "outputs": [
         "rabbitmq"
@@ -112,7 +113,7 @@
     {
       "name": "p0f",
       "image": "cyberreboot/vent-plugins-p0f",
-      "version": "v0.1.3",
+      "version": "v0.1.4",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
