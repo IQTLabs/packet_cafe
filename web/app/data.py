@@ -69,6 +69,7 @@ class Endpoints(object):
 
 
 class Id(object):
+
     def on_get(self, req, resp, session_id, req_id, tool, pcap, counter, filename):
         resp.body = 'file not found'
         with open('/id/{0}/{1}/{2}/{3}/{4}/{5}'.format(session_id, req_id, tool, pcap, counter, filename), 'rb') as f:
@@ -76,6 +77,19 @@ class Id(object):
         resp.content_type = falcon.MEDIA_PNG
         resp.status = falcon.HTTP_200
 
+
+class Ids(object):
+
+    def on_get(self, req, resp, session_id):
+        obj = []
+        ids = os.listdir(f'/id/{session_id}')
+        for id_dir in ids:
+            tools = os.listdir(f'/id/{session_id}/{id_dir}')
+            id_dict = {id_dir:tools}
+            obj.append(id_dict)
+        resp.body = json.dumps(obj)
+        resp.content_type = falcon.MEDIA_TEXT
+        resp.status = falcon.HTTP_200
 
 class Info(object):
 
