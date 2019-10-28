@@ -70,6 +70,7 @@ class Endpoints(object):
 
 class Id(object):
     def on_get(self, req, resp, session_id, req_id, tool, pcap, counter, filename):
+        resp.body = 'file not found'
         with open('/id/{0}/{1}/{2}/{3}/{4}/{5}'.format(session_id, req_id, tool, pcap, counter, filename), 'rb') as f:
             resp.body = base64.decodestring(f.read())
         resp.content_type = falcon.MEDIA_PNG
