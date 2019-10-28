@@ -143,10 +143,10 @@ class Results(object):
             for rec in metadata:
                 filename = rec['pcap']
                 packets, capture_time, host = rec[filename]
-                asn_file_path = '/id/{0}/{1}/{2}/{3}/1/map_ASN-{3}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
-                private_file_path = '/id/{0}/{1}/{2}/2/map_Private_RFC_1918-{3}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
-                src_file_path = '/id/{0}/{1}/{2}/3/map_Source_Ports-{3}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
-                dest_file_path = '/id/{0}/{1}/{3}/4/map_Destination_Ports-{3}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
+                asn_file_path = '/api/v1/id/{0}/{1}/{2}/{3}/1/map_ASN-{3}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
+                private_file_path = '/api/v1/id/{0}/{1}/{2}/{3}/2/map_Private_RFC_1918-{4}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
+                src_file_path = '/api/v1/id/{0}/{1}/{2}/{3}/3/map_Source_Ports-{4}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
+                dest_file_path = '/api/v1/id/{0}/{1}/{2}/{3}/4/map_Destination_Ports-{4}.png'.format(session_id, req_id, tool, rec['pcap'], filename)
                 list_obj = '''\
   <li class="ui-state-default" style="background-color: #999999">
       <div id="wrapper">
@@ -207,12 +207,13 @@ class Results(object):
         # if counter is 0, get all of them
         # TODO actually use the counter param
         if tool == 'pcapplot':
-            body = self.pcapplot(req_id)
+            body = self.pcapplot(session_id, req_id)
             resp.body = body
             resp.content_type = falcon.MEDIA_HTML
         else:
+            body = 'file not found'
             try:
-                with open('/id/{0}/{1}/{2}metadata.json'.format(session_id, req_id, tool)) as f:
+                with open('/id/{0}/{1}/{2}/metadata.json'.format(session_id, req_id, tool)) as f:
                     body = json.dumps(json.load(f), indent=4)
             except Exception as e:  # pragma: no cover
                 print('failed: {0}'.format(str(e)))
