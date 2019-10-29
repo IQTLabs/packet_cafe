@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import Dropzone  from '../components/dropzone/Dropzone';
 import Progress from '../components/progress/Progress';
@@ -155,9 +155,6 @@ class Upload extends React.Component{
                     <div className="Actions">{this.renderActions()}</div>
                     </Segment>
                 </Form>
-                {/*<Message>
-                    New to us? <a href='#'>Sign Up</a>
-                </Message>*/}
                 </Grid.Column>
             </Grid>
         )
