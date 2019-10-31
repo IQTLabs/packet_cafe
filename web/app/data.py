@@ -82,11 +82,17 @@ class Ids(object):
 
     def on_get(self, req, resp, session_id):
         obj = []
-        ids = os.listdir(f'/id/{session_id}')
-        for id_dir in ids:
-            tools = os.listdir(f'/id/{session_id}/{id_dir}')
-            id_dict = {id_dir:tools}
-            obj.append(id_dict)
+        try:
+            ids = os.listdir(f'/id/{session_id}')
+            for id_dir in ids:
+                tools = os.listdir(f'/id/{session_id}/{id_dir}')
+                filenames = [ filename for filename in os.listdir(f'/files/id/{session_id}/{id_dir}') if os.path.isfile(os.path.join(f'/files/id/{session_id}/{id_dir}', filename)) ]
+                if not filenames:
+                    filenames = ['none']
+                id_dict = {'id': id_dir, 'filename': filenames[0], 'tools': tools}
+                obj.append(id_dict)
+        except Exception as e:
+            print("session doesn't exist yet: {0}".format(str(e)))
         resp.body = json.dumps(obj)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200

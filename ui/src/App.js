@@ -13,7 +13,7 @@ function App() {
     <>
       <Navbar/>
       <Upload sessionId={SESSION_ID}/>
-      <Table/>
+      <Table sessionId={SESSION_ID}/>
     </>
   );
 }

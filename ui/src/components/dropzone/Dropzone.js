@@ -78,6 +78,12 @@ class Dropzone extends Component {
           multiple
           onChange={this.onFilesAdded}
         />
+        <img
+          alt="upload"
+          className="Icon"
+          src="upload-button.png"
+        />
+        <span>Upload Files</span>
       </div>
     )
   }
