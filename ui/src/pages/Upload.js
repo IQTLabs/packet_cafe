@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import Dropzone  from '../components/dropzone/Dropzone';
 import Progress from '../components/progress/Progress';
@@ -121,7 +121,7 @@ class Upload extends React.Component{
                 disabled={this.state.files.length < 0 || this.state.uploading}
                 onClick={this.uploadFiles}
             >
-                Upload
+                Submit
             </Button>
             );
         }
@@ -130,9 +130,9 @@ class Upload extends React.Component{
     render(){
         return(
             <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-                <Grid.Column style={{ maxWidth: 450 }}>
+                <Grid.Column style={{ maxWidth: 240 }}>
                 <Header as='h2' color='teal' textAlign='center'>
-                    Upload tcpdump/*.pcap/pcapng files
+                    Upload PCAP files:
                 </Header>
                 <Form size='large'>
                     <Segment stacked>
@@ -146,7 +146,7 @@ class Upload extends React.Component{
                         {this.state.files.map(file => {
                         return (
                             <div key={file.name} className="Row">
-                            <span className="Filename">{file.name}</span>
+                            <br /><span className="Filename">{file.name}</span>
                             {this.renderProgress(file)}
                             </div>
                         );
@@ -155,9 +155,6 @@ class Upload extends React.Component{
                     <div className="Actions">{this.renderActions()}</div>
                     </Segment>
                 </Form>
-                {/*<Message>
-                    New to us? <a href='#'>Sign Up</a>
-                </Message>*/}
                 </Grid.Column>
             </Grid>
         )

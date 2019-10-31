@@ -28,10 +28,10 @@ app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname, 'build')));
 
 // render results from tools
-app.get('/results/:id/:tool', function(req, res) {
+app.get('/results/:session/:id/:tool', function(req, res) {
   // '/0/' is the counter of results for that tool
   // if '0' it means return all results from that tool
-  var url = 'http://lb/api/v1/results/' + req.params['tool'] + '/0/' + req.params['id']
+  var url = 'http://lb/api/v1/results/' + req.params['tool'] + '/0/' + req.params['session'] + '/' + req.params['id']
 
   request.get({url:url}, function optionalCallback(err, httpResponse, body) {
     if (err) {
@@ -46,9 +46,28 @@ app.get('/results/:id/:tool', function(req, res) {
 
 });
 
+// render results from tools
+app.get('/ids/:session', function(req, res) {
+  // '/0/' is the counter of results for that tool
+  // if '0' it means return all results from that tool
+  var url = 'http://lb/api/v1/ids/' + req.params['session']
+
+  request.get({url:url}, function optionalCallback(err, httpResponse, body) {
+    if (err) {
+      res.set('Content-Type', 'application/json');
+      res.send([]);
+      return console.error('failed:', err);
+    }
+    console.log(body);
+    res.set('Content-Type', 'application/json');
+    res.send(body);
+  });
+
+});
+
 // render images from tools
-app.get('/id/:id/:tool/:pcap/:counter/:file', function(req, res) {
-  var url = 'http://lb/api/v1/id/' + req.params['id'] + '/' + req.params['tool'] + '/' + req.params['pcap'] + '/' + req.params['counter'] + '/' + req.params['file']
+app.get('/id/:session/:id/:tool/:pcap/:counter/:file', function(req, res) {
+  var url = 'http://lb/api/v1/id/' + req.params['session'] + '/' + req.params['id'] + '/' + req.params['tool'] + '/' + req.params['pcap'] + '/' + req.params['counter'] + '/' + req.params['file']
 
   request.get({url:url, encoding: null}, function optionalCallback(err, httpResponse, body) {
 
@@ -66,14 +85,15 @@ app.get('/id/:id/:tool/:pcap/:counter/:file', function(req, res) {
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-//
+
 app.post('/express-upload', upload.single("file"), async function(req, res) {
   console.log('receiving data ...');
   req.connection.setTimeout(600000);
 
   var file = req.file;
   const sessionId = req.body.sessionId;
-  var formData = { 
+  console.log('server session: ' + sessionId);
+  var formData = {
     file: {
       value:  fs.createReadStream(file.path),
       options: {
@@ -83,13 +103,16 @@ app.post('/express-upload', upload.single("file"), async function(req, res) {
     sessionId: sessionId
   };
 
-  let uuid = null;
   request.post({url:'http://lb/api/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
     if (err) {
       res.sendStatus(500)
       return console.error('upload failed:', err);
     }
-    uuid = body.uuid;
+    var body_obj = JSON.parse(body);
+    const uuid = body_obj.uuid;
+    const filename = body_obj.filename;
+    console.log('server uuid: ' + uuid);
+    console.log('server filename: ' + filename);
   });
   res.sendStatus(200)
 });

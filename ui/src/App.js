@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Upload from './pages/Upload';
+import Table from './pages/Table';
 import Navbar from './components/Header';
 
 const uuidv4 = require('uuid/v4');
@@ -12,6 +13,7 @@ function App() {
     <>
       <Navbar/>
       <Upload sessionId={SESSION_ID}/>
+      <Table sessionId={SESSION_ID}/>
     </>
   );
 }
