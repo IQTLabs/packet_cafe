@@ -15,38 +15,45 @@ class Table extends React.Component{
   }
 
   buildTable(data) {
-    const getResultUrls = [];
+    const allRowsUrls = {};
+    const allRowsTools = {};
 
     for (const [val, row] of data.entries()) {
+      const getResultUrls = [];
       const tools = row.tools;
       const id = row.id;
       for (const [index, value] of tools.entries()) {
-        getResultUrls.push(<p><a href={`/results/${this.props.sessionId}/${id}/${value}`}>
+        getResultUrls.push(<a href={`/results/${this.props.sessionId}/${id}/${value}`}>
           {value}
-        </a></p>);
+        </a>);
       }
+      const htmlUrls = getResultUrls.map((url) =>
+        <p>{url}</p>
+      );
+      allRowsUrls[id] = htmlUrls;
     }
 
     const renderResultsUrl =
-      (val, row) => getResultUrls;
-
-    const getTools = [];
+      (val, row) => allRowsUrls[row["id"]];
 
     for (const [val, row] of data.entries()) {
+      const getTools = [];
       const tools = row.tools;
       for (const [index, value] of tools.entries()) {
         getTools.push(<p>{value}</p>);
       }
+      allRowsTools[row.id] = getTools;
     }
 
     const renderTools =
-      (val, row) => getTools;
+      (val, row) => allRowsTools[row["id"]];
 
     const tableColumns = [
       { title: 'ID', prop: 'id' },
       { title: 'Filename', prop: 'filename' },
       { title: 'Tools', render: renderTools, className: 'text-center' },
       { title: 'Results', render: renderResultsUrl, className: 'text-center' },
+      { title: 'Report', prop: 'report', defaultContent: 'no report available' },
     ];
 
     return ( <div>
