@@ -111,6 +111,25 @@
       ]
     },
     {
+      "name": "pcap-stats",
+      "image": "cyberreboot/vent-plugins-pcap-stats",
+      "version": "master",
+      "labels": "",
+      "stage": "analysis",
+      "viewableOutput": true,
+      "environment": {
+        "redis": "false",
+        "rabbit": "true"
+      },
+      "outputs": [
+        "rabbitmq"
+      ],
+      "inputs": [
+        "pcap",
+        "pcapng"
+      ]
+    },
+    {
       "name": "p0f",
       "image": "cyberreboot/vent-plugins-p0f",
       "version": "v0.1.4",
