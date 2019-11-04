@@ -2,7 +2,8 @@ import React from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import Dropzone  from '../components/dropzone/Dropzone';
 import Progress from '../components/progress/Progress';
-
+import TabsComponent from '../components/tabs/Tabs';
+import Table from '../components/table/Table.js';
 
 class Upload extends React.Component{
     constructor(props){
@@ -129,7 +130,8 @@ class Upload extends React.Component{
 
     render(){
         return(
-            <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+            <Grid textAlign='center' style={{ height: '100vh' }} divided='vertically'>
+                <Grid.Row columns={1}>
                 <Grid.Column style={{ maxWidth: 240 }}>
                 <Header as='h2' color='teal' textAlign='center'>
                     Upload PCAP files:
@@ -156,6 +158,13 @@ class Upload extends React.Component{
                     </Segment>
                 </Form>
                 </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={1}>
+                    <Grid.Column>
+                        <Table sessionId={this.props.sessionId}/>
+                        <TabsComponent sessionId={this.props.sessionId}/>
+                    </Grid.Column>
+                </Grid.Row>
             </Grid>
         )
     }

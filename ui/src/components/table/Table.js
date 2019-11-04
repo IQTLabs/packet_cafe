@@ -83,6 +83,7 @@ class Table extends React.Component{
     fetch('/ids/' + this.props.sessionId)
       .then(res => res.json())
       .then((rows) => {
+        // TODO there's got to be a cleaner way to do this
         ReactDOM.render(this.buildTable(rows), document.getElementById('table'));
       })
       .then(data => this.setState({ rows: data, isLoading: false }));
@@ -92,7 +93,8 @@ class Table extends React.Component{
     const { hits, isLoading } = this.state;
 
     if (isLoading) {
-      return ( <div><button onClick={this.updateData}>
+      return ( <div>
+        <button onClick={this.updateData}>
           Activate Lasers
         </button><p>Loading ...</p></div>
       );
