@@ -111,6 +111,24 @@
       ]
     },
     {
+      "name": "snort",
+      "image": "cyberreboot/vent-plugins-snort",
+      "version": "master",
+      "labels": "",
+      "stage": "analysis",
+      "viewableOutput": true,
+      "environment": {
+        "rabbit": "true"
+      },
+      "outputs": [
+        "rabbitmq"
+      ],
+      "inputs": [
+        "pcap",
+        "pcapng"
+      ]
+    },
+    {
       "name": "pcap-stats",
       "image": "cyberreboot/vent-plugins-pcap-stats",
       "version": "master",
@@ -118,7 +136,6 @@
       "stage": "analysis",
       "viewableOutput": true,
       "environment": {
-        "redis": "false",
         "rabbit": "true"
       },
       "outputs": [
