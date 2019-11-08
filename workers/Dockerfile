@@ -1,8 +1,8 @@
 FROM alpine:3.9
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
-COPY workers/requirements.txt requirements.txt
-COPY workers/healthcheck /healthcheck
+COPY requirements.txt requirements.txt
+COPY healthcheck /healthcheck
 
 RUN apk add --update \
     curl \
@@ -26,8 +26,8 @@ ENV FLASK_APP /healthcheck/hc.py
 HEALTHCHECK --interval=15s --timeout=15s \
  CMD curl --silent --fail http://localhost:5000/healthcheck || exit 1
 
-COPY ./workers /app
-COPY /workers.json /app/workers.json
+COPY . /app
+COPY workers.json /definitions/workers.json
 WORKDIR /app
 ENV PYTHONUNBUFFERED 0
 
