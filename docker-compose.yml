@@ -23,11 +23,13 @@ services:
       - frontend
     deploy:
       replicas: 3
+    volumes:
+      - definitions:/definitions
   web:
     restart: always
     build:
-      context: ./
-      dockerfile: ./web/Dockerfile
+      context: web
+      dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_web:latest'
     networks:
       - frontend
@@ -36,6 +38,7 @@ services:
     volumes:
       - files:/files
       - id:/id
+      - definitions:/definitions
   lb:
     restart: always
     build:
@@ -63,13 +66,14 @@ services:
   workers:
     restart: always
     build:
-      context: ./
-      dockerfile: ./workers/Dockerfile
+      context: workers
+      dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_workers:latest'
     networks:
       - backend
       - results
     volumes:
+      - definitions:/definitions
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       replicas: 3
@@ -89,3 +93,4 @@ networks:
 volumes:
   files:
   id:
+  definitions:

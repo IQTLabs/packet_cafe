@@ -1,7 +1,7 @@
 FROM alpine:3.9
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
-COPY web/requirements.txt requirements.txt
+COPY requirements.txt requirements.txt
 
 RUN apk add --update \
     curl \
@@ -24,10 +24,9 @@ RUN apk add --update \
 HEALTHCHECK --interval=15s --timeout=15s \
   CMD curl --silent --fail http://localhost:8001/api/v1 || exit 1
 
-COPY ./web /app
-COPY web/nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY web/nginx/proxy_params /etc/nginx/proxy_params
-COPY ./workers.json /app/workers.json
+COPY . /app
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx/proxy_params /etc/nginx/proxy_params
 RUN mkdir -p /run/nginx
 RUN touch /run/nginx/nginx.pid
 WORKDIR /app

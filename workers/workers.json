@@ -61,6 +61,7 @@
         "RABBIT_QUEUE_NAME": "task_queue",
         "REDIS": "False"
       },
+      "contentType": "application/json",
       "outputs": [
         "rabbitmq"
       ],
@@ -78,6 +79,7 @@
       "environment": {
         "rabbit": "true"
       },
+      "contentType": "application/json",
       "outputs": [
         "rabbitmq"
       ],
@@ -96,6 +98,7 @@
       "environment": {
         "rabbit": "true"
       },
+      "contentType": "application/json",
       "outputs": [
         "rabbitmq"
       ],
@@ -114,6 +117,7 @@
       "environment": {
         "redis": "false"
       },
+      "contentType": "application/json",
       "outputs": [
         "rabbitmq"
       ],

@@ -106,7 +106,7 @@ def setup_docker():
 
 
 def load_workers():
-    with open('workers.json') as json_file:
+    with open('/definitions/workers.json') as json_file:
         workers = json.load(json_file)
     return workers
 
