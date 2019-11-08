@@ -26,6 +26,8 @@ COPY . /app
 WORKDIR /app
 ENV PYTHONUNBUFFERED 0
 
+USER nobody
+
 EXPOSE 5001
 
-CMD gunicorn -b 0.0.0.0:5001 -k gevent -w 1 --access-logfile /var/log/access.log --keep-alive 10 --reload app.app --timeout 60
+CMD gunicorn -b 0.0.0.0:5001 -k gevent -w 1 --access-logfile /tmp/access.log --keep-alive 10 --reload app.app --timeout 60

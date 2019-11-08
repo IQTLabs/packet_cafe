@@ -27,8 +27,7 @@ HEALTHCHECK --interval=15s --timeout=15s \
  CMD curl --silent --fail http://localhost:5000/healthcheck || exit 1
 
 COPY . /app
-COPY workers.json /definitions/workers.json
 WORKDIR /app
 ENV PYTHONUNBUFFERED 0
 
-CMD (flask run > /dev/null 2>&1) & (python3 worker.py)
+CMD (flask run > /dev/null 2>&1) & (cp /app/workers.json /definitions/workers.json && python3 worker.py)

@@ -17,7 +17,7 @@
     {
       "name": "pcap-splitter",
       "image": "cyberreboot/vent-plugins-pcap-to-node-pcap",
-      "version": "v0.1.4",
+      "version": "v0.1.5",
       "labels": "",
       "stage": "preprocessing",
       "viewableOutput": false,
@@ -31,7 +31,7 @@
     {
       "name": "pcap-dot1q",
       "image": "cyberreboot/vent-plugins-tcprewrite-dot1q",
-      "version": "v0.1.4",
+      "version": "v0.1.5",
       "labels": "",
       "stage": "preprocessing",
       "viewableOutput": false,
@@ -46,7 +46,7 @@
     {
       "name": "networkml",
       "image": "cyberreboot/networkml",
-      "version": "v0.4.0",
+      "version": "v0.4.1",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -72,7 +72,7 @@
     {
       "name": "snort",
       "image": "cyberreboot/vent-plugins-snort",
-      "version": "master",
+      "version": "v0.1.5",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -91,7 +91,7 @@
     {
       "name": "pcap-stats",
       "image": "cyberreboot/vent-plugins-pcap-stats",
-      "version": "master",
+      "version": "v0.1.5",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -110,7 +110,7 @@
     {
       "name": "p0f",
       "image": "cyberreboot/vent-plugins-p0f",
-      "version": "v0.1.4",
+      "version": "v0.1.5",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
