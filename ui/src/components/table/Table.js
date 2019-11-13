@@ -23,7 +23,7 @@ class Table extends React.Component{
       const tools = row.tools;
       const id = row.id;
       for (const [index, value] of tools.entries()) {
-        getResultUrls.push(<a href={`/results/${this.props.sessionId}/${id}/${value}`}>
+        getResultUrls.push(<a href={`/results/${this.props.sessionId}/${id}/${value}`} target="_blank">
           {value}
         </a>);
       }
