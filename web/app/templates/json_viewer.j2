@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Results Viewer</title>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/7.0.4/jsoneditor.min.css" rel="stylesheet" type="text/css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/7.0.4/jsoneditor.min.js"></script>
+
+
+  <style type="text/css">
+    body {
+      font: 11pt arial;
+    }
+    #jsoneditor {
+      width: 1000px;
+    }
+  </style>
+</head>
+<body>
+<div id="jsoneditor"></div>
+
+<script>
+  const container = document.getElementById('jsoneditor')
+  const options = {
+    modes: ['view', 'preview'],
+    mode: 'view',
+  }
+  const json = {{ results }}
+  const editor = new JSONEditor(container, options, json)
+</script>
+</body>
+</html>

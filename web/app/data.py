@@ -8,6 +8,7 @@ import uuid
 from string import Template
 
 import falcon
+import jinja2
 import magic
 import pika
 
@@ -17,6 +18,12 @@ from .helpers import load_tools
 
 
 ACCEPTED_FILE_TYPES = ['pcap', 'pcapng']
+
+
+def load_template(name):
+    path = os.path.join('app/templates', name)
+    with open(os.path.abspath(path), 'r') as fp:
+        return jinja2.Template(fp.read())
 
 
 def mkdir_p(path):
@@ -226,21 +233,22 @@ class Results(object):
         # check if id exists, and if the tool exists and has results
         # if counter is 0, get all of them
         # TODO actually use the counter param
+        resp.content_type = falcon.MEDIA_HTML
         if tool == 'pcapplot':
             body = self.pcapplot(session_id, req_id)
             resp.body = body
-            resp.content_type = falcon.MEDIA_HTML
         else:
-            body = 'file not found'
+            body = '{}'
             try:
                 with open('/id/{0}/{1}/{2}/metadata.json'.format(session_id, req_id, tool)) as f:
                     body = json.dumps(json.load(f), indent=4)
             except Exception as e:  # pragma: no cover
                 print('failed: {0}'.format(str(e)))
-            resp.body = body
-            resp.content_type = falcon.MEDIA_TEXT
+            template = load_template('json_viewer.j2')
+            resp.body = template.render(results=body)
 
         resp.status = falcon.HTTP_200
+
 
     def on_post(self, req, resp, tool, counter, session_id, req_id):
         message = req.media
