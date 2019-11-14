@@ -112,6 +112,24 @@ class Info(object):
         resp.status = falcon.HTTP_200
 
 
+class Raw(object):
+
+    def on_options(self, req, resp, tool, counter, session_id, req_id):
+        resp.set_header('Access-Control-Allow-Headers', 'Content-Type')
+        resp.status = falcon.HTTP_OK
+
+    def on_get(self, req, resp, tool, counter, session_id, req_id):
+        body = '{}'
+        try:
+            with open('/id/{0}/{1}/{2}/metadata.json'.format(session_id, req_id, tool)) as f:
+                body = json.dumps(json.load(f), indent=4)
+        except Exception as e:  # pragma: no cover
+            print('failed: {0}'.format(str(e)))
+        resp.body = body
+
+        resp.content_type = falcon.MEDIA_TEXT
+        resp.status = falcon.HTTP_200
+
 class Results(object):
 
     def pcapplot(self, session_id, req_id):
