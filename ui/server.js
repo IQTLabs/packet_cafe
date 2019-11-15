@@ -27,6 +27,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname, 'build')));
 
+// render raw results from tools
+app.get('/raw/:session/:id/:tool', function(req, res) {
+  // '/0/' is the counter of results for that tool
+  // if '0' it means return all results from that tool
+  var url = 'http://lb/api/v1/raw/' + req.params['tool'] + '/0/' + req.params['session'] + '/' + req.params['id']
+
+  request.get({url:url}, function optionalCallback(err, httpResponse, body) {
+    if (err) {
+      return console.error('failed:', err);
+    }
+    res.set('Content-Type', 'application/json');
+    res.send(body);
+  });
+
+});
+
 // render results from tools
 app.get('/results/:session/:id/:tool', function(req, res) {
   // '/0/' is the counter of results for that tool
