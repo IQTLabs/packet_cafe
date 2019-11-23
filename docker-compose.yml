@@ -47,20 +47,9 @@ services:
     image: 'cyberreboot/packet_cafe_lb:latest'
     ports:
       - 80:80
-      - 443:443
     networks:
       - frontend
       - results
-    volumes:
-      - certs-conf:/etc/letsencrypt
-      - certs-www:/var/www/certbot
-  certbot:
-    image: certbot/certbot
-    restart: unless-stopped
-    volumes:
-      - certs-conf:/etc/letsencrypt
-      - certs-www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
   messenger:
     restart: always
     build:
@@ -105,5 +94,3 @@ volumes:
   files:
   id:
   definitions:
-  certs-conf:
-  certs-www:
