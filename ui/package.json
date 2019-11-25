@@ -7,15 +7,17 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "multer": "^1.4.1",
+    "ramda": "^0.26.1",
     "react": "^16.8.6",
-    "react-data-components": "^1.2.0",
+    "react-data-table-component": "^3.10.3",
     "react-dom": "^16.8.6",
     "react-redux": "^7.1.1",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "^3.2.0",
     "react-tabs": "^3.0.0",
     "redux": "^4.0.4",
     "semantic-ui-react": "^0.87.2",
     "serve": "^11.0.2",
+    "styled-components": "^4.4.1",
     "uuid": "^3.3.3"
   },
   "scripts": {
@@ -28,6 +30,17 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "babel": {
+    "presets": [
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-transform-modules-commonjs",
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-proposal-object-rest-spread",
+      "@babel/plugin-proposal-nullish-coalescing-operator"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -39,5 +52,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0"
   }
 }
