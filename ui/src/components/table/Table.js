@@ -71,7 +71,7 @@ class Table extends React.Component{
     return tools.map((value) => {
         return(
           <p key={id + ":" +value}>
-            <a href={`/results/${this.props.sessionId}/${id}/${value}`} target="_blank">
+            <a href={'/results/${this.props.sessionId}/${id}/${value}'} target="_blank">
               {value}
             </a>
           </p>
@@ -80,7 +80,7 @@ class Table extends React.Component{
     );
   }
 
-  getTableColumns = (data) => {
+  getTableColumns = () => {
     const tableColumns = [
       { name: 'ID', selector: 'id' },
       { name: 'Filename', selector: 'filename' },
@@ -144,12 +144,12 @@ class Table extends React.Component{
 
   updateData() {
     this.setState({ isLoading: true });
-    const data2 = [{"id": "ac3bc8a9be3541de9763e237332dbb5b", "filename": "printer-18-06-06.pcap", "tools": ["pcap_stats", "networkml", "pcapplot", "p0f", "snort"]}]
-    this.setState({ rows: data2, columns: this.getTableColumns(data2), isLoading: false })
-    // fetch('/ids/' + this.props.sessionId)
-    //   .then(res => res.json())
-    //   .then(data => this.setState({ rows: data, columns: getTableColumns(data), isLoading: false }))
-    //   .then(() => this.render())
+    // const data2 = [{"id": "ac3bc8a9be3541de9763e237332dbb5b", "filename": "printer-18-06-06.pcap", "tools": ["pcap_stats", "networkml", "pcapplot", "p0f", "snort"]}]
+    // this.setState({ rows: data2, columns: this.getTableColumns(data2), isLoading: false })
+    fetch('/ids/' + this.props.sessionId)
+      .then(res => res.json())
+      .then(data => this.setState({ rows: data, columns: this.getTableColumns(), isLoading: false }))
+      .then(() => this.render())
   }
 
   render() {
@@ -168,7 +168,7 @@ class Table extends React.Component{
             //pagination={false}
             //initialPageLength={5}
             //initialSortBy={{ prop: 'filename', order: 'descending' }}
-            //progressPending={isLoading}
+            progressPending={isLoading}
             //pageLengthOptions={[ 5, 20, 50 ]}
           />
       </div>)
