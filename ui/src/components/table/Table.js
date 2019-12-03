@@ -2,55 +2,6 @@ import React from 'react';
 //import ReactDOM from 'react-dom';
 import DataTable from 'react-data-table-component';
 
-import {
-  chain,
-  concat,
-  find,
-  // fromPairs,
-  // identity,
-  is,
-  map,
-  merge,
-  // path,
-  //pipe,
-  propEq,
-  //sortBy,
-  toPairs,
-  //uniq,
-} from "ramda";
-
-/**
- * Returns an array of paths to literal values and arrays in a POJO.
- *
- * Example:
- * pathsIn({ a: 'A', b: { c: 'C', d: [1, 2] } }) //=> [['a'], ['b', 'c'], ['b', 'd']]
- */
-const pathsIn = (obj) =>
-  chain(
-    ([key, value]) =>
-      is(Object, value) ? map(concat([key]), pathsIn(value)) : [[key]],
-    toPairs(obj)
-  );
-
-/**
- * Return all fields for an object
- */
-const fieldsFor = (obj, overrides = []) => {
-  const paths = pathsIn(obj).filter(p => p[0] !== 'CRVIZ');
-  return map((path) => {
-    const override = find(propEq('path', path), overrides) || {};
-    return merge(
-      {
-        title: path.join('.'),
-        prop: path.join('.')
-      },
-      override
-    )
-  }, paths);
-}
-
-
-
 class Table extends React.Component{
   constructor(props) {
     super(props);
@@ -69,9 +20,10 @@ class Table extends React.Component{
     const id = item.id;
     console.log(tools);
     return tools.map((value) => {
+        const url = `/results/${this.props.sessionId}/${id}/${value}`
         return(
           <p key={id + ":" +value}>
-            <a href={'/results/${this.props.sessionId}/${id}/${value}'} target="_blank">
+            <a href={url} target="_blank" rel="noopener noreferrer">
               {value}
             </a>
           </p>
@@ -94,50 +46,6 @@ class Table extends React.Component{
     return tableColumns;
   }
 
-
-  // buildTable(data) {
-  //   const allRowsUrls = {};
-  //   const allRowsTools = {};
-
-  //   for (const [val, row] of data.entries()) {
-  //     const getResultUrls = [];
-  //     const tools = row.tools;
-  //     const id = row.id;
-  //     for (const [index, value] of tools.entries()) {
-  //       getResultUrls.push(<a href={`/results/${this.props.sessionId}/${id}/${value}`} target="_blank">
-  //         {value}
-  //       </a>);
-  //     }
-  //     const htmlUrls = getResultUrls.map((url) =>
-  //       <p>{url}</p>
-  //     );
-  //     allRowsUrls[id] = htmlUrls;
-  //   }
-
-  //   const renderResultsUrl =
-  //     (val, row) => allRowsUrls[row["id"]];
-
-  //   for (const [val, row] of data.entries()) {
-  //     const getTools = [];
-  //     const tools = row.tools;
-  //     for (const [index, value] of tools.entries()) {
-  //       getTools.push(<p>{value}</p>);
-  //     }
-  //     allRowsTools[row.id] = getTools;
-  //   }
-
-  //   const renderTools =
-  //     (val, row) => allRowsTools[row["id"]];
-
-  //   const tableColumns = [
-  //     { title: 'ID', prop: 'id' },
-  //     { title: 'Filename', prop: 'filename' },
-  //     // { title: 'Tools', render: renderTools, className: 'text-center' },
-  //     // { title: 'Results', render: renderResultsUrl, className: 'text-center' },
-  //     { title: 'Report', prop: 'report', defaultContent: 'no report available' },
-  //   ];
-  // }
-
   componentDidMount() {
     this.updateData()
   }
@@ -153,7 +61,7 @@ class Table extends React.Component{
   }
 
   render() {
-    const { hits, isLoading, columns, rows } = this.state;
+    const { isLoading, columns, rows } = this.state;
     console.log(columns);
     return (
         <div>
