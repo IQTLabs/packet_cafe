@@ -1,0 +1,97 @@
+version: '3.7'
+services:
+  admin:
+    restart: always
+    build:
+      context: admin
+      dockerfile: Dockerfile
+    image: 'cyberreboot/packet_cafe_admin:latest'
+    ports:
+      - 5001:5001
+    networks:
+      - admin
+    volumes:
+      - files:/files
+      - id:/id
+  ui:
+    restart: always
+    build:
+      context: ui
+      dockerfile: Dockerfile.debug
+    image: 'cyberreboot/packet_cafe_ui:latest'
+    networks:
+      - frontend
+    deploy:
+      replicas: 1
+    volumes:
+      - definitions:/definitions
+      - ./ui:/ui_src
+  web:
+    restart: always
+    build:
+      context: web
+      dockerfile: Dockerfile
+    image: 'cyberreboot/packet_cafe_web:latest'
+    networks:
+      - frontend
+    deploy:
+      replicas: 3
+    volumes:
+      - files:/files
+      - id:/id
+      - definitions:/definitions
+  lb:
+    restart: always
+    build:
+      context: lb
+      dockerfile: Dockerfile
+    image: 'cyberreboot/packet_cafe_lb:latest'
+    ports:
+      - 80:80
+    networks:
+      - frontend
+      - results
+  messenger:
+    restart: always
+    build:
+      context: messenger
+      dockerfile: Dockerfile
+    image: 'cyberreboot/packet_cafe_messenger:latest'
+    ports:
+      - 15672:15672
+    networks:
+      - frontend
+      - backend
+      - analysis
+      - preprocessing
+  workers:
+    restart: always
+    build:
+      context: workers
+      dockerfile: Dockerfile
+    image: 'cyberreboot/packet_cafe_workers:latest'
+    networks:
+      - backend
+      - results
+    volumes:
+      - definitions:/definitions
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      replicas: 3
+networks:
+  admin:
+    name: admin
+  frontend:
+    name: frontend
+  backend:
+    name: backend
+  analysis:
+    name: analysis
+  preprocessing:
+    name: preprocessing
+  results:
+    name: results
+volumes:
+  files:
+  id:
+  definitions:
