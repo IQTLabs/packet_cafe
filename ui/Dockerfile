@@ -12,8 +12,7 @@ COPY . /app
 WORKDIR /app
 
 RUN npm i npm@latest -g
-RUN npm install --no-optional
-#RUN npm audit fix
+RUN npm ci --no-optional
 RUN npm run build
 
 EXPOSE 5000
