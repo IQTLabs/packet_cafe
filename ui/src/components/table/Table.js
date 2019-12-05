@@ -14,7 +14,6 @@ class Table extends React.Component{
   renderTools = (item) => {
     const tools = item.tools;
     const id = item.id;
-    console.log(tools);
     return tools.map((value) => {
         const url = `/results/${this.props.sessionId}/${id}/${value}`
         return(
@@ -45,7 +44,6 @@ class Table extends React.Component{
   render() {
     const columns = this.getTableColumns();
     const { rows, isLoading } = this.props;
-    console.log({rows})
     return (
         <div>
           <DataTable

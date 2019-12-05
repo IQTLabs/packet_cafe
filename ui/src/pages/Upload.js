@@ -1,9 +1,15 @@
 import React from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
-import Dropzone  from '../components/dropzone/Dropzone';
-import Progress from '../components/progress/Progress';
-import TabsComponent from '../components/tabs/Tabs';
-import Table from '../components/table/Table.js';
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+
+import { fetchResults } from 'epics/fetch-results-epic'
+
+import Dropzone  from 'components/dropzone/Dropzone';
+import Progress from 'components/progress/Progress';
+import TabsComponent from 'components/tabs/Tabs';
+import Table from 'components/table/Table.js';
 
 class Upload extends React.Component{
     constructor(props){
@@ -85,6 +91,14 @@ class Upload extends React.Component{
         });
     }
 
+    fetchResults = () => {
+        console.log("Peasant Burnination initiated...");
+        //this.props.showBusy(true);
+        //this.props.setIsFetching({owner: this.props.uuid, isFetching: true});
+        //const authHeader = buildAuthHeader(username, password, token);
+        this.props.fetchResults({ 'sessionId': this.props.sessionId });
+    }
+
     renderProgress(file) {
         const uploadProgress = this.state.uploadProgress[file.name];
         if (this.state.uploading || this.state.successfullUploaded) {
@@ -161,6 +175,11 @@ class Upload extends React.Component{
                 </Grid.Row>
                 <Grid.Row columns={1}>
                     <Grid.Column>
+                        <div>
+                            <button onClick={this.fetchResults}>
+                                Burninate Peasants
+                            </button>
+                        </div>
                         <Table sessionId={this.props.sessionId}/>
                         <TabsComponent sessionId={this.props.sessionId}/>
                     </Grid.Column>
@@ -170,4 +189,14 @@ class Upload extends React.Component{
     }
 }
 
-export default Upload
+Upload.propTypes = {
+  fetchResults: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = null;
+
+const mapDispatchToProps = {
+    fetchResults,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps) (Upload)

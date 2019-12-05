@@ -6,22 +6,20 @@ const defaultState = {
     rows:[],
     columns:['id']
   },
+  isLoading: false
 };
 
 
 
 // ACTIONS
-
 const setResults = createAction("SET_RESULTS");
 
 // REDUCERS
 const reducer = handleActions(
   {
     [setResults]: (state, { payload }) => {
-      const datasets = payload.datasets;
-      Object.keys(datasets).forEach((key) => {
-        state.datasets[key] = datasets[key];
-      })
+      const resultRows = payload;
+      state.results.rows = resultRows
       
       return { ...state};
     },
@@ -37,7 +35,7 @@ const reducer = handleActions(
 //pare the tree down to just the relevant attributes. in these cases the
 //variable "dataset" will represent the segment of the state tree owned by the datset reducer.
 const _getResults = (results) => {
-  results = {rows: [{"id": "ac3bc8a9be3541de9763e237332dbb5b", "filename": "printer-18-06-06.pcap", "tools": ["pcap_stats", "networkml", "pcapplot", "p0f", "snort"]}]};
+  //results = {rows: [{"id": "ac3bc8a9be3541de9763e237332dbb5b", "filename": "printer-18-06-06.pcap", "tools": ["pcap_stats", "networkml", "pcapplot", "p0f", "snort"]}]};
   return results || defaultState.results;
 }
 
