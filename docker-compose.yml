@@ -11,8 +11,8 @@ services:
     networks:
       - admin
     volumes:
-      - files:${VOL_PREFIX}/files
-      - id:${VOL_PREFIX}/id
+      - files:/files
+      - id:/id
   ui:
     restart: always
     build:
@@ -24,7 +24,7 @@ services:
     deploy:
       replicas: 3
     volumes:
-      - definitions:${VOL_PREFIX}/definitions
+      - definitions:/definitions
   web:
     restart: always
     build:
@@ -36,9 +36,9 @@ services:
     deploy:
       replicas: 3
     volumes:
-      - files:${VOL_PREFIX}/files
-      - id:${VOL_PREFIX}/id
-      - definitions:${VOL_PREFIX}/definitions
+      - files:/files
+      - id:/id
+      - definitions:/definitions
   lb:
     restart: always
     build:
@@ -72,10 +72,8 @@ services:
     networks:
       - backend
       - results
-    environment:
-      VOL_PREFIX: '${VOL_PREFIX}'
     volumes:
-      - definitions:${VOL_PREFIX}/definitions
+      - definitions:/definitions
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       replicas: 3
@@ -94,5 +92,20 @@ networks:
     name: results
 volumes:
   files:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${VOL_PREFIX}/files'
   id:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${VOL_PREFIX}/id'
   definitions:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${VOL_PREFIX}/definitions'
