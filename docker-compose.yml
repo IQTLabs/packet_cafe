@@ -11,8 +11,8 @@ services:
     networks:
       - admin
     volumes:
-      - files:/files
-      - id:/id
+      - files:${VOL_PREFIX}/files
+      - id:${VOL_PREFIX}/id
   ui:
     restart: always
     build:
@@ -24,7 +24,7 @@ services:
     deploy:
       replicas: 3
     volumes:
-      - definitions:/definitions
+      - definitions:${VOL_PREFIX}/definitions
   web:
     restart: always
     build:
@@ -36,9 +36,9 @@ services:
     deploy:
       replicas: 3
     volumes:
-      - files:/files
-      - id:/id
-      - definitions:/definitions
+      - files:${VOL_PREFIX}/files
+      - id:${VOL_PREFIX}/id
+      - definitions:${VOL_PREFIX}/definitions
   lb:
     restart: always
     build:
@@ -72,8 +72,10 @@ services:
     networks:
       - backend
       - results
+    environment:
+      VOL_PREFIX: '${VOL_PREFIX}'
     volumes:
-      - definitions:/definitions
+      - definitions:${VOL_PREFIX}/definitions
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       replicas: 3
