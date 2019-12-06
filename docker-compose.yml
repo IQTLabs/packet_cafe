@@ -72,6 +72,8 @@ services:
     networks:
       - backend
       - results
+    environment:
+      VOL_PREFIX: '${VOL_PREFIX}'
     volumes:
       - '${VOL_PREFIX}/definitions:/definitions'
       - /var/run/docker.sock:/var/run/docker.sock

@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import time
 import uuid
 
@@ -10,6 +11,7 @@ import requests
 
 def callback(ch, method, properties, body):
     """Callback that has the message that was received"""
+    vol_prefix = os.getenv('VOL_PREFIX', '')
     workers = load_workers()
     d = setup_docker()
     pipeline = json.loads(body.decode('utf-8'))
@@ -40,7 +42,7 @@ def callback(ch, method, properties, body):
                 d.containers.run(image=image,
                                  name=name,
                                  network=worker['stage'],
-                                 volumes={'packet_cafe_files': {'bind': '/files', 'mode': 'rw'}},
+                                 volumes={vol_prefix + '/files': {'bind': '/files', 'mode': 'rw'}},
                                  environment=environment,
                                  remove=True,
                                  command=command,
