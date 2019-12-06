@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import time
 import uuid
 
@@ -10,7 +11,8 @@ import requests
 
 def callback(ch, method, properties, body):
     """Callback that has the message that was received"""
-    workers = load_workers()
+    vol_prefix = os.getenv('VOL_PREFIX', '')
+    workers = load_workers(vol_prefix)
     d = setup_docker()
     pipeline = json.loads(body.decode('utf-8'))
     worker_found = False
@@ -40,38 +42,38 @@ def callback(ch, method, properties, body):
                 d.containers.run(image=image,
                                  name=name,
                                  network=worker['stage'],
-                                 volumes={'packet_cafe_files': {'bind': '/files', 'mode': 'rw'}},
+                                 volumes={'packet_cafe_files': {'bind': vol_prefix + '/files', 'mode': 'rw'}},
                                  environment=environment,
                                  remove=True,
                                  command=command,
                                  detach=True)
             except Exception as e:  # pragma: no cover
                 print('failed: {0}'.format(str(e)))
-            print(" [C] %s UTC %r:%r:%r:%r" % (str(datetime.datetime.utcnow()),
+            print(" [Create container] %s UTC %r:%r:%r:%r" % (str(datetime.datetime.utcnow()),
                                          method.routing_key,
                                          pipeline['id'],
                                          image,
                                          pipeline))
             worker_found = True
     if 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'data':
-        print(" [D] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
+        print(" [Data] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
         r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], pipeline['results']['counter'], session_id, pipeline['id']), data=json.dumps(pipeline))
     elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'metadata':
         if 'data' in pipeline and pipeline['data'] != '':
-            print(" [M] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
+            print(" [Metadata] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
                                             method.routing_key,
                                             pipeline['id'],
                                             pipeline['results']))
             r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], 0, session_id, pipeline['id']), data=json.dumps(pipeline))
         else:
-            print(" [F] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
+            print(" [Finished] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                          method.routing_key,
                                          pipeline))
     elif not worker_found:
-        print(" [X] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
+        print(" [X no match] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                      method.routing_key,
                                      pipeline))
 
@@ -106,8 +108,8 @@ def setup_docker():
     return docker.from_env()
 
 
-def load_workers():
-    with open('/definitions/workers.json') as json_file:
+def load_workers(vol_prefix):
+    with open(vol_prefix + '/definitions/workers.json') as json_file:
         workers = json.load(json_file)
     return workers
 
