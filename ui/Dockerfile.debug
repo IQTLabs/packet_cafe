@@ -8,13 +8,10 @@ RUN apk --no-cache upgrade && \
 HEALTHCHECK --interval=15s --timeout=15s \
  CMD curl --silent --fail http://localhost:5000/ || exit 1
 
-COPY . /app
-WORKDIR /app
+WORKDIR /ui_src
 
 RUN npm i npm@latest -g
-RUN npm ci --no-optional
-RUN npm run build
 
 EXPOSE 5000
-ENTRYPOINT ["node"]
-CMD ["server.js"]
+CMD npm ci --no-optional && npm start
+#CMD ["npm", "start"]

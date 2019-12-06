@@ -143,6 +143,7 @@ class Upload extends React.Component{
     }
 
     render(){
+        console.log("pitying fools in 3..2..1...")
         return(
             <Grid textAlign='center' style={{ height: '100vh' }} divided='vertically'>
                 <Grid.Row columns={1}>
