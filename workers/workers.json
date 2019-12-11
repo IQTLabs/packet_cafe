@@ -3,7 +3,7 @@
     {
       "name": "pcapplot",
       "image": "cyberreboot/pcapplot",
-      "version": "v0.1.2",
+      "version": "latest",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -52,7 +52,7 @@
     {
       "name": "networkml",
       "image": "cyberreboot/networkml",
-      "version": "v0.4.3",
+      "version": "latest",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -116,7 +116,7 @@
     {
       "name": "p0f",
       "image": "cyberreboot/vent-plugins-p0f",
-      "version": "v0.1.6",
+      "version": "master",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
