@@ -182,7 +182,6 @@ class Upload extends React.Component{
                             </button>
                         </div>
                         <Table sessionId={this.props.sessionId}/>
-                        <TabsComponent sessionId={this.props.sessionId}/>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
