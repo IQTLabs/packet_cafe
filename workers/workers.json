@@ -115,7 +115,7 @@
     {
       "name": "pcap-stats",
       "image": "cyberreboot/vent-plugins-pcap-stats",
-      "version": "v0.1.6",
+      "version": "master",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
