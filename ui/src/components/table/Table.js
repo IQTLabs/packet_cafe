@@ -66,7 +66,7 @@ const mapStateToProps = (state, ownProps) => {
   
   const results = getResults(state)
   return{
-    rows: results.rows,
+    rows: results.rows || [],
   }
 };
 

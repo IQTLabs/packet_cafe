@@ -97,6 +97,7 @@ class Upload extends React.Component{
         //this.props.setIsFetching({owner: this.props.uuid, isFetching: true});
         //const authHeader = buildAuthHeader(username, password, token);
         this.props.fetchResults({ 'sessionId': this.props.sessionId });
+        console.log("Peasant Burnination complete!");
     }
 
     renderProgress(file) {
