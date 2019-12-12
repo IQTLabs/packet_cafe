@@ -32,6 +32,25 @@
       ]
     },
     {
+      "name": "ncapture",
+      "image": "cyberreboot/vent-ncapture",
+      "version": "master",
+      "labels": "",
+      "stage": "preprocessing",
+      "viewableOutput": false,
+      "command": ["/tmp/run.sh", "pcapfile:", "60", "id", "1", "ip"],
+      "environment": {
+        "rabbit": "true"
+      },
+      "outputs": [
+        "pcap"
+      ],
+      "inputs": [
+        "pcap",
+        "pcapng"
+      ]
+    },
+    {
       "name": "pcap-dot1q",
       "image": "cyberreboot/vent-plugins-tcprewrite-dot1q",
       "version": "v0.1.6",
@@ -45,8 +64,7 @@
         "pcap"
       ],
       "inputs": [
-        "pcap",
-        "pcapng"
+        "ncapture"
       ]
     },
     {
