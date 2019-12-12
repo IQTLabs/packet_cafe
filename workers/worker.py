@@ -6,8 +6,8 @@ import uuid
 
 import docker
 import pika
-import redis
 import requests
+from redis import StrictRedis
 
 
 def callback(ch, method, properties, body):
@@ -114,6 +114,16 @@ def main(queue_name, host):
 
 def setup_docker():
     return docker.from_env()
+
+
+def setup_redis(host='redis', port=6379, db=0):
+    r = None
+    try:
+        r = StrictRedis(host=host, port=port, db=db,
+                        socket_connect_timeout=2)
+    except Exception as e:  # pragma: no cover
+        print('Failed connect to Redis because: {0}'.format(str(e)))
+    return r
 
 
 def load_workers():
