@@ -4,7 +4,6 @@ services:
     restart: always
     build:
       context: admin
-      dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_admin:latest'
     ports:
       - 5001:5001
@@ -17,24 +16,18 @@ services:
     restart: always
     build:
       context: ui
-      dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_ui:latest'
     networks:
       - frontend
-    deploy:
-      replicas: 3
     volumes:
       - '${VOL_PREFIX}/definitions:/definitions'
   web:
     restart: always
     build:
       context: web
-      dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_web:latest'
     networks:
       - frontend
-    deploy:
-      replicas: 3
     volumes:
       - '${VOL_PREFIX}/files:/files'
       - '${VOL_PREFIX}/id:/id'
@@ -43,7 +36,6 @@ services:
     restart: always
     build:
       context: lb
-      dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_lb:latest'
     ports:
       - 80:80
@@ -54,20 +46,25 @@ services:
     restart: always
     build:
       context: messenger
-      dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_messenger:latest'
-    ports:
-      - 15672:15672
     networks:
       - frontend
       - backend
       - analysis
       - preprocessing
+  redis:
+    restart: always
+    build:
+      context: redis
+    image: 'cyberreboot/packet_cafe_redis:latest'
+    networks:
+      - backend
+    volumes:
+      - '${VOL_PREFIX}/redis:/data'
   workers:
     restart: always
     build:
       context: workers
-      dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_workers:latest'
     networks:
       - backend
@@ -78,8 +75,6 @@ services:
       - '${VOL_PREFIX}/definitions:/definitions'
       - '${VOL_PREFIX}/files:/files'
       - /var/run/docker.sock:/var/run/docker.sock
-    deploy:
-      replicas: 3
 networks:
   admin:
     name: admin
