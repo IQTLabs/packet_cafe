@@ -93,7 +93,7 @@ class Ids(object):
             ids = os.listdir(f'/id/{session_id}')
             for id_dir in ids:
                 tools = os.listdir(f'/id/{session_id}/{id_dir}')
-                filenames = [ filename for filename in os.listdir(f'/files/id/{session_id}/{id_dir}') if os.path.isfile(os.path.join(f'/files/id/{session_id}/{id_dir}', filename)) ]
+                filenames = [ filename for filename in os.listdir(f'/files/{session_id}/{id_dir}') if os.path.isfile(os.path.join(f'/files/{session_id}/{id_dir}', filename)) ]
                 if not filenames:
                     filenames = ['none']
                 id_dict = {'id': id_dir, 'filename': filenames[0], 'tools': tools}
@@ -362,7 +362,7 @@ class Upload(object):
             filename = input_file.filename
 
             uid = str(uuid.uuid4()).replace('-', '')
-            file_dir = '/files/id/{0}/{1}'.format(session_id, uid)
+            file_dir = '/files/{0}/{1}'.format(session_id, uid)
             mkdir_p(file_dir)
             # Define file_path
             file_path = os.path.join(file_dir, filename)
