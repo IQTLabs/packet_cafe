@@ -32,7 +32,14 @@ def callback(ch, method, properties, body):
             command = []
             if 'command' in worker:
                 command = worker['command']
-            command.append(file_path)
+
+            if worker['name'] == 'ncapture':
+                command[1] = 'pcapfile:' + file_path
+                command[3] = pipeline['id']
+                command.append(os.path.dirname(file_path))
+            else:
+                command.append(file_path)
+
             environment = pipeline
             if 'environment' in worker:
                 environment.update(worker['environment'])
