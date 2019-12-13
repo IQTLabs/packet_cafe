@@ -14,4 +14,3 @@ RUN npm i npm@latest -g
 
 EXPOSE 5000
 CMD npm ci --no-optional && npm start
-#CMD ["npm", "start"]

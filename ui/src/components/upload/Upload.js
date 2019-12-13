@@ -1,15 +1,9 @@
 import React from 'react';
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
-import PropTypes from "prop-types";
+import { Button, Form, Header, Segment } from 'semantic-ui-react';
 import { connect } from "react-redux";
-
-
-import { fetchResults } from 'epics/fetch-results-epic'
 
 import Dropzone  from 'components/dropzone/Dropzone';
 import Progress from 'components/progress/Progress';
-import TabsComponent from 'components/tabs/Tabs';
-import Table from 'components/table/Table.js';
 
 class Upload extends React.Component{
     constructor(props){
@@ -91,14 +85,6 @@ class Upload extends React.Component{
         });
     }
 
-    fetchResults = () => {
-        console.log("Peasant Burnination initiated...");
-        //this.props.showBusy(true);
-        //this.props.setIsFetching({owner: this.props.uuid, isFetching: true});
-        //const authHeader = buildAuthHeader(username, password, token);
-        this.props.fetchResults({ 'sessionId': this.props.sessionId });
-    }
-
     renderProgress(file) {
         const uploadProgress = this.state.uploadProgress[file.name];
         if (this.state.uploading || this.state.successfullUploaded) {
@@ -143,12 +129,9 @@ class Upload extends React.Component{
     }
 
     render(){
-        console.log("pitying fools in 3..2..1...")
         return(
-            <Grid textAlign='center' style={{ height: '100vh' }} divided='vertically'>
-                <Grid.Row columns={1}>
-                <Grid.Column style={{ maxWidth: 240 }}>
-                <Header as='h2' color='teal' textAlign='center'>
+        <div>
+            <Header as='h2' color='teal' textAlign='center'>
                     Upload PCAP files:
                 </Header>
                 <Form size='large'>
@@ -172,31 +155,13 @@ class Upload extends React.Component{
                     <div className="Actions">{this.renderActions()}</div>
                     </Segment>
                 </Form>
-                </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={1}>
-                    <Grid.Column>
-                        <div>
-                            <button onClick={this.fetchResults}>
-                                Burninate Peasants
-                            </button>
-                        </div>
-                        <Table sessionId={this.props.sessionId}/>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            </div>
         )
     }
 }
 
-Upload.propTypes = {
-  fetchResults: PropTypes.func.isRequired,
-};
-
 const mapStateToProps = null;
 
-const mapDispatchToProps = {
-    fetchResults,
-};
+const mapDispatchToProps = null;
 
 export default connect(mapStateToProps, mapDispatchToProps) (Upload)

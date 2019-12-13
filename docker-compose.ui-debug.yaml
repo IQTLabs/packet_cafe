@@ -19,6 +19,8 @@ services:
       context: ui
       dockerfile: Dockerfile.debug
     image: 'cyberreboot/packet_cafe_ui:latest'
+    ports:
+      - 9229:9229
     networks:
       - frontend
     deploy:
