@@ -1,15 +1,10 @@
 import React from 'react';
 import DataTable from 'react-data-table-component';
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { getResults } from 'domain/data';
 
 class Table extends React.Component{
-  constructor(props) {
-    super(props);
-
-  }
 
   renderTools = (item) => {
     const tools = item.tools;
