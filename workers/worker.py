@@ -7,6 +7,7 @@ import uuid
 import docker
 import pika
 import requests
+from redis import StrictRedis
 
 
 def callback(ch, method, properties, body):
@@ -16,10 +17,11 @@ def callback(ch, method, properties, body):
     d = setup_docker()
     pipeline = json.loads(body.decode('utf-8'))
     worker_found = False
+    status = {}
     for worker in workers['workers']:
         file_path = pipeline['file_path']
         try:
-            session_id = file_path.split('/')[3]
+            session_id = file_path.split('/')[2]
         except Exception as e:  # pragma: no cover
             session_id = ''
         if 'id' in pipeline and (('results' in pipeline and pipeline['results']['tool'] in worker['inputs']) or ('file_type' in pipeline and pipeline['file_type'] in worker['inputs'])):
@@ -32,7 +34,14 @@ def callback(ch, method, properties, body):
             command = []
             if 'command' in worker:
                 command = worker['command']
-            command.append(file_path)
+
+            if worker['name'] == 'ncapture':
+                command[1] = 'pcapfile:' + file_path
+                command[3] = pipeline['id']
+                command.append(os.path.dirname(file_path))
+            else:
+                command.append(file_path)
+
             environment = pipeline
             if 'environment' in worker:
                 environment.update(worker['environment'])
@@ -54,6 +63,7 @@ def callback(ch, method, properties, body):
                                          pipeline['id'],
                                          image,
                                          pipeline))
+            status[worker['name']] = 'In progress'
             worker_found = True
     if 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'data':
         print(" [Data] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
@@ -61,6 +71,7 @@ def callback(ch, method, properties, body):
                                         pipeline['id'],
                                         pipeline['results']))
         r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], pipeline['results']['counter'], session_id, pipeline['id']), data=json.dumps(pipeline))
+        status[pipeline['results']['tool']] = 'In progress'
     elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'metadata':
         if 'data' in pipeline and pipeline['data'] != '':
             print(" [Metadata] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
@@ -68,16 +79,25 @@ def callback(ch, method, properties, body):
                                             pipeline['id'],
                                             pipeline['results']))
             r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], 0, session_id, pipeline['id']), data=json.dumps(pipeline))
+            status[pipeline['results']['tool']] = 'In progress'
         else:
             print(" [Finished] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                          method.routing_key,
                                          pipeline))
+            status[pipeline['results']['tool']] = 'Complete'
     elif not worker_found:
         print(" [X no match] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                      method.routing_key,
                                      pipeline))
 
     ch.basic_ack(delivery_tag=method.delivery_tag)
+
+    # store state of status in redis
+    r = setup_redis()
+    if r:
+        r.sadd(session_id, pipeline['id'])
+        r.hmset(pipeline['id']+"_status", status)
+        r.close()
 
 
 def main(queue_name, host):
@@ -106,6 +126,16 @@ def main(queue_name, host):
 
 def setup_docker():
     return docker.from_env()
+
+
+def setup_redis(host='redis', port=6379, db=0):
+    r = None
+    try:
+        r = StrictRedis(host=host, port=port, db=db,
+                        socket_connect_timeout=2)
+    except Exception as e:  # pragma: no cover
+        print('Failed connect to Redis because: {0}'.format(str(e)))
+    return r
 
 
 def load_workers():

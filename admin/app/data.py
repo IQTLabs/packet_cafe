@@ -23,7 +23,7 @@ class Endpoints(object):
 class IDFiles(object):
 
     def on_get(self, req, resp):
-        path = '/files/id'
+        path = '/files'
         files = []
         for r, d, f in os.walk(path):
             for file in f:
@@ -50,7 +50,7 @@ class IDs(object):
 
     def on_get(self, req, resp):
         # TODO
-        path = '/files/id'
+        path = '/files'
         ids = []
         for r, d, f in os.walk(path):
             for directory in d:
