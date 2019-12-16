@@ -6,3 +6,4 @@ gunicorn==19.9.0
 jinja2==2.10.3
 pika==1.1.0
 python-magic==0.4.15
+redis==3.3.11

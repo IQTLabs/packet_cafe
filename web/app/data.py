@@ -12,6 +12,8 @@ import jinja2
 import magic
 import pika
 
+from redis import StrictRedis
+
 from .routes import paths
 from .routes import version
 from .helpers import load_tools
@@ -308,18 +310,19 @@ class Results(object):
 
 class Status(object):
 
+    def setup_redis(self, host='redis', port=6379, db=0):
+        self.r = None
+        try:
+            self.r = StrictRedis(host=host, port=port, db=db,
+                                 socket_connect_timeout=2)
+        except Exception as e:  # pragma: no cover
+            print('Failed connect to Redis because: {0}'.format(str(e)))
+        return self.r
+
     def on_get(self, req, resp, session_id, req_id):
-        tools = load_tools()
-        statuses = []
-        for tool in tools['workers']:
-            name = tool['name']
-            if tool['viewableOutput']:
-                tool_status = {
-                'name': name,
-                'uri': f'/{session_id}/{req_id}/results/{name}',
-                'status': 'TODO'
-                }
-                statuses.append(tool_status)
+        if not self.r:
+            self.setup_redis()
+        statuses = self.r.hgetall(req_id+'_status')
 
         resp.body = json.dumps(statuses)
         resp.content_type = falcon.MEDIA_TEXT
