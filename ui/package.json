@@ -25,12 +25,15 @@
     "uuid": "^3.3.3"
   },
   "scripts": {
-    "start": "PORT=5000 react-scripts start",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "PORT=5001 nodemon --inspect=0.0.0.0:9229 server.js",
+    "client": "PORT=5000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-server": "node server.js"
   },
+  "proxy": "http://localhost:5001",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -60,6 +63,8 @@
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
-    "@babel/preset-react": "^7.7.0"
+    "@babel/preset-react": "^7.7.0",
+    "concurrently": "^5.0.1",
+    "nodemon": "^2.0.2"
   }
 }

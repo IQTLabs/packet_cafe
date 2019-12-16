@@ -19,6 +19,7 @@ const reducer = handleActions(
   {
     [setResults]: (state, { payload }) => {
       const resultRows = payload;
+      console.log({payload})
       state.results.rows = resultRows
       
       return { ...state};

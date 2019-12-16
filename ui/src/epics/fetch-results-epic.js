@@ -20,6 +20,7 @@ const fetchResultsEpic = (action$, store, ajax = rxAjax) => {
       const url = '/ids/' + sessionId;
       return ajax({ 'url': url, 'crossDomain': true, 'responseType': 'json' }).pipe(
         map((result) => { 
+
           return result.response ;
         })
         ,map(setResults)
