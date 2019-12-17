@@ -1,3 +1,4 @@
+import ast
 import errno
 import base64
 import json
@@ -314,14 +315,13 @@ class Status(object):
         self.r = None
         try:
             self.r = StrictRedis(host=host, port=port, db=db,
-                                 socket_connect_timeout=2)
+                                 socket_connect_timeout=2, decode_responses=True)
         except Exception as e:  # pragma: no cover
             print('Failed connect to Redis because: {0}'.format(str(e)))
         return self.r
 
     def on_get(self, req, resp, session_id, req_id):
-        if not self.r:
-            self.setup_redis()
+        self.setup_redis()
         statuses = self.r.hgetall(req_id+'_status')
 
         resp.body = json.dumps(statuses)

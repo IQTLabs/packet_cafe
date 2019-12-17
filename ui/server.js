@@ -43,6 +43,20 @@ app.get('/raw/:session/:id/:tool', function(req, res) {
 
 });
 
+// render status from ID
+app.get('/status/:session/:id', function(req, res) {
+  var url = 'http://lb/api/v1/status/' + req.params['session'] + '/' + req.params['id']
+
+  request.get({url:url}, function optionalCallback(err, httpResponse, body) {
+    if (err) {
+      return console.error('failed:', err);
+    }
+    res.set('Content-Type', 'application/json');
+    res.send(body);
+  });
+
+});
+
 // render results from tools
 app.get('/results/:session/:id/:tool', function(req, res) {
   // '/0/' is the counter of results for that tool

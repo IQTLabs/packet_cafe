@@ -58,6 +58,7 @@ services:
       context: redis
     image: 'cyberreboot/packet_cafe_redis:latest'
     networks:
+      - frontend
       - backend
     volumes:
       - '${VOL_PREFIX}/redis:/data'
