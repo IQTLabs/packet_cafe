@@ -12,6 +12,11 @@ For more documents related to this project, check out the [wiki](https://va-vsrv
 
 ## Get up and running
 
+If you want to override the path location (for example only some paths can be mounted in OSX):
+```
+export VOL_PREFIX=/Users/me/packet_cafe_data
+```
+
 Using docker-compose:
 ```
 docker-compose up -d --build --scale web=3 --scale workers=3
