@@ -6,11 +6,11 @@ import { getResults } from 'domain/data';
 
 class Table extends React.Component{
 
-  renderTools = (item) => {
+  renderTools = (item, type) => {
     const tools = item.tools;
     const id = item.id;
     return tools.map((value) => {
-        const url = `/results/${this.props.sessionId}/${id}/${value}`
+        const url = `/${type}/${this.props.sessionId}/${id}/${value}`
         return(
           <p key={id + ":" +value}>
             <a href={url} target="_blank" rel="noopener noreferrer">
@@ -39,7 +39,10 @@ class Table extends React.Component{
       { name: 'ID', selector: 'id' },
       { name: 'Filename', selector: 'original_filename' },
       { name: 'Tools', className: 'text-center',
-        cell: row => <div>{this.renderTools(row)}</div>,
+        cell: row => <div>{this.renderTools(row, 'results')}</div>,
+      },
+      { name: 'Tools (Raw)', className: 'text-center',
+        cell: row => <div>{this.renderTools(row, 'raw')}</div>,
       },
       // { title: 'Results', render: renderResultsUrl, className: 'text-center' },
       { name: 'Report', selector: 'report', cell: row => <p>{ row.report ? row.report : 'no report available' }</p> },
