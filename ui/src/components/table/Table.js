@@ -37,7 +37,7 @@ class Table extends React.Component{
   getTableColumns = () => {
     const tableColumns = [
       { name: 'ID', selector: 'id' },
-      { name: 'Filename', selector: 'filename' },
+      { name: 'Filename', selector: 'original_filename' },
       { name: 'Tools', className: 'text-center',
         cell: row => <div>{this.renderTools(row)}</div>,
       },
@@ -73,7 +73,7 @@ class Table extends React.Component{
 }
 
 const mapStateToProps = (state, ownProps) => {
-  
+
   const results = getResults(state)
   return{
     rows: results.rows || [],
