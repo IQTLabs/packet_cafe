@@ -22,6 +22,18 @@ class Table extends React.Component{
     );
   }
 
+  renderStatus = (item) => {
+    const id = item.id;
+    const url = `/status/${this.props.sessionId}/${id}`;
+    return(
+          <p key={id}>
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              Check Status
+            </a>
+          </p>
+    );
+  }
+
   getTableColumns = () => {
     const tableColumns = [
       { name: 'ID', selector: 'id' },
@@ -31,6 +43,9 @@ class Table extends React.Component{
       },
       // { title: 'Results', render: renderResultsUrl, className: 'text-center' },
       { name: 'Report', selector: 'report', cell: row => <p>{ row.report ? row.report : 'no report available' }</p> },
+      { name: 'Status', className: 'text-center',
+        cell: row => <div>{this.renderStatus(row)}</div>,
+      },
     ];
 
     return tableColumns;
