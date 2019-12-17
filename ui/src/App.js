@@ -22,7 +22,7 @@ class App extends React.Component {
       //this.props.showBusy(true);
       //this.props.setIsFetching({owner: this.props.uuid, isFetching: true});
       //const authHeader = buildAuthHeader(username, password, token);
-      this.props.fetchResults({ 'sessionId': this.props.sessionId });
+      this.props.fetchResults({ 'sessionId': SESSION_ID });
       console.log("Peasant Burnination complete!");
   }
 
@@ -43,12 +43,10 @@ class App extends React.Component {
                                   Burninate Peasants
                               </button>
                           </div>
-                          <Table sessionId={this.props.sessionId}/>
-                          <TabsComponent sessionId={this.props.sessionId}/>
+                          <Table sessionId={SESSION_ID}/>
                       </Grid.Column>
                   </Grid.Row>
               </Grid>
-        
       </>
     );
   }
