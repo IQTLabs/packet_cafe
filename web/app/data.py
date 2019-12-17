@@ -99,7 +99,7 @@ class Ids(object):
                 filenames = [ filename for filename in os.listdir(f'/files/{session_id}/{id_dir}') if os.path.isfile(os.path.join(f'/files/{session_id}/{id_dir}', filename)) ]
                 if not filenames:
                     filenames = ['none']
-                id_dict = {'id': id_dir, 'filename': filenames[0], 'tools': tools}
+                id_dict = {'id': id_dir, 'filename': filenames[0], 'tools': tools, 'original_filename': filenames[-1]}
                 obj.append(id_dict)
         except Exception as e:
             print("session doesn't exist yet: {0}".format(str(e)))
