@@ -56,22 +56,25 @@ def callback(ch, method, properties, body):
                                  remove=True,
                                  command=command,
                                  detach=True)
+                print(" [Create container] %s UTC %r:%r:%r:%r" % (str(datetime.datetime.utcnow()),
+                                                                  method.routing_key,
+                                                                  pipeline['id'],
+                                                                  image,
+                                                                  pipeline))
+                status[worker['name']] = json.dumps({'state': 'In progress', 'timestamp': str(datetime.datetime.utcnow())})
+                worker_found = True
             except Exception as e:  # pragma: no cover
                 print('failed: {0}'.format(str(e)))
-            print(" [Create container] %s UTC %r:%r:%r:%r" % (str(datetime.datetime.utcnow()),
-                                         method.routing_key,
-                                         pipeline['id'],
-                                         image,
-                                         pipeline))
-            status[worker['name']] = 'In progress'
-            worker_found = True
+                status[worker['name']] = json.dumps({'state': 'Error', 'timestamp': str(datetime.datetime.utcnow())})
+        else:
+            status[worker['name']] = json.dumps({'state': 'Queued', 'timestamp': str(datetime.datetime.utcnow())})
     if 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'data':
         print(" [Data] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
         r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], pipeline['results']['counter'], session_id, pipeline['id']), data=json.dumps(pipeline))
-        status[pipeline['results']['tool']] = 'In progress'
+        status[pipeline['results']['tool']] = json.dumps({'state': 'In progress', 'timestamp': str(datetime.datetime.utcnow())})
     elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'metadata':
         if 'data' in pipeline and pipeline['data'] != '':
             print(" [Metadata] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
@@ -79,12 +82,12 @@ def callback(ch, method, properties, body):
                                             pipeline['id'],
                                             pipeline['results']))
             r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], 0, session_id, pipeline['id']), data=json.dumps(pipeline))
-            status[pipeline['results']['tool']] = 'In progress'
+            status[pipeline['results']['tool']] = json.dumps({'state': 'In progress', 'timestamp': str(datetime.datetime.utcnow())})
         else:
             print(" [Finished] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                          method.routing_key,
                                          pipeline))
-            status[pipeline['results']['tool']] = 'Complete'
+            status[pipeline['results']['tool']] = json.dumps({'state': 'Complete', 'timestamp': str(datetime.datetime.utcnow())})
     elif not worker_found:
         print(" [X no match] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
                                      method.routing_key,

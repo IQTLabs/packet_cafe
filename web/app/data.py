@@ -1,4 +1,3 @@
-import ast
 import errno
 import base64
 import json
@@ -327,8 +326,10 @@ class Status(object):
 
     def on_get(self, req, resp, session_id, req_id):
         self.setup_redis()
-        statuses = self.r.hgetall(req_id+'_status')
 
+        statuses = self.r.hgetall(req_id+'_status')
+        for status in statuses:
+            statuses[status] = json.loads(statuses[status])
         resp.body = json.dumps(statuses)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
