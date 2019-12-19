@@ -19,7 +19,7 @@ export VOL_PREFIX=/Users/me/packet_cafe_data
 
 Using docker-compose:
 ```
-docker-compose up -d --build --scale web=3 --scale workers=3
+docker-compose up -d --build
 ```
 
 Using kubernetes (assuming your default orchestrator is set to k8s for stacks):
