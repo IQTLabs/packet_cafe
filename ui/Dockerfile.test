@@ -1,0 +1,14 @@
+FROM node:alpine
+LABEL maintainer="Ryan Ashley <rashley@iqt.org>"
+
+RUN apk --no-cache upgrade && \
+    apk --no-cache add \
+    curl
+
+COPY . /app
+WORKDIR /app
+
+RUN npm i npm@latest -g
+RUN npm ci --no-optional
+
+CMD npm test

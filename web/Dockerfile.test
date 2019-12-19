@@ -1,0 +1,18 @@
+FROM packet_cafe/web:latest
+LABEL maintainer="Ryan Ashley <rashley@iqt.org>"
+
+COPY tests/test_data	test_data/
+COPY requirements-test.txt requirements-test.txt
+
+RUN apk upgrade --no-cache && \
+    apk add --no-cache \
+    build-base \
+    cmake \
+    gcc \
+    linux-headers \
+    musl-dev \
+    python3-dev \
+    yaml-dev && \
+    pip3 install --no-cache-dir scikit-build && \
+    pip3 install --no-cache-dir -r requirements-test.txt
+CMD py.test -v -vv --cov-report term-missing --cov=. -c .coveragerc

@@ -1,0 +1,38 @@
+sudo: false
+
+language: node_js
+node_js:
+- '12'
+
+python:
+- '3.7'
+
+dist: xenial
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install docker-ce
+  - npm cache clean --force
+
+install:
+  - npm install -g codecov
+  - pip install -U pip
+  - pip install codecov
+  - npm ci --no-optional
+
+cache:
+  directories:
+  - $HOME/ui/.npm
+  - ./ui/node_modules
+
+jobs:
+  include:
+  - stage: test
+    script:
+    - docker build -t packet_cafe/ui-test -f ./ui/Dockerfile.test ./ui
+    - docker run packet_cafe/ui-test
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install docker-ce
+after_success:
+  - codecov
