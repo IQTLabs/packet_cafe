@@ -10,7 +10,7 @@
     "prop-types": "15.7.2",
     "ramda": "0.26.1",
     "react": "16.12.0",
-    "react-data-table-component": "6.0.1",
+    "react-data-table-component": "6.0.2",
     "react-dom": "16.12.0",
     "react-redux": "7.1.3",
     "react-scripts": "3.3.0",
