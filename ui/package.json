@@ -29,7 +29,7 @@
     "server": "PORT=5001 nodemon --inspect=0.0.0.0:9229 server.js",
     "client": "PORT=5000 react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "NODE_ENV=test NODE_PATH=./src nyc mocha --opts ./.mocha --exit --recursive 'src/tests/*.test.js*'",
     "eject": "react-scripts eject",
     "start-server": "node server.js"
   },
@@ -46,7 +46,29 @@
       "@babel/plugin-proposal-class-properties",
       "@babel/plugin-proposal-object-rest-spread",
       "@babel/plugin-proposal-nullish-coalescing-operator"
-    ]
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "istanbul"
+        ]
+      }
+    }
+  },
+  "nyc": {
+    "exclude": [
+      "src/**/*.test.js*",
+      "test/**"
+    ],
+    "require": [
+      "@babel/register"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "sourceMap": false,
+    "instrument": false
   },
   "browserslist": {
     "production": [
@@ -62,9 +84,15 @@
   },
   "devDependencies": {
     "@babel/core": "7.7.7",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.7.4",
     "@babel/preset-env": "7.7.7",
     "@babel/preset-react": "7.7.4",
+    "@babel/register": "^7.7.7",
+    "chai": "^4.2.0",
     "concurrently": "5.0.2",
-    "nodemon": "2.0.2"
+    "enzyme": "^3.10.0",
+    "mocha": "^6.2.2",
+    "nodemon": "2.0.2",
+    "nyc": "^14.1.1"
   }
 }

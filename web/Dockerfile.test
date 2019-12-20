@@ -1,0 +1,22 @@
+FROM packet_cafe/web:latest
+LABEL maintainer="Ryan Ashley <rashley@iqt.org>"
+
+COPY requirements-test.txt requirements-test.txt
+
+RUN apk upgrade --no-cache && \
+    apk add --no-cache \
+    build-base \
+    cmake \
+    gcc \
+    linux-headers \
+    musl-dev \
+    python3-dev \
+    yaml-dev
+RUN pip3 install -U pip
+RUN pip3 install --no-cache-dir scikit-build 
+RUN CXXFLAGS="-D_BSD_SOURCE" pip3 install --no-cache-dir ninja
+RUN pip3 install --no-cache-dir -r requirements-test.txt
+
+WORKDIR /app
+
+CMD py.test -v -vv --cov-report term-missing --cov=. -c .coveragerc
