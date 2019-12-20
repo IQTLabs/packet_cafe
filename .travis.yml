@@ -1,8 +1,7 @@
-sudo: false
-
-matrix:
+jobs:
   include:
-    - language: node_js
+    - stage: build
+      language: node_js
       dist: xenial
       node_js: '12'
       before_script:
@@ -13,10 +12,15 @@ matrix:
       script:
         - docker build -t packet_cafe/ui -f ./ui/Dockerfile ./ui
         - docker build -t packet_cafe/ui-test -f ./ui/Dockerfile.test ./ui
+    - stage: test
+      script:
         - docker run packet_cafe/ui-test 
+      after_success:
+        - codecov
 
   include:
-    - language: python
+    - stage: build
+      language: python
       dist: xenial
       python: '3.7'
       before_script:
@@ -27,7 +31,8 @@ matrix:
       script:
         - docker build -t packet_cafe/web -f ./web/Dockerfile ./web
         - docker build -t packet_cafe/web-test -f ./web/Dockerfile.test ./web
-        - docker run packet_cafe/web-test 
-
-after_success:
-  - codecov
+    - stage: test
+      script:
+        - docker run packet_cafe/web-test
+      after_success:
+        - codecov
