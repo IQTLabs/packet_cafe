@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.11
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
 COPY requirements.txt requirements.txt
@@ -24,7 +24,7 @@ HEALTHCHECK --interval=15s --timeout=15s \
 
 COPY . /app
 WORKDIR /app
-ENV PYTHONUNBUFFERED 0
+ENV PYTHONUNBUFFERED 1
 
 USER nobody
 

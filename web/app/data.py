@@ -98,7 +98,12 @@ class Ids(object):
                 filenames = [ filename for filename in os.listdir(f'/files/{session_id}/{id_dir}') if os.path.isfile(os.path.join(f'/files/{session_id}/{id_dir}', filename)) ]
                 if not filenames:
                     filenames = ['none']
-                id_dict = {'id': id_dir, 'filename': filenames[0], 'tools': tools}
+                out_file = filenames[0]
+                orig_file = filenames[-1]
+                if f'trace_{id_dir}_' in orig_file:
+                    out_file = filenames[-1]
+                    orig_file = filenames[0]
+                id_dict = {'id': id_dir, 'filename': out_file, 'tools': tools, 'original_filename': orig_file}
                 obj.append(id_dict)
         except Exception as e:
             print("session doesn't exist yet: {0}".format(str(e)))
@@ -314,16 +319,17 @@ class Status(object):
         self.r = None
         try:
             self.r = StrictRedis(host=host, port=port, db=db,
-                                 socket_connect_timeout=2)
+                                 socket_connect_timeout=2, decode_responses=True)
         except Exception as e:  # pragma: no cover
             print('Failed connect to Redis because: {0}'.format(str(e)))
         return self.r
 
     def on_get(self, req, resp, session_id, req_id):
-        if not self.r:
-            self.setup_redis()
-        statuses = self.r.hgetall(req_id+'_status')
+        self.setup_redis()
 
+        statuses = self.r.hgetall(req_id+'_status')
+        for status in statuses:
+            statuses[status] = json.loads(statuses[status])
         resp.body = json.dumps(statuses)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200

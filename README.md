@@ -12,9 +12,14 @@ For more documents related to this project, check out the [wiki](https://va-vsrv
 
 ## Get up and running
 
+If you want to override the path location (for example only some paths can be mounted in OSX):
+```
+export VOL_PREFIX=/Users/me/packet_cafe_data
+```
+
 Using docker-compose:
 ```
-docker-compose up -d --build --scale web=3 --scale workers=3
+docker-compose up -d --build
 ```
 
 Using kubernetes (assuming your default orchestrator is set to k8s for stacks):
@@ -40,23 +45,28 @@ ADMIN (port 5001):
 
 WEB (port 80):
 ```
-/api/v1                                                 enumerates the endpoints for this service
-/api/v1/id/{req_id}/{tool}/{pcap}/{counter}/{filename}  returns a results file for rendering
-/api/v1/info                                            returns basic information about the service, such as version
-/api/v1/results/{tool}/{counter}/{req_id}               returns the results from a tool for rendering
-/api/v1/status/{req_id}                                 returns the status of an ID
-/api/v1/stop/{req_id}                                   stops jobs of an ID
-/api/v1/tools                                           returns list of available tools
-/api/v1/upload                                          writes uploaded files to disk
+/api/v1                                                              enumerates the endpoints for this service
+/api/v1/id/{session_id}/{req_id}/{tool}/{pcap}/{counter}/{filename}  returns a results file for rendering
+/api/v1/ids/{session_id}                                             returns the IDs of a session
+/api/v1/info                                                         returns basic information about the service, such as version
+/api/v1/raw/{tool}/{counter}/{session_id}/{req_id}                   returns the raw json results from a tool
+/api/v1/results/{tool}/{counter}/{session_id}/{req_id}               returns the results from a tool for rendering
+/api/v1/status/{session_id}/{req_id}                                 returns the status of an ID
+/api/v1/stop/{session_id}/{req_id}                                   stops jobs of an ID
+/api/v1/tools                                                        returns list of available tools
+/api/v1/upload                                                       writes uploaded files to disk
 ```
 
 UI (port 80):
 ```
-/                                            main home page
-/express-upload                              processing uploading a file
-/id/{req_id}/{tool}/{pcap}/{counter}/{file}  renders a results file
-/results/{req_id}/{tool}                     renders results from a tool
-/*                                           redirects to main home page
+/                                                         main home page
+/express-upload                                           processing uploading a file from API
+/id/{session_id}/{req_id}/{tool}/{pcap}/{counter}/{file}  renders a results file from API
+/ids/{session_id}                                         gets IDs in a session from API
+/results/{session_id}/{req_id}/{tool}                     renders results from a tool from API
+/raw/{session_id}/{req_id}/{tool}                         renders raw json results from a tool from API
+/status/{session_id}/{req_id}                             gets status of tools for an ID from API
+/*                                                        redirects to main home page
 ```
 
 ## Testing POST requests with curl and datamash
