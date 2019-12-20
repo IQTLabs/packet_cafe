@@ -90,7 +90,7 @@
     "@babel/register": "7.7.7",
     "chai": "4.2.0",
     "concurrently": "5.0.2",
-    "enzyme": "3.10.0",
+    "enzyme": "3.11.0",
     "mocha": "6.2.2",
     "nodemon": "2.0.2",
     "nyc": "14.1.1"
