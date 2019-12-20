@@ -24,7 +24,7 @@ HEALTHCHECK --interval=15s --timeout=15s \
 
 COPY . /app
 WORKDIR /app
-ENV PYTHONUNBUFFERED 0
+ENV PYTHONUNBUFFERED 1
 
 USER nobody
 

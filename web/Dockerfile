@@ -30,7 +30,7 @@ COPY nginx/proxy_params /etc/nginx/proxy_params
 RUN mkdir -p /run/nginx
 RUN touch /run/nginx/nginx.pid
 WORKDIR /app
-ENV PYTHONUNBUFFERED 0
+ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8000
 
