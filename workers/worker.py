@@ -18,7 +18,11 @@ def callback(ch, method, properties, body):
     pipeline = json.loads(body.decode('utf-8'))
     worker_found = False
     status = {}
+    pcap_inputs = []
+    extra_workers = {}
     for worker in workers['workers']:
+        if 'pcap' in worker['inputs'] or 'pcapng' in worker['inputs']:
+            pcap_inputs.append(worker['name'])
         file_path = pipeline['file_path']
         try:
             session_id = file_path.split('/')[2]
@@ -67,7 +71,7 @@ def callback(ch, method, properties, body):
                 print('failed: {0}'.format(str(e)))
                 status[worker['name']] = json.dumps({'state': 'Error', 'timestamp': str(datetime.datetime.utcnow())})
         else:
-            status[worker['name']] = json.dumps({'state': 'Queued', 'timestamp': str(datetime.datetime.utcnow())})
+            extra_workers[worker['name']] = json.dumps({'state': 'Queued', 'timestamp': str(datetime.datetime.utcnow())})
     if 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'data':
         print(" [Data] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
                                         method.routing_key,
@@ -97,9 +101,38 @@ def callback(ch, method, properties, body):
 
     # store state of status in redis
     r = setup_redis()
+    print("redis: {0}".format(status))
     if r:
         r.sadd(session_id, pipeline['id'])
         r.hmset(pipeline['id']+"_status", status)
+        # TODO check all workers if input of 'pcap/pcapng' and see if they're complete, if so, zero out original file
+        # check if it's already been cleaned
+        # add to status that original file has been 'cleaned'
+        statuses = r.hgetall(pipeline['id']+"_status")
+        for s in statuses:
+            statuses[s] = json.loads(statuses[s])
+        for worker in extra_workers:
+            if not worker in statuses:
+                status[worker] = extra_workers[worker]
+        complete = True
+        for worker in pcap_inputs:
+            if worker in statuses and statuses[worker]['state'] != 'Complete':
+                complete = False
+        if complete and not ('cleaned' in statuses and statuses['cleaned']):
+            id_dir = pipeline['id']
+            try:
+                filenames = [ filename for filename in os.listdir(f'/files/{session_id}/{id_dir}') if os.path.isfile(os.path.join(f'/files/{session_id}/{id_dir}', filename)) ]
+                if filenames:
+                    orig_file = filenames[-1]
+                    if f'trace_{id_dir}_' in orig_file:
+                        orig_file = filenames[0]
+                    open(f'/files/{session_id}/{id_dir}/{orig_file}', 'w').close()
+                    status['cleaned'] = json.dumps(True)
+                    print(" [Cleaned] %s UTC %s:%s:%s" % (str(datetime.datetime.utcnow()),
+                                                 str(session_id), str(id_dir), str(orig_file)))
+            except Exception as e:  # pragma: no cover
+                print('failed to clean file because: {0}'.format(str(e)))
+            r.hmset(f'{id_dir}_status', status)
         r.close()
 
 
@@ -135,7 +168,7 @@ def setup_redis(host='redis', port=6379, db=0):
     r = None
     try:
         r = StrictRedis(host=host, port=port, db=db,
-                        socket_connect_timeout=2)
+                        socket_connect_timeout=2, decode_responses=True)
     except Exception as e:  # pragma: no cover
         print('Failed connect to Redis because: {0}'.format(str(e)))
     return r
