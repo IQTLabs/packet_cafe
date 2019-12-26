@@ -57,7 +57,7 @@ def callback(ch, method, properties, body):
                                  network=worker['stage'],
                                  volumes={vol_prefix + '/files': {'bind': '/files', 'mode': 'rw'}},
                                  environment=environment,
-                                 remove=False,
+                                 remove=True,
                                  command=command,
                                  detach=True)
                 print(" [Create container] %s UTC %r:%r:%r:%r" % (str(datetime.datetime.utcnow()),
