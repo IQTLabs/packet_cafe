@@ -57,7 +57,7 @@ def callback(ch, method, properties, body):
                                  network=worker['stage'],
                                  volumes={vol_prefix + '/files': {'bind': '/files', 'mode': 'rw'}},
                                  environment=environment,
-                                 remove=True,
+                                 remove=False,
                                  command=command,
                                  detach=True)
                 print(" [Create container] %s UTC %r:%r:%r:%r" % (str(datetime.datetime.utcnow()),
@@ -105,9 +105,6 @@ def callback(ch, method, properties, body):
     if r:
         r.sadd(session_id, pipeline['id'])
         r.hmset(pipeline['id']+"_status", status)
-        # TODO check all workers if input of 'pcap/pcapng' and see if they're complete, if so, zero out original file
-        # check if it's already been cleaned
-        # add to status that original file has been 'cleaned'
         statuses = r.hgetall(pipeline['id']+"_status")
         for s in statuses:
             statuses[s] = json.loads(statuses[s])
