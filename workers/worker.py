@@ -52,6 +52,11 @@ def callback(ch, method, properties, body):
             if 'rabbit' not in pipeline:
                 pipeline['rabbit'] = 'true'
             try:
+                print(" [Create container] %s UTC %r:%r:%r:%r" % (str(datetime.datetime.utcnow()),
+                                                                  method.routing_key,
+                                                                  pipeline['id'],
+                                                                  image,
+                                                                  pipeline))
                 d.containers.run(image=image,
                                  name=name,
                                  network=worker['stage'],
@@ -60,11 +65,6 @@ def callback(ch, method, properties, body):
                                  remove=True,
                                  command=command,
                                  detach=True)
-                print(" [Create container] %s UTC %r:%r:%r:%r" % (str(datetime.datetime.utcnow()),
-                                                                  method.routing_key,
-                                                                  pipeline['id'],
-                                                                  image,
-                                                                  pipeline))
                 status[worker['name']] = json.dumps({'state': 'In progress', 'timestamp': str(datetime.datetime.utcnow())})
                 worker_found = True
             except Exception as e:  # pragma: no cover
