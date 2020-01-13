@@ -34,7 +34,7 @@
     {
       "name": "ncapture",
       "image": "cyberreboot/ncapture",
-      "version": "v0.11.0",
+      "version": "latest",
       "labels": "",
       "stage": "preprocessing",
       "viewableOutput": false,
@@ -129,6 +129,24 @@
       "inputs": [
         "pcap",
         "pcapng"
+      ]
+    },
+    {
+      "name": "mercury",
+      "image": "cyberreboot/mercury",
+      "version": "latest",
+      "labels": "",
+      "stage": "analysis",
+      "viewableOutput": true,
+      "environment": {
+        "rabbit": "true"
+      },
+      "contentType": "application/json",
+      "outputs": [
+        "rabbitmq"
+      ],
+      "inputs": [
+        "pcap-splitter"
       ]
     },
     {
