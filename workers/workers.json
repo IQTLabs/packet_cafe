@@ -146,7 +146,8 @@
         "rabbitmq"
       ],
       "inputs": [
-        "pcap-splitter"
+        "pcap",
+        "pcapng"
       ]
     },
     {
