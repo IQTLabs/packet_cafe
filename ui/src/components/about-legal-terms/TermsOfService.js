@@ -11,9 +11,12 @@ export default class TermsOfServiceModal extends Component {
     modalOpen: true 
   })
 
-  handleModalClose = () => this.setState({ 
-    modalOpen: false 
-  })
+  // handleModalClose = () => this.setState({ 
+  //   modalOpen: false 
+  // })
+  handleModalClose = e => {
+    this.props.modalClose && this.props.modalClose(e);
+  }
 
   handleCheckedToggle  = () => this.setState(
     (prevState) => ({ 
@@ -24,8 +27,8 @@ export default class TermsOfServiceModal extends Component {
   render() {
     return (
       <Modal
-        trigger={<span onClick={this.handleModalOpen}>Terms of Service</span>}
-        open={this.state.modalOpen}
+        // trigger={<span onClick={this.handleModalOpen}>{/*Terms of Service*/}</span>}
+        open={this.props.open}
         onClose={this.handleModalClose}
         size="small"
       >
