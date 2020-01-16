@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Header, Icon, Modal } from 'semantic-ui-react'
+import { Button, Header, Icon, Modal, Checkbox } from 'semantic-ui-react'
 
 export default class TermsOfServiceModal extends Component {
   state = { modalOpen: false }
@@ -62,6 +62,7 @@ export default class TermsOfServiceModal extends Component {
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
+            <Checkbox label={{ children: 'I accept these terms and conditions' }} />
             <Button primary>
               Proceed <Icon name='chevron right' />
             </Button>
