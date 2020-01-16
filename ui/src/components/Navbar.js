@@ -14,9 +14,9 @@ class Navbar extends React.Component{
                             <Dropdown.Item><About /></Dropdown.Item>
                             <Dropdown.Item>Data Requirements</Dropdown.Item>
                             <Dropdown.Item>IQT Labs</Dropdown.Item>
-                            <Dropdown.Divider />
+                            {/* <Dropdown.Divider />
                             <Dropdown.Header>Legal</Dropdown.Header>
-                            <Dropdown.Item><TermsOfService /></Dropdown.Item>
+                            <Dropdown.Item><TermsOfService /></Dropdown.Item> */}
                             {/* <Dropdown.Item>
                                 <i className='dropdown icon' />
                                 <span className='text'>Submenu</span>
@@ -28,12 +28,6 @@ class Navbar extends React.Component{
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu.Menu>
-                {/* <Menu.Menu position="right">
-                    <Menu.Item>About Packet Cafe</Menu.Item>
-                    <Menu.Item><TermsOfService /></Menu.Item>
-                    <Menu.Item>Data Requirements</Menu.Item>
-                    <Menu.Item>IQT Labs</Menu.Item>
-                </Menu.Menu> */}
             </Menu>
         )
     }
