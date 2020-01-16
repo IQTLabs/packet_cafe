@@ -2,18 +2,31 @@ import React, { Component } from 'react'
 import { Button, Header, Icon, Modal, Checkbox } from 'semantic-ui-react'
 
 export default class TermsOfServiceModal extends Component {
-  state = { modalOpen: false }
+  state = { 
+    modalOpen: false,
+    checked: false 
+  }
 
-  handleOpen = () => this.setState({ modalOpen: true })
+  handleModalOpen = () => this.setState({ 
+    modalOpen: true 
+  })
 
-  handleClose = () => this.setState({ modalOpen: false })
+  handleModalClose = () => this.setState({ 
+    modalOpen: false 
+  })
+
+  handleCheckedToggle  = () => this.setState(
+    (prevState) => ({ 
+      checked: !prevState.checked 
+    })
+  )
 
   render() {
     return (
       <Modal
-        trigger={<span onClick={this.handleOpen}>Terms of Service</span>}
+        trigger={<span onClick={this.handleModalOpen}>Terms of Service</span>}
         open={this.state.modalOpen}
-        onClose={this.handleClose}
+        onClose={this.handleModalClose}
         size="small"
       >
         <Modal.Header>Terms of Service</Modal.Header>
@@ -62,10 +75,21 @@ export default class TermsOfServiceModal extends Component {
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
-            <Checkbox label={{ children: 'I accept these terms and conditions' }} />
-            <Button primary>
-              Proceed <Icon name='chevron right' />
-            </Button>
+            <Checkbox
+              label='I accept these terms and conditions'
+              onChange={this.handleCheckedToggle}
+              checked={this.state.checked}
+            />
+            {this.state.checked &&
+              <Button primary >
+                Proceed <Icon name='chevron right' />
+              </Button>
+            }
+            {!this.state.checked &&
+              <Button primary disabled>
+                Proceed <Icon name='chevron right' />
+              </Button>
+            }
           </Modal.Actions>
       </Modal>
     )

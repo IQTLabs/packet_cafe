@@ -33,11 +33,6 @@ export default class AboutModal extends Component {
               </p>
             </Modal.Description>
           </Modal.Content>
-          {/* <Modal.Actions>
-            <Button primary>
-              Proceed <Icon name='chevron right' />
-            </Button>
-          </Modal.Actions> */}
       </Modal>
     )
   }
