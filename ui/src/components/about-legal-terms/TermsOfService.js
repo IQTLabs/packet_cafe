@@ -7,15 +7,12 @@ export default class TermsOfServiceModal extends Component {
     checked: false 
   }
 
-  handleModalOpen = () => this.setState({ 
-    modalOpen: true 
-  })
-
-  // handleModalClose = () => this.setState({ 
-  //   modalOpen: false 
-  // })
   handleModalClose = e => {
-    this.props.modalClose && this.props.modalClose(e);
+    this.props.modalAction && this.props.modalAction(e);
+  }
+
+  handleTerms = e => {
+    this.props.termsAction && this.props.termsAction(e);
   }
 
   handleCheckedToggle  = () => this.setState(
@@ -27,8 +24,7 @@ export default class TermsOfServiceModal extends Component {
   render() {
     return (
       <Modal
-        // trigger={<span onClick={this.handleModalOpen}>{/*Terms of Service*/}</span>}
-        open={this.props.open}
+        open={this.props.openState}
         onClose={this.handleModalClose}
         size="small"
       >
@@ -80,15 +76,16 @@ export default class TermsOfServiceModal extends Component {
           <Modal.Actions>
             <Checkbox
               label='I accept these terms and conditions'
-              onChange={this.handleCheckedToggle}
-              checked={this.state.checked}
+              onChange={this.handleTerms}
+              // checked={this.state.checked}
+              checked={this.props.termsState}
             />
-            {this.state.checked &&
-              <Button primary >
+            {this.props.termsState &&
+              <Button onClick={this.handleModalClose} primary >
                 Proceed <Icon name='chevron right' />
               </Button>
             }
-            {!this.state.checked &&
+            {!this.props.termsState &&
               <Button primary disabled>
                 Proceed <Icon name='chevron right' />
               </Button>
