@@ -135,24 +135,22 @@ class Upload extends React.Component{
                     Upload PCAP files:
                 </Header>
                 <Form size='large'>
-                    <Segment stacked>
-                    <div>
+                    <Segment stacked textAlign="center">
                         <Dropzone
-                        onFilesAdded={this.onFilesAdded}
-                        disabled={this.state.uploading || this.state.successfullUploaded}
+                            onFilesAdded={this.onFilesAdded}
+                            disabled={this.state.uploading || this.state.successfullUploaded}
                         />
-                    </div>
-                    <div className="Files">
-                        {this.state.files.map(file => {
-                        return (
-                            <div key={file.name} className="Row">
-                            <br /><span className="Filename">{file.name}</span>
-                            {this.renderProgress(file)}
-                            </div>
-                        );
-                        })}
-                    </div>
-                    <div className="Actions">{this.renderActions()}</div>
+                        <div className="Files">
+                            {this.state.files.map(file => {
+                            return (
+                                <div key={file.name} className="Row">
+                                <br /><span className="Filename">{file.name}</span>
+                                {this.renderProgress(file)}
+                                </div>
+                            );
+                            })}
+                        </div>
+                        <div className="Actions">{this.renderActions()}</div>
                     </Segment>
                 </Form>
             </div>
