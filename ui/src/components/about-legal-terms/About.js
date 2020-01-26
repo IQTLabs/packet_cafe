@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Header, Icon, Modal } from 'semantic-ui-react';
+import { Header, Modal } from 'semantic-ui-react';
 
 export default class AboutModal extends Component {
   state = { modalOpen: false }
