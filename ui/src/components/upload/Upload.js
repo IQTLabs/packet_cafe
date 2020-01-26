@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Form, Header, Segment } from 'semantic-ui-react';
 import { connect } from "react-redux";
+import { getData } from 'domain/data';
 
 import Dropzone  from 'components/dropzone/Dropzone';
 import Progress from 'components/progress/Progress';
@@ -66,31 +67,32 @@ class Upload extends React.Component{
         return new Promise((resolve, reject) => {
             const req = new XMLHttpRequest();
             req.upload.addEventListener("progress", event => {
-            if (event.lengthComputable) {
-                const copy = { ...this.state.uploadProgress };
-                copy[file.name] = {
-                state: "pending",
-                percentage: (event.loaded / event.total) * 100
-                };
-                this.setState({ uploadProgress: copy });
-            }
+                if (event.lengthComputable) {
+                    const copy = { ...this.state.uploadProgress };
+                    copy[file.name] = {
+                    state: "pending",
+                    percentage: (event.loaded / event.total) * 100
+                    };
+                    this.setState({ uploadProgress: copy });
+                }
             });
 
             req.upload.addEventListener("load", event => {
-            const copy = { ...this.state.uploadProgress };
-            copy[file.name] = { state: "done", percentage: 100 };
-            this.setState({ uploadProgress: copy });
-            resolve(req.response);
+                const copy = { ...this.state.uploadProgress };
+                copy[file.name] = { state: "done", percentage: 100 };
+                this.setState({ uploadProgress: copy });
+                resolve(req.response);
             });
 
             req.upload.addEventListener("error", event => {
-            const copy = { ...this.state.uploadProgress };
-            copy[file.name] = { state: "error", percentage: 0 };
-            this.setState({ uploadProgress: copy });
-            console.log("error event: %o", event);
-            reject(req.response);
+                const copy = { ...this.state.uploadProgress };
+                copy[file.name] = { state: "error", percentage: 0 };
+                this.setState({ uploadProgress: copy });
+                console.log("error event: %o", event);
+                reject(req.response);
             });
             console.log("sessionId: %o", sessionId);
+            
             const formData = new FormData();
             //
             formData.append("file", file, file.name);
@@ -123,6 +125,7 @@ class Upload extends React.Component{
 
     renderActions() {
         if (this.state.successfullUploaded) {
+            console.log(this.props.data);
             return (
             <Button
                 onClick={() =>
@@ -188,7 +191,11 @@ class Upload extends React.Component{
     }
 }
 
-const mapStateToProps = null;
+const mapStateToProps = (state) => {
+	return { 
+		data: getData(state)
+	}
+};
 
 const mapDispatchToProps = null;
 

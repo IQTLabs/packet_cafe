@@ -44,7 +44,8 @@ const _getResults = (results) => {
 const getResults = (state) => {
   return _getResults(state.results);
 }
+const getData = (state) => state.data;
 
 export default reducer;
 
-export { setResults, getResults}
+export { setResults, getResults, getData}

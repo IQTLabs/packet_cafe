@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { Grid } from 'semantic-ui-react';
 
-import { fetchResults } from 'epics/fetch-results-epic'
+import { fetchResults } from 'epics/fetch-results-epic';
 
 import './App.css';
 import Upload from 'components/upload/Upload';
