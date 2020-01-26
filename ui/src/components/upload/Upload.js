@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 
 import Dropzone  from 'components/dropzone/Dropzone';
 import Progress from 'components/progress/Progress';
+import TermsOfService from 'components/about-legal-terms/TermsOfService';
+
 
 class Upload extends React.Component{
     constructor(props){
@@ -14,12 +16,26 @@ class Upload extends React.Component{
             uploadProgress: {},
             successfullUploaded: false,
             resultId: null,
+            modalOpen:false, 
+            termsAccepted: false 
         };
 
         this.onFilesAdded = this.onFilesAdded.bind(this);
         this.uploadFiles = this.uploadFiles.bind(this);
         this.sendRequest = this.sendRequest.bind(this);
         this.renderActions = this.renderActions.bind(this);
+    }
+
+    handleTermsModal = () => {
+        this.setState(prevState => ({
+            modalOpen:!prevState.modalOpen
+        }))
+    }
+    
+    handleTermsStatus = () => {
+        this.setState(prevState => ({
+            termsAccepted:!prevState.termsAccepted
+        }))
     }
 
     onFilesAdded(files) {
@@ -130,30 +146,44 @@ class Upload extends React.Component{
 
     render(){
         return(
+        
         <div>
-            <Header as='h2' color='teal' textAlign='center'>
-                    Upload PCAP files:
-                </Header>
-                <Form size='large'>
-                    <Segment stacked textAlign="center">
-                        <Dropzone
-                            onFilesAdded={this.onFilesAdded}
-                            disabled={this.state.uploading || this.state.successfullUploaded}
-                        />
-                        <div className="Files">
-                            {this.state.files.map(file => {
-                            return (
-                                <div key={file.name} className="Row">
-                                <br /><span className="Filename">{file.name}</span>
-                                {this.renderProgress(file)}
-                                </div>
-                            );
-                            })}
-                        </div>
-                        <div className="Actions">{this.renderActions()}</div>
-                    </Segment>
-                </Form>
-            </div>
+            <Form size='large'>
+                <div onClick={this.handleTermsModal}>
+                    <div style={!this.state.termsAccepted ? {pointerEvents: "none", opacity: "0.4"} : {}}>
+                        <Header as='h2' color='teal' textAlign='center'>
+                            Upload PCAP files:
+                        </Header>
+                        <Segment stacked textAlign="center">
+                            <div >
+                                <Dropzone
+                                    onFilesAdded={this.onFilesAdded}
+                                    disabled={this.state.uploading || this.state.successfullUploaded}
+                                />
+                            </div>
+                            <div className="Files">
+                                {this.state.files.map(file => {
+                                return (
+                                    <div key={file.name} className="Row">
+                                    <br /><span className="Filename">{file.name}</span>
+                                    {this.renderProgress(file)}
+                                    </div>
+                                );
+                                })}
+                            </div>  
+                        </Segment>
+                    </div>
+                </div>
+                <div style={!this.state.termsAccepted ? {pointerEvents: "none", opacity: "0.4"} : {}} className="Actions">{this.renderActions()}</div>
+            </Form>
+            <TermsOfService 
+                openState={this.state.modalOpen} 
+                modalAction={this.handleTermsModal} 
+
+                termsState={this.state.termsAccepted} 
+                termsAction={this.handleTermsStatus}
+            />
+        </div>
         )
     }
 }
