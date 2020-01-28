@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withCookies, Cookies } from 'react-cookie';
-
+import { instanceOf } from 'prop-types';
 
 import { Grid } from 'semantic-ui-react';
 
