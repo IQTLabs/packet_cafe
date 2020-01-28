@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
 
 import { fetchResults } from 'epics/fetch-results-epic'
+import { fetchToolStatus } from 'epics/fetch-status-epic'
+import { getResults, getToolStatuses } from 'domain/data';
 
 import './App.css';
 import Upload from 'components/upload/Upload';
@@ -19,6 +21,15 @@ class App extends React.Component {
       console.log("Peasant Burnination initiated...");
       this.props.fetchResults({ 'sessionId': SESSION_ID });
       console.log("Peasant Burnination complete!");
+  }
+
+  fetchStatuses = () => {
+      console.log("Norm Abrams is doing all of the real work....")
+      for(const row of this.props.rows){
+        this.props.fetchToolStatus({ 'sessionId': SESSION_ID, 'fileId':row.id });
+      }
+      console.log("statuses: %o", this.props.statuses)
+      console.log("This House Oldification complete")
   }
 
   render() {
@@ -37,6 +48,9 @@ class App extends React.Component {
                 <button onClick={this.fetchResults}>
                   Burninate Peasants
                 </button>
+                <button onClick={this.fetchStatuses}>
+                  Bob Villa was useless.
+                </button>
               </div>
               <Table sessionId={SESSION_ID}/>
             </Grid.Column>
@@ -47,10 +61,19 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = null;
+const mapStateToProps = (state, ownProps) => {
+
+  const results = getResults(state)
+  const toolStatuses = getToolStatuses(state)
+  return{
+    rows: results.rows || [],
+    statuses: toolStatuses || {},
+  }
+};
 
 const mapDispatchToProps = {
     fetchResults,
+    fetchToolStatus,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

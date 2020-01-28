@@ -6,6 +6,7 @@ const defaultState = {
     rows:[],
     columns:['id']
   },
+  toolStatus: {},
   isLoading: false
 };
 
@@ -13,14 +14,28 @@ const defaultState = {
 
 // ACTIONS
 const setResults = createAction("SET_RESULTS");
+const setToolStatus = createAction("SET_TOOL_STATUS");
 
 // REDUCERS
 const reducer = handleActions(
   {
     [setResults]: (state, { payload }) => {
       const resultRows = payload;
-      console.log({payload})
       state.results.rows = resultRows
+      return { ...state};
+    },
+    [setToolStatus]: (state, { payload }) => {
+      if(!state.toolStatus) state.toolStatus ={};
+
+      const tools = payload;
+
+      for(const toolName in tools){
+        const existing = state.toolStatus[toolName];
+        const tool = tools[toolName];
+        if(existing == null || tool.timestamp > existing.timestamp){
+           state.toolStatus[toolName] = tool;
+        }
+      }
       
       return { ...state};
     },
@@ -40,11 +55,22 @@ const _getResults = (results) => {
   return results || defaultState.results;
 }
 
+const _getToolStatuses = (toolStatuses, toolId) => {
+  const status = toolStatuses && toolId ? toolStatuses[toolId] : (toolStatuses || {} )
+  return status;
+}
+
 // SELECTORS
 const getResults = (state) => {
   return _getResults(state.results);
 }
+const getToolStatus = (state, toolId) => {
+  return _getToolStatuses(state.data.toolStatus || {}, toolId)
+}
+const getToolStatuses = (state) => {
+  return _getToolStatuses(state.data.toolStatus || {}, null)
+}
 
 export default reducer;
 
-export { setResults, getResults}
+export { setResults, getResults, setToolStatus, getToolStatus, getToolStatuses }
