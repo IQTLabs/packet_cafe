@@ -2,7 +2,7 @@ import React from 'react';
 import DataTable from 'react-data-table-component';
 import { connect } from "react-redux";
 
-import { getResults } from 'domain/data';
+import { getResults, getToolStatuses } from 'domain/data';
 
 class Table extends React.Component{
 
@@ -77,9 +77,11 @@ class Table extends React.Component{
 
 const mapStateToProps = (state, ownProps) => {
 
-  const results = getResults(state)
+  const results = getResults(state);
+  const toolStatuses = getToolStatuses(state);
   return{
     rows: results.rows || [],
+    statuses: toolStatuses || {},
   }
 };
 
