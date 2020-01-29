@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withCookies, Cookies } from 'react-cookie';
+import { instanceOf } from 'prop-types';
 
 import { Grid } from 'semantic-ui-react';
 
@@ -16,6 +18,18 @@ const uuidv4 = require('uuid/v4');
 const SESSION_ID = uuidv4();
 
 class App extends React.Component {
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+
+  constructor(props) {
+    super(props);
+
+    const { cookies } = props;
+    this.state = {
+      sessionId: cookies.get('sessionID') || ''
+    };
+  }
 
   fetchResults = () => {
       console.log("Peasant Burnination initiated...");
@@ -33,6 +47,9 @@ class App extends React.Component {
   }
 
   render() {
+    const { cookies } = this.props;
+
+    cookies.set('sessionID', SESSION_ID, { path: '/' });
     return (
       <>
         <Navbar/>
@@ -76,4 +93,4 @@ const mapDispatchToProps = {
     fetchToolStatus,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withCookies(App));
