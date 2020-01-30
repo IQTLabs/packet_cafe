@@ -24,10 +24,9 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-
     const { cookies } = props;
     this.state = {
-      sessionId: cookies.get('sessionID') || ''
+      sessionId: cookies.get('sessionID') || SESSION_ID
     };
   }
 
@@ -46,17 +45,26 @@ class App extends React.Component {
       console.log("This House Oldification complete")
   }
 
-  render() {
+  handleCookies = (termsAccepted) => {
     const { cookies } = this.props;
+    cookies.set('sessionID', SESSION_ID, { 
+      path: '/',
+      maxAge:'3600' 
+    });
+    cookies.set('termsAccepted', termsAccepted, { 
+      path: '/',
+      maxAge:'3600'
+    });
+  }
 
-    cookies.set('sessionID', SESSION_ID, { path: '/' });
+  render() { 
     return (
       <>
         <Navbar/>
         <Grid textAlign='center' style={{ height: '100vh' }} divided='vertically'>
           <Grid.Row columns={1}>
             <Grid.Column style={{ maxWidth: 240 }}>
-              <Upload sessionId={SESSION_ID}/>
+              <Upload onSelectCookies={this.handleCookies} sessionId={this.state.sessionId}/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
