@@ -1,35 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withCookies, Cookies } from 'react-cookie';
+import { instanceOf } from 'prop-types';
 
 import { Grid } from 'semantic-ui-react';
 
 import { fetchResults } from 'epics/fetch-results-epic'
+import { fetchToolStatus } from 'epics/fetch-status-epic'
+import { getResults, getToolStatuses } from 'domain/data';
 
 import './App.css';
 import Upload from 'components/upload/Upload';
 import Navbar from 'components/Navbar';
 import Table from 'components/table/Table.js';
-import TermsOfService from 'components/about-legal-terms/TermsOfService';
 
 const uuidv4 = require('uuid/v4');
 const SESSION_ID = uuidv4();
 
 class App extends React.Component {
-  state = { 
-    modalOpen:false, 
-    termsAccepted: false 
-  }
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
 
-  handleTermsModal = () => {
-    this.setState(prevState => ({
-      modalOpen:!prevState.modalOpen
-    }))
-  }
-
-  handleTermsStatus = () => {
-    this.setState(prevState => ({
-      termsAccepted:!prevState.termsAccepted
-    }))
+  constructor(props) {
+    super(props);
+    const { cookies } = props;
+    this.state = {
+      sessionId: cookies.get('sessionID') || SESSION_ID
+    };
   }
 
   fetchResults = () => {
@@ -38,32 +36,45 @@ class App extends React.Component {
       console.log("Peasant Burnination complete!");
   }
 
-  render() {
+  fetchStatuses = () => {
+      console.log("Norm Abrams is doing all of the real work....")
+      for(const row of this.props.rows){
+        this.props.fetchToolStatus({ 'sessionId': SESSION_ID, 'fileId':row.id });
+      }
+      console.log("statuses: %o", this.props.statuses)
+      console.log("This House Oldification complete")
+  }
+
+  handleCookies = (termsAccepted) => {
+    const { cookies } = this.props;
+    cookies.set('sessionID', SESSION_ID, { 
+      path: '/',
+      maxAge:'3600' 
+    });
+    cookies.set('termsAccepted', termsAccepted, { 
+      path: '/',
+      maxAge:'3600'
+    });
+  }
+
+  render() { 
     return (
       <>
         <Navbar/>
         <Grid textAlign='center' style={{ height: '100vh' }} divided='vertically'>
           <Grid.Row columns={1}>
-              <Grid.Column style={{ maxWidth: 240 }}>
-                <div onClick={this.handleTermsModal}>
-                  <div style={!this.state.termsAccepted ? {pointerEvents: "none", opacity: "0.4"} : {}}>
-                    <Upload sessionId={SESSION_ID}/>
-                  </div>
-                </div>
-              </Grid.Column>
-              <TermsOfService 
-                openState={this.state.modalOpen} 
-                modalAction={this.handleTermsModal} 
-
-                termsState={this.state.termsAccepted} 
-                termsAction={this.handleTermsStatus}
-              />
+            <Grid.Column style={{ maxWidth: 240 }}>
+              <Upload onSelectCookies={this.handleCookies} sessionId={this.state.sessionId}/>
+            </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
             <Grid.Column>
               <div>
                 <button onClick={this.fetchResults}>
                   Burninate Peasants
+                </button>
+                <button onClick={this.fetchStatuses}>
+                  Bob Villa was useless.
                 </button>
               </div>
               <Table sessionId={SESSION_ID}/>
@@ -75,10 +86,19 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = null;
+const mapStateToProps = (state, ownProps) => {
+
+  const results = getResults(state)
+  const toolStatuses = getToolStatuses(state)
+  return{
+    rows: results.rows || [],
+    statuses: toolStatuses || {},
+  }
+};
 
 const mapDispatchToProps = {
     fetchResults,
+    fetchToolStatus,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withCookies(App));

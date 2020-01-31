@@ -2,33 +2,55 @@ import React from 'react';
 import { Button, Form, Header, Segment } from 'semantic-ui-react';
 import { connect } from "react-redux";
 
+import { withCookies, Cookies } from 'react-cookie';
+import { instanceOf } from 'prop-types';
+
 import Dropzone  from 'components/dropzone/Dropzone';
 import Progress from 'components/progress/Progress';
+import TermsOfService from 'components/about-legal-terms/TermsOfService';
+
 
 class Upload extends React.Component{
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+    };
+
     constructor(props){
         super(props);
+        const { cookies } = props;
         this.state = {
             files: [],
             uploading: false,
             uploadProgress: {},
             successfullUploaded: false,
             resultId: null,
+            modalOpen:false, 
+            termsAccepted: cookies.get('termsAccepted') || false 
         };
 
-        this.onFilesAdded = this.onFilesAdded.bind(this);
-        this.uploadFiles = this.uploadFiles.bind(this);
-        this.sendRequest = this.sendRequest.bind(this);
-        this.renderActions = this.renderActions.bind(this);
     }
 
-    onFilesAdded(files) {
+    handleTermsModal = () => {
+        this.setState(prevState => ({
+            modalOpen:!prevState.modalOpen
+        }))
+    }
+    
+    handleTermsStatus = () => {
+        this.setState(prevState => ({
+            termsAccepted:!prevState.termsAccepted
+        }), () => {
+            this.props.onSelectCookies(this.state.termsAccepted);
+        }); 
+    }
+
+    onFilesAdded = (files) => {
         this.setState(prevState => ({
             files: prevState.files.concat(files)
         }));
     }
 
-    async uploadFiles() {
+    uploadFiles = async() => {
         this.setState({ uploadProgress: {}, uploading: true });
         const promises = [];
         this.state.files.forEach(file => {
@@ -45,36 +67,37 @@ class Upload extends React.Component{
         }
     }
 
-    sendRequest(file) {
+    sendRequest = (file) =>{
         const sessionId = this.props.sessionId;
         return new Promise((resolve, reject) => {
             const req = new XMLHttpRequest();
             req.upload.addEventListener("progress", event => {
-            if (event.lengthComputable) {
-                const copy = { ...this.state.uploadProgress };
-                copy[file.name] = {
-                state: "pending",
-                percentage: (event.loaded / event.total) * 100
-                };
-                this.setState({ uploadProgress: copy });
-            }
+                if (event.lengthComputable) {
+                    const copy = { ...this.state.uploadProgress };
+                    copy[file.name] = {
+                    state: "pending",
+                    percentage: (event.loaded / event.total) * 100
+                    };
+                    this.setState({ uploadProgress: copy });
+                }
             });
 
             req.upload.addEventListener("load", event => {
-            const copy = { ...this.state.uploadProgress };
-            copy[file.name] = { state: "done", percentage: 100 };
-            this.setState({ uploadProgress: copy });
-            resolve(req.response);
+                const copy = { ...this.state.uploadProgress };
+                copy[file.name] = { state: "done", percentage: 100 };
+                this.setState({ uploadProgress: copy });
+                resolve(req.response);
             });
 
             req.upload.addEventListener("error", event => {
-            const copy = { ...this.state.uploadProgress };
-            copy[file.name] = { state: "error", percentage: 0 };
-            this.setState({ uploadProgress: copy });
-            console.log("error event: %o", event);
-            reject(req.response);
+                const copy = { ...this.state.uploadProgress };
+                copy[file.name] = { state: "error", percentage: 0 };
+                this.setState({ uploadProgress: copy });
+                console.log("error event: %o", event);
+                reject(req.response);
             });
             console.log("sessionId: %o", sessionId);
+            
             const formData = new FormData();
             //
             formData.append("file", file, file.name);
@@ -105,8 +128,9 @@ class Upload extends React.Component{
         }
     }
 
-    renderActions() {
+    renderActions = () => {
         if (this.state.successfullUploaded) {
+            console.log(this.props.data);
             return (
             <Button
                 onClick={() =>
@@ -130,30 +154,44 @@ class Upload extends React.Component{
 
     render(){
         return(
+        
         <div>
-            <Header as='h2' color='teal' textAlign='center'>
-                    Upload PCAP files:
-                </Header>
-                <Form size='large'>
-                    <Segment stacked textAlign="center">
-                        <Dropzone
-                            onFilesAdded={this.onFilesAdded}
-                            disabled={this.state.uploading || this.state.successfullUploaded}
-                        />
-                        <div className="Files">
-                            {this.state.files.map(file => {
-                            return (
-                                <div key={file.name} className="Row">
-                                <br /><span className="Filename">{file.name}</span>
-                                {this.renderProgress(file)}
-                                </div>
-                            );
-                            })}
-                        </div>
-                        <div className="Actions">{this.renderActions()}</div>
-                    </Segment>
-                </Form>
-            </div>
+            <Form size='large'>
+                <div onClick={this.handleTermsModal}>
+                    <div style={!this.state.termsAccepted ? {pointerEvents: "none", opacity: "0.4"} : {}}>
+                        <Header as='h2' color='teal' textAlign='center'>
+                            Upload PCAP files:
+                        </Header>
+                        <Segment stacked textAlign="center">
+                            <div >
+                                <Dropzone
+                                    onFilesAdded={this.onFilesAdded}
+                                    disabled={this.state.uploading || this.state.successfullUploaded}
+                                />
+                            </div>
+                            <div className="Files">
+                                {this.state.files.map(file => {
+                                return (
+                                    <div key={file.name} className="Row">
+                                    <br /><span className="Filename">{file.name}</span>
+                                    {this.renderProgress(file)}
+                                    </div>
+                                );
+                                })}
+                            </div>  
+                        </Segment>
+                    </div>
+                </div>
+                <div style={!this.state.termsAccepted ? {pointerEvents: "none", opacity: "0.4"} : {}} className="Actions">{this.renderActions()}</div>
+            </Form>
+            <TermsOfService 
+                openState={this.state.modalOpen} 
+                modalAction={this.handleTermsModal} 
+
+                termsState={this.state.termsAccepted} 
+                termsAction={this.handleTermsStatus}
+            />
+        </div>
         )
     }
 }
@@ -162,4 +200,4 @@ const mapStateToProps = null;
 
 const mapDispatchToProps = null;
 
-export default connect(mapStateToProps, mapDispatchToProps) (Upload)
+export default connect(mapStateToProps, mapDispatchToProps) (withCookies(Upload))
