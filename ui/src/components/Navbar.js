@@ -1,6 +1,5 @@
 import React from 'react';
 import { Menu, Dropdown } from 'semantic-ui-react';
-import TermsOfService from './about-legal-terms/TermsOfService';
 import About from './about-legal-terms/About';
 
 class Navbar extends React.Component{

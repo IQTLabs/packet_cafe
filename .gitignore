@@ -28,3 +28,4 @@ ui/node_modules
 ui/build
 ui/uploads
 *.swp
+sample.pcap
