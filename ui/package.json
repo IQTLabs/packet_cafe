@@ -84,9 +84,9 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "7.8.3",
+    "@babel/core": "7.8.4",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
-    "@babel/preset-env": "7.8.3",
+    "@babel/preset-env": "7.8.4",
     "@babel/preset-react": "7.8.3",
     "@babel/register": "7.8.3",
     "chai": "4.2.0",
