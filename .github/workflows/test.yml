@@ -1,11 +1,6 @@
 name: test
 
-on:
-  pull_request:
-    branches: master
-  push:
-    branches: master
-    tags: 'v*'
+on: [push, pull_request]
 
 jobs:
   test:
