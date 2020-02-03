@@ -401,5 +401,9 @@ class Upload(object):
                 resp.media = {'status': 'Error', 'error': 'Invalid file type. Acceptable file formats are {0}'.format(ACCEPTED_FILE_TYPES)}
                 resp.status = falcon.HTTP_200
         else:
+            try:
+                os.remove(file_path)
+            except Exception as e:  # pragma: no cover
+                print(f'Failed to delete {file_path} because: {e}')
             resp.media = {'status': 'Error'}
             resp.status = falcon.HTTP_500
