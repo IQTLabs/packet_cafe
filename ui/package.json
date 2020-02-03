@@ -30,7 +30,7 @@
     "server": "PORT=5001 nodemon --inspect=0.0.0.0:9229 server.js",
     "client": "PORT=5000 react-scripts start",
     "build": "react-scripts build",
-    "test": "NODE_ENV=test NODE_PATH=./src nyc mocha --opts ./.mocha --exit --recursive 'src/tests/*.test.js*'",
+    "test": "NODE_ENV=test NODE_PATH=./src nyc mocha src/tests/**/*.test.js*",
     "eject": "react-scripts eject",
     "start-server": "node server.js"
   },
@@ -86,6 +86,8 @@
   "devDependencies": {
     "@babel/core": "7.8.4",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.8.3",
     "@babel/preset-env": "7.8.4",
     "@babel/preset-react": "7.8.3",
     "@babel/register": "7.8.3",
