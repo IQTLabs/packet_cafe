@@ -1,7 +1,7 @@
 name: test
 
 on:
-  pull_requests:
+  pull_request:
     branches: master
   push:
     branches: master
