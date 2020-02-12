@@ -27,5 +27,6 @@ web/venv/
 ui/node_modules
 ui/build
 ui/uploads
+ui/coverage
 *.swp
 sample.pcap
