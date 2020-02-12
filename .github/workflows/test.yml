@@ -1,0 +1,31 @@
+name: test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: test
+      run: |
+        pip3 install -U pip && \
+        pip3 install codecov && \
+        docker build -t packet_cafe/ui -f ./ui/Dockerfile ./ui && \
+        docker build -t packet_cafe/ui-test -f ./ui/Dockerfile.test ./ui && \
+        docker run packet_cafe/ui-test && \
+        docker build -t packet_cafe/web -f ./web/Dockerfile ./web && \
+        docker build -t packet_cafe/web-test -f ./web/Dockerfile.test ./web && \
+        docker run packet_cafe/web-test && \
+        export PATH=/home/runner/.local/bin:$PATH
+        #coverage report && coverage xml
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.0.5
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+      if: github.repository == 'cyberreboot/packet_cafe' && github.event_name == 'push'
+
