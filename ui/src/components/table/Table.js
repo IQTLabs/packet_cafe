@@ -2,7 +2,29 @@ import React from 'react';
 import DataTable from 'react-data-table-component';
 import { connect } from "react-redux";
 
+import { Tab } from 'semantic-ui-react';
+
+
 import { getResults, getToolStatuses } from 'domain/data';
+
+function getPanes(data,columns){
+  return data.map(function(dat){
+    console.log(data);
+    return {
+      menuItem: dat.filename,
+      render: () =>
+        <Tab.Pane attached="false">
+          <DataTable
+            className="container"
+            keyField="id"
+            columns={columns}
+            data={data}
+            // progressPending={isLoading}
+            />
+        </Tab.Pane>
+    }
+  })
+}
 
 class Table extends React.Component{
 
@@ -36,8 +58,8 @@ class Table extends React.Component{
 
   getTableColumns = () => {
     const tableColumns = [
-      { name: 'ID', selector: 'id' },
-      { name: 'Filename', selector: 'original_filename' },
+      // { name: 'ID', selector: 'id' },
+      // { name: 'Filename', selector: 'original_filename' },
       { name: 'Tools', className: 'text-center',
         cell: row => <div>{this.renderTools(row, 'results')}</div>,
       },
@@ -56,21 +78,24 @@ class Table extends React.Component{
 
   render() {
     const columns = this.getTableColumns();
-    const { rows, isLoading } = this.props;
+    const { rows, isLoading, statuses } = this.props;
+    console.log(statuses)
+    console.log(rows)
     return (
-        <div>
-          <DataTable
-            className="container"
-            keyField="id"
-            columns={columns}
-            data={rows}
-            //pagination={false}
-            //initialPageLength={5}
-            //initialSortBy={{ prop: 'filename', order: 'descending' }}
-            progressPending={isLoading}
-            //pageLengthOptions={[ 5, 20, 50 ]}
-          />
-      </div>
+      // <div>
+      //     <DataTable
+      //       className="container"
+      //       keyField="id"
+      //       columns={columns}
+      //       data={rows}
+      //       //pagination={false}
+      //       //initialPageLength={5}
+      //       //initialSortBy={{ prop: 'filename', order: 'descending' }}
+      //       progressPending={isLoading}
+      //       //pageLengthOptions={[ 5, 20, 50 ]}
+      //     />
+      // </div>
+      <Tab menu={{ secondary: true }} panes={getPanes(rows,columns)} />
     )
   }
 }

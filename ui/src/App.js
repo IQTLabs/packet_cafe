@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
 
-import { Grid } from 'semantic-ui-react';
+import { Grid, Button } from 'semantic-ui-react';
 
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
@@ -70,12 +70,12 @@ class App extends React.Component {
           <Grid.Row columns={1}>
             <Grid.Column>
               <div>
-                <button onClick={this.fetchResults}>
-                  Burninate Peasants
-                </button>
-                <button onClick={this.fetchStatuses}>
-                  Bob Villa was useless.
-                </button>
+                <Button circular basic color='green' onClick={this.fetchResults}>
+                  Burninate Peasants (Fetch Results)
+                </Button>
+                <Button circular basic color='violet' onClick={this.fetchStatuses}>
+                  Bob Villa was useless. (Fetch Statuses)
+                </Button>
               </div>
               <Table sessionId={SESSION_ID}/>
             </Grid.Column>
