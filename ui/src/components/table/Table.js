@@ -8,7 +8,7 @@ import './Table.css';
 
 import { getResults, getToolStatuses } from 'domain/data';
 
-function getPanes(results, statuses, columns){
+function getPanes(results, statuses, columns, tableLoading){
   const statusArray = Object.keys(statuses).map(key => ({
     tool: String(key), 
     ...statuses[key]
@@ -25,6 +25,7 @@ function getPanes(results, statuses, columns){
             title={result.id}
             columns={columns}
             data={statusArray}
+            progressPending={tableLoading}
             />
         </Tab.Pane>
     }
@@ -88,9 +89,9 @@ class Table extends React.Component{
       },
       { name: 'Status', className: '',
         cell: row => <div>
-            {row.status == 'Queued' && <Icon color='grey' size='big' name='pause circle' />}
-            {row.status == 'In progress' && <Icon loading size='big' color='yellow' name='cog' />}
-            {row.status == 'Complete' && <Icon size='big' color='green' name='check circle' />}
+            {row.status == 'Queued' && <Icon title="Queued" color='grey' size='big' name='pause circle' />}
+            {row.status == 'In progress' && <Icon title="In Progress" loading size='big' color='yellow' name='cog' />}
+            {row.status == 'Complete' && <Icon title="Complete" size='big' color='green' name='check circle' />}
           </div>,
       },
       { name: 'Timestamp', className: '',
@@ -107,7 +108,7 @@ class Table extends React.Component{
     const { rows, isLoading, statuses } = this.props;
     
     return (
-      <Tab className={` ${rows === undefined || rows.length == 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns)} />
+      <Tab className={` ${rows === undefined || rows.length == 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns, isLoading)} />
     )
   }
 }
