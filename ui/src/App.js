@@ -61,7 +61,7 @@ class App extends React.Component {
     return (
       <>
         <Navbar/>
-        <Grid textAlign='center' style={{ height: '100vh' }} divided='vertically'>
+        <Grid textAlign='center' container style={{ height: '100vh' }}>
           <Grid.Row columns={1}>
             <Grid.Column style={{ maxWidth: 240 }}>
               <Upload onSelectCookies={this.handleCookies} sessionId={this.state.sessionId}/>
@@ -69,14 +69,16 @@ class App extends React.Component {
           </Grid.Row>
           <Grid.Row columns={1}>
             <Grid.Column>
-              <div>
-                <Button circular basic color='green' onClick={this.fetchResults}>
+                <Button circular basic color='green'  onClick={this.fetchResults}>
                   Burninate Peasants (Fetch Results)
                 </Button>
-                <Button circular basic color='violet' onClick={this.fetchStatuses}>
+                <Button circular basic color='teal' onClick={this.fetchStatuses}>
                   Bob Villa was useless. (Fetch Statuses)
                 </Button>
-              </div>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={1}>
+            <Grid.Column>
               <Table sessionId={SESSION_ID}/>
             </Grid.Column>
           </Grid.Row>

@@ -2,24 +2,29 @@ import React from 'react';
 import DataTable from 'react-data-table-component';
 import { connect } from "react-redux";
 
-import { Tab } from 'semantic-ui-react';
+import { Tab, Icon } from 'semantic-ui-react';
+import './Table.css';
 
 
 import { getResults, getToolStatuses } from 'domain/data';
 
-function getPanes(data,columns){
-  return data.map(function(dat){
-    console.log(data);
+function getPanes(results, statuses, columns){
+  const statusArray = Object.keys(statuses).map(key => ({
+    tool: String(key), 
+    ...statuses[key]
+  }));
+  console.log(statusArray);
+  console.log(results);
+  return results.map(function(result){
     return {
-      menuItem: dat.filename,
+      menuItem: result.filename,
       render: () =>
-        <Tab.Pane attached="false">
+        <Tab.Pane attached={true}>
           <DataTable
-            className="container"
             keyField="id"
+            title={result.id}
             columns={columns}
-            data={data}
-            // progressPending={isLoading}
+            data={statusArray}
             />
         </Tab.Pane>
     }
@@ -76,26 +81,33 @@ class Table extends React.Component{
     return tableColumns;
   }
 
+  getToolsTableColumns = () => {
+    const tableColumns = [
+      { name: 'Tool', className: '',
+        cell: row => <div>{row.tool}</div>,
+      },
+      { name: 'Status', className: '',
+        cell: row => <div>
+            {row.status == 'Queued' && <Icon color='grey' size='big' name='pause circle' />}
+            {row.status == 'In progress' && <Icon loading size='big' color='yellow' name='cog' />}
+            {row.status == 'Complete' && <Icon size='big' color='green' name='check circle' />}
+          </div>,
+      },
+      { name: 'Timestamp', className: '',
+        cell: row => <div>{row.timestamp}</div>,
+      },
+    ];
+
+    return tableColumns;
+  }
+
   render() {
-    const columns = this.getTableColumns();
+    // const columns = this.getTableColumns();
+    const columns = this.getToolsTableColumns();
     const { rows, isLoading, statuses } = this.props;
-    console.log(statuses)
-    console.log(rows)
+    
     return (
-      // <div>
-      //     <DataTable
-      //       className="container"
-      //       keyField="id"
-      //       columns={columns}
-      //       data={rows}
-      //       //pagination={false}
-      //       //initialPageLength={5}
-      //       //initialSortBy={{ prop: 'filename', order: 'descending' }}
-      //       progressPending={isLoading}
-      //       //pageLengthOptions={[ 5, 20, 50 ]}
-      //     />
-      // </div>
-      <Tab menu={{ secondary: true }} panes={getPanes(rows,columns)} />
+      <Tab className={` ${rows === undefined || rows.length == 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns)} />
     )
   }
 }
