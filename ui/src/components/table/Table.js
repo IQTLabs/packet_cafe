@@ -2,15 +2,35 @@ import React from 'react';
 import DataTable from 'react-data-table-component';
 import { connect } from "react-redux";
 
-import { Tab, Icon } from 'semantic-ui-react';
+import { Tab, Icon, Label } from 'semantic-ui-react';
 import './Table.css';
-
 
 import { getResults, getToolStatuses } from 'domain/data';
 
-function getPanes(results, statuses, columns, tableLoading){
+const customStyles = {
+  rows: {
+    style: {
+      minHeight: '72px', // override the row height
+    }
+  },
+  headCells: {
+    style: {
+      paddingLeft: '8px', // override the cell padding for head cells
+      paddingRight: '8px',
+    },
+  },
+  cells: {
+    style: {
+      paddingLeft: '8px', // override the cell padding for data cells
+      paddingRight: '8px',
+    },
+  },
+};
+
+const getPanes = (results, statuses, columns, tableLoading) => {
   const statusArray = Object.keys(statuses).map(key => ({
     tool: String(key), 
+    id: results[0].id,
     ...statuses[key]
   }));
   console.log(statusArray);
@@ -26,7 +46,8 @@ function getPanes(results, statuses, columns, tableLoading){
             columns={columns}
             data={statusArray}
             progressPending={tableLoading}
-            />
+            customStyles={customStyles}
+          />
         </Tab.Pane>
     }
   })
@@ -48,6 +69,20 @@ class Table extends React.Component{
         )
       }
     );
+  }
+
+  //NEW
+  renderTool = (item, type) => {
+    const id = item.id;
+    const value = item.tool;
+    const url = `/${type}/${this.props.sessionId}/${id}/${value}`
+    return(
+      <p key={id + ":" +value}>
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          <Label>Open {value} {type}</Label>
+        </a>
+      </p>
+    )
   }
 
   renderStatus = (item) => {
@@ -82,6 +117,7 @@ class Table extends React.Component{
     return tableColumns;
   }
 
+  //NEW
   getToolsTableColumns = () => {
     const tableColumns = [
       { name: 'Tool', className: '',
@@ -97,13 +133,19 @@ class Table extends React.Component{
       { name: 'Timestamp', className: '',
         cell: row => <div>{row.timestamp}</div>,
       },
+      { name: 'Results', className: 'text-center',
+        cell: row => <div>{this.renderTool(row, 'results')}</div>,
+      },
+      { name: 'Results (Raw)', className: 'text-center',
+        cell: row => <div>{this.renderTool(row, 'raw')}</div>,
+      },
     ];
 
     return tableColumns;
   }
 
   render() {
-    // const columns = this.getTableColumns();
+    // const columns = this.getTableColumns(); //original
     const columns = this.getToolsTableColumns();
     const { rows, isLoading, statuses } = this.props;
     
