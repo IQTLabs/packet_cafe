@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Grid, Button } from 'semantic-ui-react';
 
@@ -14,7 +15,6 @@ import Upload from 'components/upload/Upload';
 import Navbar from 'components/Navbar';
 import Table from 'components/table/Table.js';
 
-const uuidv4 = require('uuid/v4');
 const SESSION_ID = uuidv4();
 
 class App extends React.Component {
