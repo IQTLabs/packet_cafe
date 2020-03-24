@@ -89,7 +89,7 @@
     "@babel/plugin-proposal-object-rest-spread": "7.9.0",
     "@babel/plugin-transform-modules-commonjs": "7.9.0",
     "@babel/preset-env": "7.9.0",
-    "@babel/preset-react": "7.9.1",
+    "@babel/preset-react": "7.9.4",
     "@babel/register": "7.9.0",
     "chai": "4.2.0",
     "concurrently": "5.1.0",
