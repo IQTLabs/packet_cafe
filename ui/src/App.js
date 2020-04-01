@@ -9,11 +9,14 @@ import { Grid, Button } from 'semantic-ui-react';
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
 import { getResults, getToolStatuses } from 'domain/data';
+import data from 'components/heatmap/data.json'
+
 
 import './App.css';
 import Upload from 'components/upload/Upload';
 import Navbar from 'components/Navbar';
 import Table from 'components/table/Table.js';
+import Heatmap from 'components/heatmap/Heatmap.js';
 
 const SESSION_ID = uuidv4();
 
@@ -81,6 +84,14 @@ class App extends React.Component {
             <Grid.Column>
               <Table sessionId={SESSION_ID}/>
             </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2}>
+            <Grid.Column >
+              <Heatmap key="1" dataJson={data}/>
+            </Grid.Column>
+            {/* <Grid.Column>
+              <Heatmap key="2" data={data}/>
+            </Grid.Column> */}
           </Grid.Row>
         </Grid>
       </>
