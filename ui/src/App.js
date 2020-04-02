@@ -4,12 +4,14 @@ import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
+import * as d3 from 'd3';
 import { Grid, Button } from 'semantic-ui-react';
 
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
 import { getResults, getToolStatuses } from 'domain/data';
-import data from 'components/heatmap/data.json'
+import { setHeatmapData, getDataWranglingState } from 'domain/data_wrangling';
+import dataJson from 'components/heatmap/data.json'
 
 
 import './App.css';
@@ -32,6 +34,9 @@ class App extends React.Component {
       sessionId: cookies.get('sessionID') || SESSION_ID
     };
   }
+  componentDidMount = () => {
+    this.fetchHeatmapData(dataJson);
+  }
 
   fetchResults = () => {
       console.log("Peasant Burnination initiated...");
@@ -48,6 +53,22 @@ class App extends React.Component {
       console.log("This House Oldification complete")
   }
 
+  fetchHeatmapData = (dataJson) => {
+    const { setHeatmapData,vizData } = this.props;
+    var data = {
+      type:"ip",
+      data:dataJson
+    }
+    setHeatmapData(data);
+
+    var data = {
+      type:"port",
+      data:dataJson
+    }
+    setHeatmapData(data);
+    console.log(vizData);
+  }
+
   handleCookies = (termsAccepted) => {
     const { cookies } = this.props;
     cookies.set('sessionID', SESSION_ID, { 
@@ -61,6 +82,8 @@ class App extends React.Component {
   }
 
   render() { 
+    const { ipResults } = this.props.vizData.heatmap;
+
     return (
       <>
         <Navbar/>
@@ -85,14 +108,17 @@ class App extends React.Component {
               <Table sessionId={SESSION_ID}/>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row columns={2}>
+          {ipResults &&
+          <Grid.Row >
             <Grid.Column >
-              <Heatmap key="1" dataJson={data}/>
+              <Heatmap key="1" data={ipResults.transformedData} keys={ipResults.uniqueListOfKeys} index="dst_ip"/>
             </Grid.Column>
+          
             {/* <Grid.Column>
               <Heatmap key="2" data={data}/>
             </Grid.Column> */}
           </Grid.Row>
+          }
         </Grid>
       </>
     );
@@ -101,17 +127,21 @@ class App extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 
-  const results = getResults(state)
-  const toolStatuses = getToolStatuses(state)
+  const results = getResults(state);
+  const toolStatuses = getToolStatuses(state);
+  const wrangledData = getDataWranglingState(state);
+
   return{
     rows: results.rows || [],
     statuses: toolStatuses || {},
+    vizData: wrangledData || {},
   }
 };
 
 const mapDispatchToProps = {
     fetchResults,
     fetchToolStatus,
+    setHeatmapData
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withCookies(App));
