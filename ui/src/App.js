@@ -62,16 +62,11 @@ class App extends React.Component {
         return data.tool === "mercury"
     })
 
-    console.log(rows);
-    console.log(statuses);
-    console.log(statusArray);
-
     const url = `/raw/${sessionId}/${mercury[0].id}/${mercury[0].tool}`;
 
     if(mercury[0].status == "Complete"){
       await fetch(url)
         .then((response) => {
-          console.log(response);
           return response.json();
         })
         .then((jsonData) => {
@@ -87,7 +82,7 @@ class App extends React.Component {
     
           var data = {
             type:"port",
-            data:jsonData,
+            data:jsonData[0],
             firstKey:"dst_port",
             secondKey:"src_port"
           }
