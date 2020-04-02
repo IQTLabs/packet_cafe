@@ -4,15 +4,12 @@ import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
-import * as d3 from 'd3';
 import { Grid, Button } from 'semantic-ui-react';
 
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
 import { getResults, getToolStatuses } from 'domain/data';
 import { setHeatmapData, getDataWranglingState } from 'domain/data_wrangling';
-import dataJson from 'components/heatmap/data.json'
-
 
 import './App.css';
 import Upload from 'components/upload/Upload';
@@ -34,14 +31,12 @@ class App extends React.Component {
       sessionId: cookies.get('sessionID') || SESSION_ID
     };
   }
-  componentDidMount = () => {
-    this.fetchHeatmapData(dataJson);
-  }
 
   fetchResults = () => {
       console.log("Peasant Burnination initiated...");
       this.props.fetchResults({ 'sessionId': SESSION_ID });
       console.log("Peasant Burnination complete!");
+      this.fetchHeatmapData();
   }
 
   fetchStatuses = () => {
@@ -53,24 +48,54 @@ class App extends React.Component {
       console.log("This House Oldification complete")
   }
 
-  fetchHeatmapData = (dataJson) => {
-    const { setHeatmapData, rows } = this.props;
-    console.log(rows)
-    var data = {
-      type:"ip",
-      data:dataJson,
-      firstKey:"dst_ip",
-      secondKey:"src_ip"
-    }
-    setHeatmapData(data);
+  fetchHeatmapData = async () => {
+    const { setHeatmapData, rows, statuses } = this.props;
+    const { sessionId } = this.state;
 
-    var data = {
-      type:"port",
-      data:dataJson,
-      firstKey:"dst_port",
-      secondKey:"src_port"
+    const statusArray = Object.keys(statuses).map(key => ({
+      tool: String(key), 
+      id: rows[0].id,
+      ...statuses[key]
+    }));
+
+    const mercury = statusArray.filter((data)=>{
+        return data.tool === "mercury"
+    })
+
+    console.log(rows);
+    console.log(statuses);
+    console.log(statusArray);
+
+    const url = `/raw/${sessionId}/${mercury[0].id}/${mercury[0].tool}`;
+
+    if(mercury[0].status == "Complete"){
+      await fetch(url)
+        .then((response) => {
+          console.log(response);
+          return response.json();
+        })
+        .then((jsonData) => {
+          console.log(jsonData);
+          var data = {
+            type:"ip",
+            data:jsonData[0],
+            firstKey:"dst_ip",
+            secondKey:"src_ip"
+          }
+    
+          setHeatmapData(data);
+    
+          var data = {
+            type:"port",
+            data:jsonData,
+            firstKey:"dst_port",
+            secondKey:"src_port"
+          }
+    
+          setHeatmapData(data);
+        });
     }
-    setHeatmapData(data);
+
   }
 
   handleCookies = (termsAccepted) => {

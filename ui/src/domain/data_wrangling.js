@@ -21,7 +21,6 @@ const configureHeatmapData = (payload) => {
   const firstKey = payload.firstKey;
   const secondKey = payload.secondKey;
 
-
   const mappedfirstKey = data.map((dat)=>{
     return dat[firstKey]
   });
@@ -30,7 +29,7 @@ const configureHeatmapData = (payload) => {
   
   /**
    * Count of Source IP Keys by Destination IP Keys
-   */
+  */
 
   var dataByFirstKeyBySecondKey = d3.nest()
     .key((d) => { return d[secondKey]; })

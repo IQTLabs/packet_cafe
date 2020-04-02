@@ -159,7 +159,7 @@ const mapStateToProps = (state, ownProps) => {
 
   const results = getResults(state);
   const toolStatuses = getToolStatuses(state);
-  return{
+  return {
     rows: results.rows || [],
     statuses: toolStatuses || {},
   }
