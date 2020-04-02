@@ -8,16 +8,16 @@ import './Heatmap.css';
 class Heatmap extends React.Component{
 
   render() {
-    const { data, keys, index} = this.props;
+    const { data, keys, index, name, height, width} = this.props;
     
     return (
       <ResponsiveHeatMap
         data={data}
         keys={keys}
         indexBy={index}
-        height={500}
-        width={1000}
-        margin={{ top: 100, right: 80, bottom: 60, left: 80 }}
+        height={height}
+        width={width}
+        margin={{ top: 100, right: 100, bottom: 100, left: 100 }}
         forceSquare={false}
         axisTop={{ orient: 'top', tickSize: 5, tickPadding: 5, tickRotation: -90, legend: '', legendOffset: 36 }}
         axisRight={null}
@@ -27,9 +27,9 @@ class Heatmap extends React.Component{
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: index,
+            legend: name,
             legendPosition: 'middle',
-            legendOffset: -40
+            legendOffset: -80
         }}
         cellOpacity={1}
         cellBorderColor={{ from: 'color', modifiers: [ [ 'darker', 0.4 ] ] }}
@@ -51,6 +51,10 @@ class Heatmap extends React.Component{
         motionDamping={9}
         hoverTarget="cell"
         cellHoverOthersOpacity={0.25}
+
+        minValue={1}
+        // sizeVariation={.15}
+        cellShape="rect"
     />
     )
   }

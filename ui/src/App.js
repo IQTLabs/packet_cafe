@@ -54,19 +54,23 @@ class App extends React.Component {
   }
 
   fetchHeatmapData = (dataJson) => {
-    const { setHeatmapData,vizData } = this.props;
+    const { setHeatmapData, rows } = this.props;
+    console.log(rows)
     var data = {
       type:"ip",
-      data:dataJson
+      data:dataJson,
+      firstKey:"dst_ip",
+      secondKey:"src_ip"
     }
     setHeatmapData(data);
 
     var data = {
       type:"port",
-      data:dataJson
+      data:dataJson,
+      firstKey:"dst_port",
+      secondKey:"src_port"
     }
     setHeatmapData(data);
-    console.log(vizData);
   }
 
   handleCookies = (termsAccepted) => {
@@ -82,7 +86,7 @@ class App extends React.Component {
   }
 
   render() { 
-    const { ipResults } = this.props.vizData.heatmap;
+    const { ipResults, portResults } = this.props.vizData.heatmap;
 
     return (
       <>
@@ -111,12 +115,16 @@ class App extends React.Component {
           {ipResults &&
           <Grid.Row >
             <Grid.Column >
-              <Heatmap key="1" data={ipResults.transformedData} keys={ipResults.uniqueListOfKeys} index="dst_ip"/>
+              <Heatmap key="1" data={ipResults.transformedData} keys={ipResults.uniqueListOfKeys} index="firstKey" name="Destination IP" width={800} height={500}/>
             </Grid.Column>
-          
-            {/* <Grid.Column>
-              <Heatmap key="2" data={data}/>
-            </Grid.Column> */}
+          </Grid.Row>
+          }
+
+          {portResults &&
+          <Grid.Row >
+            <Grid.Column >
+              <Heatmap key="2" data={portResults.transformedData} keys={portResults.uniqueListOfKeys} index="firstKey" name="Destination Port" width={800} height={1000}/>
+            </Grid.Column>
           </Grid.Row>
           }
         </Grid>
