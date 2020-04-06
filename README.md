@@ -1,11 +1,7 @@
 # Packet Café
 
 ## Background
-Large open domain-specific datasets have proven to achieve new analytical abilities in their respective fields using machine learning. Now is the time to move that needle forward for cybersecurity. To do this, this project has two primary goals:
-1.	Build a platform for easy-to-use automated network traffic analysis.
-2.	Grow a sizable labeled dataset of network traffic data using that platform to push machine learning forward in the cybersecurity domain.
-
-For more documents related to this project, check out the [wiki](https://va-vsrv-github.a.internal/CyberReboot/packet_cafe/wiki).
+This is a platform built for easy-to-use automated network traffic analysis. It is built to be modular and allow for a pipeline of tools that are triggered by different inputs and outputs. Currently the tools supplied are defined [here](https://github.com/CyberReboot/packet_cafe/blob/master/workers/workers.json).
 
 ## Platform Architecture
 <img src="/docs/img/packet_cafe_diagram.png"/>
