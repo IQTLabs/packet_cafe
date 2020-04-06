@@ -1,6 +1,5 @@
 import React from 'react';
 import { Menu, Dropdown } from 'semantic-ui-react';
-import About from './about-legal-terms/About';
 
 class Navbar extends React.Component{
     render(){
@@ -10,7 +9,6 @@ class Navbar extends React.Component{
                 <Menu.Menu position="left">
                     <Dropdown item simple text='About'>
                         <Dropdown.Menu>
-                            <Dropdown.Item><About /></Dropdown.Item>
                             <Dropdown.Item>Data Requirements</Dropdown.Item>
                             <Dropdown.Item>IQT Labs</Dropdown.Item>
                             {/* <Dropdown.Divider />
