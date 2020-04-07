@@ -12,7 +12,7 @@ See https://docs.docker.com/docker-for-mac/osxfs/#namespaces for more info.
 ERROR: Encountered errors while bringing up the project.
 ```
 
-macOS has limitations on which paths Docker is allowed to mount, to get around this export the environment variable `VOL_PREFIX` to a path that Docker can mount, then try re-running `docker-compose`. Here's an example:
+macOS has limitations on which paths Docker is allowed to mount. To get around this, export the environment variable `VOL_PREFIX` to a path that Docker can mount, then try re-running `docker-compose`. Here's an example:
 
 ```text
 export VOL_PREFIX=~/packet_cafe_data
