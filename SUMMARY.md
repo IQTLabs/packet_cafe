@@ -17,4 +17,5 @@
 ## Testing
 
 * [Untitled](testing/untitled.md)
+* [FAQ](faq.md)
 

@@ -12,11 +12,11 @@ cd packet_cafe
 Pick a path store Packet Café data and export it as an environment variable:
 
 ```text
-export VOL_PREFIX=/Users/name/packet_cafe_data
+export VOL_PREFIX=~/packet_cafe_data
 ```
 
 {% hint style="warning" %}
- Only some paths are allowed to be mounted with Docker on macOS, make sure to use one that is allowed, for example a path in your home directory: `/Users/name/packet_cafe_data`
+ Only some paths are allowed to be mounted with Docker on macOS, make sure to use one that is allowed, for example a path in your home directory: `~/packet_cafe_data`
 {% endhint %}
 
 Once a path has been picked for the data to live build and start Packet Café \(from the repository directory\):
