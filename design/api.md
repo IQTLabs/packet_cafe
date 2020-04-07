@@ -4,7 +4,7 @@ The `lb` \(load balancer\) will process requests for both the `ui` \(frontend\) 
 
 Here are the available API endpoints:
 
-`admin` \(port 5001\):
+## `admin` \(port 5001\)
 
 {% api-method method="get" host="http://0.0.0.0:5001" path="/v1" %}
 {% api-method-summary %}
@@ -33,4 +33,78 @@ Returns a list of the available API endpoints for this service.
 {% endapi-method %}
 
 TODO
+
+## `web` \(port 80\)
+
+{% api-method method="get" host="" path="" %}
+{% api-method-summary %}
+
+{% endapi-method-summary %}
+
+{% api-method-description %}
+
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-path-parameters %}
+{% api-method-parameter name="" type="string" required=false %}
+
+{% endapi-method-parameter %}
+{% endapi-method-path-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+
+{% endapi-method-response-example-description %}
+
+```
+
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+TODO
+
+## `ui` \(port 80\)
+
+{% api-method method="get" host="" path="" %}
+{% api-method-summary %}
+
+{% endapi-method-summary %}
+
+{% api-method-description %}
+
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-path-parameters %}
+{% api-method-parameter name="" type="string" required=false %}
+
+{% endapi-method-parameter %}
+{% endapi-method-path-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+
+{% endapi-method-response-example-description %}
+
+```
+
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+TODO
+
+
 
