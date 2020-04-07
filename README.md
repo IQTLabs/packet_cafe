@@ -1,14 +1,11 @@
 # Packet Café
 
 ## Background
-This is a platform built for easy-to-use automated network traffic analysis. It is built to be modular and allow for a pipeline of tools that are triggered by different inputs and outputs. Currently the tools supplied are defined [here](https://github.com/CyberReboot/packet_cafe/blob/master/workers/workers.json).
-
-## Platform Architecture
-<img src="/docs/img/packet_cafe_diagram.png"/>
+Packet Café is a platform built for easy-to-use automated network traffic analysis. It is built to be modular and allow for a pipeline of tools that are triggered by different inputs and outputs. Currently the tools supplied are defined [here](https://github.com/CyberReboot/packet_cafe/blob/master/workers/workers.json).
 
 ## Get up and running
 
-If you want to override the path location (for example only some paths can be mounted in OSX):
+To override the path location (for example only some paths can be mounted in OSX):
 ```
 export VOL_PREFIX=/Users/me/packet_cafe_data
 ```
@@ -18,18 +15,21 @@ Using docker-compose:
 docker-compose up -d --build
 ```
 
-Using kubernetes (assuming your default orchestrator is set to k8s for stacks):
+Alternatively, using kubernetes (assuming the default orchestrator is set to k8s for stacks):
 ```
 docker stack deploy -c docker-compose.yml packet_cafe
 ```
 
+## Platform Architecture
+<img src="/docs/img/packet_cafe_diagram.png"/>
+
 ## Getting Started
 
-The load balancer will process requests for both the UI (frontend) and the WEB (API) containers. It is exposed on port 80 by default. Requests that prepend `/api` to the URL will route requests to the WEB container and all other URLs will be routed to the UI container.  Additionally there is an ADMIN container that is exposed on its own port (5001) and is not load balanced.
+The load balancer will process requests for both the `ui` (frontend) and the `web` (API) containers. It is exposed on port 80 by default. Requests that prepend `/api` to the URL will route requests to the WEB container and all other URLs will be routed to the UI container.  Additionally, there is an `admin` container that is exposed on its own port (5001) and is not load balanced.
 
-Here are the following endpoints:
+Here are the available endpoints:
 
-ADMIN (port 5001):
+`admin` (port 5001):
 ```
 /v1                enumerates the endpoints for this service
 /v1/id/files       returns all files that have been uploaded or created from those uploads
@@ -39,7 +39,7 @@ ADMIN (port 5001):
 /v1/logs/{req_id}  returns the logs for a given ID
 ```
 
-WEB (port 80):
+`web` (port 80):
 ```
 /api/v1                                                              enumerates the endpoints for this service
 /api/v1/id/{session_id}/{req_id}/{tool}/{pcap}/{counter}/{filename}  returns a results file for rendering
@@ -53,7 +53,7 @@ WEB (port 80):
 /api/v1/upload                                                       writes uploaded files to disk
 ```
 
-UI (port 80):
+`ui` (port 80):
 ```
 /                                                         main home page
 /express-upload                                           processing uploading a file from API
@@ -64,6 +64,8 @@ UI (port 80):
 /status/{session_id}/{req_id}                             gets status of tools for an ID from API
 /*                                                        redirects to main home page
 ```
+
+# Testing
 
 ## Testing POST requests with curl and datamash
 
