@@ -8,7 +8,7 @@ import { Grid, Button } from 'semantic-ui-react';
 
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
-import { getResults, getToolStatuses } from 'domain/data';
+import { setSessionId, getResults, getToolStatuses } from 'domain/data';
 
 import './App.css';
 import Upload from 'components/upload/Upload';
@@ -25,21 +25,23 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const { cookies } = props;
+    const sessionId = cookies.get('sessionID') || SESSION_ID
+    this.props.setSessionId(sessionId);
     this.state = {
-      sessionId: cookies.get('sessionID') || SESSION_ID
+      sessionId: sessionId
     };
   }
 
   fetchResults = () => {
       console.log("Peasant Burnination initiated...");
-      this.props.fetchResults({ 'sessionId': SESSION_ID });
+      this.props.fetchResults({ 'sessionId': this.state.sessionId });
       console.log("Peasant Burnination complete!");
   }
 
   fetchStatuses = () => {
       console.log("Norm Abrams is doing all of the real work....")
       for(const row of this.props.rows){
-        this.props.fetchToolStatus({ 'sessionId': SESSION_ID, 'fileId':row.id });
+        this.props.fetchToolStatus({ 'sessionId': this.state.sessionId, 'fileId':row.id });
       }
       console.log("statuses: %o", this.props.statuses)
       console.log("This House Oldification complete")
@@ -47,7 +49,7 @@ class App extends React.Component {
 
   handleCookies = (termsAccepted) => {
     const { cookies } = this.props;
-    cookies.set('sessionID', SESSION_ID, { 
+    cookies.set('sessionID', this.state.sessionId, { 
       path: '/',
       maxAge:'3600' 
     });
@@ -79,7 +81,7 @@ class App extends React.Component {
           </Grid.Row>
           <Grid.Row columns={1}>
             <Grid.Column>
-              <Table sessionId={SESSION_ID}/>
+              <Table sessionId={this.state.sessionId}/>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -99,6 +101,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
+    setSessionId,
     fetchResults,
     fetchToolStatus,
 };
