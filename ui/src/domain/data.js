@@ -36,7 +36,7 @@ const reducer = handleActions(
            state.toolStatus[toolName] = tool;
         }
       }
-      
+
       return { ...state};
     },
   },
@@ -62,7 +62,7 @@ const _getToolStatuses = (toolStatuses, toolId) => {
 
 // SELECTORS
 const getResults = (state) => {
-  return _getResults(state.results);
+  return _getResults(state.data.results);
 }
 const getToolStatus = (state, toolId) => {
   return _getToolStatuses(state.data.toolStatus || {}, toolId)

@@ -29,7 +29,7 @@ const customStyles = {
 
 const getPanes = (results, statuses, columns, tableLoading) => {
   const statusArray = Object.keys(statuses).map(key => ({
-    tool: String(key), 
+    tool: String(key),
     id: results[0].id,
     ...statuses[key]
   }));
@@ -148,7 +148,7 @@ class Table extends React.Component{
     // const columns = this.getTableColumns(); //original
     const columns = this.getToolsTableColumns();
     const { rows, isLoading, statuses } = this.props;
-    
+
     return (
       <Tab className={` ${rows === undefined || rows.length == 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns, isLoading)} />
     )
