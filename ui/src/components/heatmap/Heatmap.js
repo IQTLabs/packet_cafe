@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 
-import { Tab, Icon, Label } from 'semantic-ui-react';
-import { ResponsiveHeatMap, HeatMap } from '@nivo/heatmap';
+import { ResponsiveHeatMap } from '@nivo/heatmap';
 import './Heatmap.css';
 
 class Heatmap extends React.Component{

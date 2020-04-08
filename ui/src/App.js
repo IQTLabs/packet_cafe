@@ -34,6 +34,20 @@ class App extends React.Component {
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    // Any time the current user changes,
+    // Reset any parts of state that are tied to that user.
+    // In this simple example, that's just the email.
+    const { ipResults, portResults } = props.vizData.heatmap;
+    if (props.ipResults !== state.ipResults) {
+      return {
+        ipResults: ipResults,
+        portResults: portResults
+      };
+    }
+    return null;
+  }
+
   fetchResults = () => {
       console.log("Peasant Burnination initiated...");
       this.props.fetchResults({ 'sessionId': SESSION_ID });
@@ -72,30 +86,30 @@ class App extends React.Component {
     if(mercury[0].status == "Complete"){
       await fetch(url)
         .then((response) => {
-          console.log(response);
           return response.json();
         })
         .then((jsonData) => {
-          console.log(jsonData);
-          var data = {
+          var ipData = {
             type:"ip",
             data:jsonData[0],
+            // data:json,
             firstKey:"dst_ip",
             secondKey:"src_ip"
           }
     
-          setHeatmapData(data);
+          setHeatmapData(ipData);
     
-          var data = {
+          var portData = {
             type:"port",
             data:jsonData[0],
+            // data: json,
             firstKey:"dst_port",
             secondKey:"src_port"
           }
     
-          setHeatmapData(data);
+          setHeatmapData(portData);
         });
-    }
+     }
 
   }
 
@@ -112,7 +126,7 @@ class App extends React.Component {
   }
 
   render() { 
-    const { ipResults, portResults } = this.props.vizData.heatmap;
+    const { ipResults, portResults } = this.state;
 
     return (
       <>
@@ -149,7 +163,7 @@ class App extends React.Component {
           {portResults &&
           <Grid.Row >
             <Grid.Column >
-              <Heatmap key="2" data={portResults.transformedData} keys={portResults.uniqueListOfKeys} index="firstKey" name="Destination Port" width={800} height={1000}/>
+              <Heatmap key="1" data={portResults.transformedData} keys={portResults.uniqueListOfKeys} index="firstKey" name="Destination Port" width={800} height={1000}/>
             </Grid.Column>
           </Grid.Row>
           }

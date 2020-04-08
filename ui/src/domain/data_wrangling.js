@@ -22,7 +22,7 @@ const configureHeatmapData = (payload) => {
   const secondKey = payload.secondKey;
 
   const mappedfirstKey = data.map((dat)=>{
-    return dat[firstKey]
+    return dat[firstKey].toString();
   });
 
   const uniquemappedfirstKey = [...new Set(mappedfirstKey)];
