@@ -2,46 +2,24 @@ import React from 'react';
 import { Button, Form, Header, Segment } from 'semantic-ui-react';
 import { connect } from "react-redux";
 
-import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
 
 import Dropzone  from 'components/dropzone/Dropzone';
 import Progress from 'components/progress/Progress';
-import TermsOfService from 'components/about-legal-terms/TermsOfService';
 
 
 class Upload extends React.Component{
-    static propTypes = {
-        cookies: instanceOf(Cookies).isRequired
-    };
 
     constructor(props){
         super(props);
-        const { cookies } = props;
         this.state = {
             files: [],
             uploading: false,
             uploadProgress: {},
             successfullUploaded: false,
             resultId: null,
-            modalOpen:false, 
-            termsAccepted: cookies.get('termsAccepted') || false 
         };
 
-    }
-
-    handleTermsModal = () => {
-        this.setState(prevState => ({
-            modalOpen:!prevState.modalOpen
-        }))
-    }
-    
-    handleTermsStatus = () => {
-        this.setState(prevState => ({
-            termsAccepted:!prevState.termsAccepted
-        }), () => {
-            this.props.onSelectCookies(this.state.termsAccepted);
-        }); 
     }
 
     onFilesAdded = (files) => {
@@ -157,8 +135,8 @@ class Upload extends React.Component{
         
         <div>
             <Form size='large'>
-                <div onClick={this.handleTermsModal}>
-                    <div style={!this.state.termsAccepted ? {pointerEvents: "none", opacity: "0.4"} : {}}>
+                <div >
+                    <div >
                         <Header as='h2' color='teal' textAlign='center'>
                             Upload PCAP files:
                         </Header>
@@ -182,15 +160,8 @@ class Upload extends React.Component{
                         </Segment>
                     </div>
                 </div>
-                <div style={!this.state.termsAccepted ? {pointerEvents: "none", opacity: "0.4"} : {}} className="Actions">{this.renderActions()}</div>
+                <div className="Actions">{this.renderActions()}</div>
             </Form>
-            <TermsOfService 
-                openState={this.state.modalOpen} 
-                modalAction={this.handleTermsModal} 
-
-                termsState={this.state.termsAccepted} 
-                termsAction={this.handleTermsStatus}
-            />
         </div>
         )
     }
@@ -200,4 +171,4 @@ const mapStateToProps = null;
 
 const mapDispatchToProps = null;
 
-export default connect(mapStateToProps, mapDispatchToProps) (withCookies(Upload))
+export default connect(mapStateToProps, mapDispatchToProps) (Upload)
