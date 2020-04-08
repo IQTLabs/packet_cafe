@@ -28,12 +28,15 @@ const customStyles = {
 };
 
 const getPanes = (results, statuses, columns, tableLoading) => {
-  // TODO handle case if results is an empty list
-  const statusArray = Object.keys(statuses).map(key => ({
-    tool: String(key),
-    id: results[0].id,
-    ...statuses[key]
-  }));
+  // handle case if results is an empty list
+  var statusArray = {};
+  if (results.length > 0) {
+    statusArray = Object.keys(statuses).map(key => ({
+      tool: String(key),
+      id: results[0].id,
+      ...statuses[key]
+    }));
+  }
   console.log(statusArray);
   console.log(results);
   return results.map(function(result){
