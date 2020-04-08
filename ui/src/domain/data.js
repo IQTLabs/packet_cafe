@@ -13,12 +13,17 @@ const defaultState = {
 
 
 // ACTIONS
+const setSessionId = createAction("SET_SESSION_ID");
 const setResults = createAction("SET_RESULTS");
 const setToolStatus = createAction("SET_TOOL_STATUS");
 
 // REDUCERS
 const reducer = handleActions(
   {
+    [setSessionId]: (state, { payload }) => {
+      state.sessionId = payload;
+      return { ...state};
+    },
     [setResults]: (state, { payload }) => {
       const resultRows = payload;
       state.results.rows = resultRows
@@ -73,4 +78,4 @@ const getToolStatuses = (state) => {
 
 export default reducer;
 
-export { setResults, getResults, setToolStatus, getToolStatus, getToolStatuses }
+export { setSessionId, setResults, getResults, setToolStatus, getToolStatus, getToolStatuses }
