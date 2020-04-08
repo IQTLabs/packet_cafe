@@ -29,7 +29,7 @@ const customStyles = {
 
 const getPanes = (results, statuses, columns, tableLoading) => {
   // handle case if results is an empty list
-  var statusArray = {};
+  var statusArray = [];
   if (results.length > 0) {
     statusArray = Object.keys(statuses).map(key => ({
       tool: String(key),
