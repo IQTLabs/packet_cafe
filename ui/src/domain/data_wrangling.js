@@ -96,8 +96,6 @@ const reducer = handleActions(
 
 const getDataWranglingState = (state) => state.data_wrangling;
 
-
-
 export { setHeatmapData, getDataWranglingState}
 
 export default reducer;

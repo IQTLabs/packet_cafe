@@ -28,7 +28,9 @@ class App extends React.Component {
     super(props);
     const { cookies } = props;
     this.state = {
-      sessionId: cookies.get('sessionID') || SESSION_ID
+      sessionId: cookies.get('sessionID') || SESSION_ID,
+      ipResults: [],
+      portResults:[]
     };
   }
 
@@ -62,11 +64,15 @@ class App extends React.Component {
         return data.tool === "mercury"
     })
 
+    console.log(mercury);
+
     const url = `/raw/${sessionId}/${mercury[0].id}/${mercury[0].tool}`;
+    console.log(url);
 
     if(mercury[0].status == "Complete"){
       await fetch(url)
         .then((response) => {
+          console.log(response);
           return response.json();
         })
         .then((jsonData) => {
