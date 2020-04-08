@@ -28,6 +28,7 @@ const customStyles = {
 };
 
 const getPanes = (results, statuses, columns, tableLoading) => {
+  // TODO handle case if results is an empty list
   const statusArray = Object.keys(statuses).map(key => ({
     tool: String(key),
     id: results[0].id,
