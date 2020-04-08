@@ -7,11 +7,32 @@ import rootEpic from './epics/root-epic';
 // Replace redux compose with redux-devtools compose if it exists
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const configureStore = (initialState = {}) => {
+function saveToLocalStorage(state) {
+  try {
+    const serializedState = JSON.stringify(state)
+    localStorage.setItem('state', serializedState)
+  } catch(e) {
+    console.log(e)
+  }
+}
+
+function loadFromLocalStorage() {
+  try {
+    const serializedState = localStorage.getItem('state')
+    if (serializedState === null) return {}
+    return JSON.parse(serializedState)
+  } catch(e) {
+    console.log(e)
+    return {}
+  }
+}
+
+const configureStore = () => {
+  const persistedState = loadFromLocalStorage()
   const middleware = createEpicMiddleware()
 
   const store = createStore(rootReducer,
-    initialState,
+    persistedState,
     composeEnhancers(
       applyMiddleware(middleware)
     )
@@ -19,6 +40,7 @@ const configureStore = (initialState = {}) => {
 
   middleware.run(rootEpic);
 
+  store.subscribe(() => saveToLocalStorage(store.getState()))
   return store;
 };
 
