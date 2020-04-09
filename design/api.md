@@ -187,9 +187,46 @@ TODO
 
 ## `web` \(port 80\)
 
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1" %}
+{% api-method-summary %}
+/api/v1
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Enumerates the API endpoints for this service.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+Returns a list of of the available API endpoints for this service.
+{% endapi-method-response-example-description %}
+
+```
+[
+    "/api/v1",
+    "/api/v1/id/{session_id}/{req_id}/{tool}/{pcap}/{counter}/{filename}",
+    "/api/v1/ids/{session_id}",
+    "/api/v1/info",
+    "/api/v1/raw/{tool}/{counter}/{session_id}/{req_id}",
+    "/api/v1/results/{tool}/{counter}/{session_id}/{req_id}",
+    "/api/v1/status/{session_id}/{req_id}",
+    "/api/v1/stop/{session_id}/{req_id}",
+    "/api/v1/tools",
+    "/api/v1/upload"
+]
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
 {% api-method method="get" host="" path="" %}
 {% api-method-summary %}
-
+/api/v1/id/:sess\_id/:req\_id/:tool/:pcap/:counter/:filename
 {% endapi-method-summary %}
 
 {% api-method-description %}
