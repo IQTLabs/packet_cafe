@@ -16,10 +16,15 @@
 * [macOS](deployment/macos.md)
 * [Orchestration](deployment/orchestration.md)
 
+## Getting Started
+
+* [Uploading PCAP Files](getting-started/uploading-pcap-files.md)
+* [Results](getting-started/results.md)
+
 ## Testing
 
-* [Unit Tests](testing/unit-tests.md)
-* [Curl and Datamash](testing/untitled.md)
 * [Apache Benchmark](testing/apache-benchmark.md)
+* [Curl and Datamash](testing/untitled.md)
+* [Unit Tests](testing/unit-tests.md)
 * [FAQ](faq.md)
 
