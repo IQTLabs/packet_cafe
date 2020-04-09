@@ -16,6 +16,11 @@
 * [macOS](deployment/macos.md)
 * [Orchestration](deployment/orchestration.md)
 
+## Getting Started
+
+* [Uploading PCAP Files](getting-started/uploading-pcap-files.md)
+* [Results](getting-started/results.md)
+
 ## Testing
 
 * [Apache Benchmark](testing/apache-benchmark.md)
