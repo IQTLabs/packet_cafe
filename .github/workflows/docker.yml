@@ -62,4 +62,4 @@ jobs:
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
           -t cyberreboot/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
-      if: github.repository == 'cyberreboot/poseidon' && github.event_name == 'push'
+      if: github.repository == 'cyberreboot/packet_cafe' && github.event_name == 'push'
