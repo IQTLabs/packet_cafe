@@ -47,26 +47,14 @@ class App extends React.Component {
       console.log("This House Oldification complete")
   }
 
-  handleCookies = (termsAccepted) => {
-    const { cookies } = this.props;
-    cookies.set('sessionID', this.state.sessionId, { 
-      path: '/',
-      maxAge:'3600' 
-    });
-    cookies.set('termsAccepted', termsAccepted, { 
-      path: '/',
-      maxAge:'3600'
-    });
-  }
-
-  render() { 
+  render() {
     return (
       <>
         <Navbar/>
         <Grid textAlign='center' container style={{ height: '100vh' }}>
           <Grid.Row columns={1}>
             <Grid.Column style={{ maxWidth: 240 }}>
-              <Upload onSelectCookies={this.handleCookies} sessionId={this.state.sessionId}/>
+              <Upload sessionId={this.state.sessionId}/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
@@ -76,6 +64,9 @@ class App extends React.Component {
                 </Button>
                 <Button circular basic color='teal' onClick={this.fetchStatuses}>
                   Bob Villa was useless. (Fetch Statuses)
+                </Button>
+                <Button circular basic color='orange' onClick={() => { localStorage.clear() }}>
+                  Clear Results
                 </Button>
             </Grid.Column>
           </Grid.Row>
