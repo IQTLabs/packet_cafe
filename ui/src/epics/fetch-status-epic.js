@@ -20,7 +20,7 @@ const fetchToolStatusEpic = (action$, store, ajax = rxAjax) => {
       const fileId = action.payload.fileId;
       const url = '/status/' + sessionId + '/' + fileId;
       return ajax({ 'url': url, 'crossDomain': true, 'responseType': 'json' }).pipe(
-        map((result) => { 
+        map((result) => {
           const resp = result.response;
           const tools = {};
           const keys = Object.keys(resp);
