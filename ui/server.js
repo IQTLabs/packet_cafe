@@ -109,6 +109,23 @@ app.get('/id/:session/:id/:tool/:pcap/:counter/:file', function(req, res) {
 
 });
 
+// render tools available
+app.get('/tools', function(req, res) {
+  var url = 'http://lb/api/v1/tools'
+
+  request.get({url:url}, function optionalCallback(err, httpResponse, body) {
+    if (err) {
+      res.set('Content-Type', 'application/json');
+      res.send([]);
+      return console.error('failed:', err);
+    }
+    console.log(body);
+    res.set('Content-Type', 'application/json');
+    res.send(body);
+  });
+
+});
+
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
