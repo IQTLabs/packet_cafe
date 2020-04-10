@@ -8,7 +8,7 @@ This tool supports Drag and Drop onto the upload page.
 
 This project is built with [ReactJS](https://reactjs.org).
 
-This project is a bootstrapped using [create-react-app](https://github.com/facebook/create-react-app).
+This project is bootstrapped using [create-react-app](https://github.com/facebook/create-react-app).
 
 Here are quick scripts to get started:
 
@@ -21,8 +21,6 @@ Here are quick scripts to get started:
 ### Project Structure
 
 - `src/components` contains modular components to each page
-
-- `src/pages` contains page layouts for each view
 
 ## Resources
 - [Dropzone Mechanic](https://malcoded.com/posts/react-dropzone/).
