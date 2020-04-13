@@ -224,20 +224,40 @@ Returns a list of of the available API endpoints for this service.
 {% endapi-method-spec %}
 {% endapi-method %}
 
-{% api-method method="get" host="" path="" %}
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/id/:sess\_id/:req\_id/:tool/:pcap/:counter/:filename" %}
 {% api-method-summary %}
 /api/v1/id/:sess\_id/:req\_id/:tool/:pcap/:counter/:filename
 {% endapi-method-summary %}
 
 {% api-method-description %}
-
+Serves up the results from a file produced by a tool given a specific PCAP uploaded for rendering.
 {% endapi-method-description %}
 
 {% api-method-spec %}
 {% api-method-request %}
 {% api-method-path-parameters %}
-{% api-method-parameter name="" type="string" required=false %}
+{% api-method-parameter name="filename" type="string" required=true %}
+Filename to serve up that is returning results from the tool.
+{% endapi-method-parameter %}
 
+{% api-method-parameter name="counter" type="number" required=true %}
+Which result file number to get, if only one use 1
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="pcap" type="string" required=true %}
+The name of the PCAP file
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="tool" type="string" required=true %}
+The tool to get results from
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="req\_id" type="string" required=true %}
+The ID of the file request
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="sess\_id" type="string" required=true %}
+The ID of the session
 {% endapi-method-parameter %}
 {% endapi-method-path-parameters %}
 {% endapi-method-request %}
@@ -245,11 +265,72 @@ Returns a list of of the available API endpoints for this service.
 {% api-method-response %}
 {% api-method-response-example httpCode=200 %}
 {% api-method-response-example-description %}
-
+Returns the contents of the results file, could be text or images or whatever.
 {% endapi-method-response-example-description %}
 
 ```
 
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/ids/:sess\_id" %}
+{% api-method-summary %}
+/api/v1/ids/:sess\_id
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Returns a list of all IDs and info about them for this session ID.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-path-parameters %}
+{% api-method-parameter name="sess\_id" type="string" required=true %}
+Session ID
+{% endapi-method-parameter %}
+{% endapi-method-path-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+Returns a list of all IDs and info about them for a given session ID.
+{% endapi-method-response-example-description %}
+
+```
+[{"id": "ab7af73526814d58bf35f1399a5594b2", "filename": "trace_ab7af73526814d58bf35f1399a5594b2_2020-04-09_23_38_56.pcap", "tools": ["networkml", "mercury", "pcap-stats", "snort", "p0f", "pcapplot"], "original_filename": "smallFlows.pcap"}]
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/info" %}
+{% api-method-summary %}
+/api/v1/info
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Returns basic information about the service, such as version.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+Returns basic information about the service, such as version.
+{% endapi-method-response-example-description %}
+
+```
+{
+    "version": "v0.1.0",
+    "hostname": "0425707763d8"
+}
 ```
 {% endapi-method-response-example %}
 {% endapi-method-response %}
