@@ -308,6 +308,35 @@ Returns a list of all IDs and info about them for a given session ID.
 {% endapi-method-spec %}
 {% endapi-method %}
 
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/info" %}
+{% api-method-summary %}
+/api/v1/info
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Returns basic information about the service, such as version.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+Returns basic information about the service, such as version.
+{% endapi-method-response-example-description %}
+
+```
+{
+    "version": "v0.1.0",
+    "hostname": "0425707763d8"
+}
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
 TODO
 
 ## `ui` \(port 80\)
