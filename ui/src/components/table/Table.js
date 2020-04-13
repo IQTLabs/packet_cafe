@@ -103,7 +103,13 @@ class Table extends React.Component{
           </div>,
       },
       { name: 'Timestamp', className: '',
-        cell: row => <div>{row.timestamp}</div>,
+        //cell: row => <div>{d.setUTCSeconds(row.timestamp)}</div>,
+        //var d = new Date(0);
+        cell: row => {
+            const d = new Date(0);
+            d.setUTCSeconds(row.timestamp/1000);
+            return <div>{d.toString().split("GMT")[0]}</div>
+        },
       },
       { name: 'Results', className: 'text-center',
         cell: row => <div>{this.renderTool(row, 'results')}</div>,
