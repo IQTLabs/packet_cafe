@@ -12,7 +12,7 @@ const startFetchResults = createAction('START_FETCH_RESULTS');
 const stopFetchResults = createAction('STOP_FETCH_RESULTS');
 
 // EPIC
-const fetchResultsEpic = (action$, store, ajax = rxAjax) => {
+const autoFetchResultsEpic = (action$, store, ajax = rxAjax) => {
   return action$.pipe(
     ofType(startFetchResults.toString())
     ,debounceTime(500)
@@ -36,5 +36,5 @@ const fetchResultsEpic = (action$, store, ajax = rxAjax) => {
   );
 }
 
-export default fetchResultsEpic;
+export default autoFetchResultsEpic;
 export { startFetchResults, stopFetchResults };
