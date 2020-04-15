@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 import { ofType } from 'redux-observable';
-import { of } from 'rxjs';
+import { of, EMPTY } from 'rxjs';
 import { ajax  as rxAjax } from 'rxjs/ajax';
 import { catchError, debounceTime, mergeMap, map } from 'rxjs/operators';
 
@@ -20,7 +20,7 @@ const fetchResultsEpic = (action$, store, ajax = rxAjax) => {
       const url = '/ids/' + sessionId;
       return ajax({ 'url': url, 'crossDomain': true, 'responseType': 'json' }).pipe(
         map((result) => {
-
+          console.log(result);
           return result.response ;
         })
         ,map(setResults)
@@ -29,6 +29,7 @@ const fetchResultsEpic = (action$, store, ajax = rxAjax) => {
     ,catchError((error) => {
       console.log("error xhr: %o", error)
       const newErr = new Error("Error fetching results: " + error.message);
+      return EMPTY;
       //return of(setError(newErr));
     })
   );

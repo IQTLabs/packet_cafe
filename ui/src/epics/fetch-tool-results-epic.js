@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 import { ofType } from 'redux-observable';
-import { of } from 'rxjs';
+import { of, EMPTY } from 'rxjs';
 import { ajax  as rxAjax } from 'rxjs/ajax';
 import { catchError, debounceTime, mergeMap, map } from 'rxjs/operators';
 
@@ -32,6 +32,7 @@ const fetchToolResultsEpic = (action$, store, ajax = rxAjax) => {
     ,catchError((error) => {
       console.log("error xhr: %o", error)
       const newErr = new Error("Error fetching results: " + error.message);
+      return EMPTY;
       //return of(setError(newErr));
     })
   );

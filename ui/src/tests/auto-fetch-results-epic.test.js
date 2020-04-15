@@ -15,9 +15,7 @@ describe("autoFetchResultsEpic", () =>{
 		const action$ = ActionsObservable.of(startFetchResults(data));
 		autoFetchResultsEpic(action$).toPromise()
 			.then((actionsOut) => {
-				//console.log(actionsOut);
 				expect(actionsOut.type).toBe(stopFetchResults.toString());
-
 			})
 			.catch((error) => {
 				expect(false).to.equal(true);
