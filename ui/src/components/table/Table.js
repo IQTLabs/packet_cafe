@@ -37,8 +37,7 @@ const getPanes = (results, statuses, columns, tableLoading) => {
       ...statuses[key]
     }));
   }
-  console.log(statusArray);
-  console.log(results);
+
   return results.map(function(result){
     return {
       menuItem: result.filename,

@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Grid, Button } from 'semantic-ui-react';
 
+import { startFetchResults, stopFetchResults } from "epics/auto-fetch-results-epic"
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
 import { setSessionId, getResults, getToolStatuses } from 'domain/data';
@@ -30,6 +31,17 @@ class App extends React.Component {
     this.state = {
       sessionId: sessionId
     };
+  }
+
+  componentWillMount() {
+    const interval = this.props.refreshInterval || 5;
+    const sessionId = this.state.sessionId;
+    this.props.startFetchResults({ 'sessionId': sessionId, 'interval': interval });
+  }
+
+  componentWillUnmount() {
+    console.log("unmount called");
+    this.props.stopFetchResults();
   }
 
   fetchResults = () => {
@@ -95,6 +107,8 @@ const mapDispatchToProps = {
     setSessionId,
     fetchResults,
     fetchToolStatus,
+    startFetchResults,
+    stopFetchResults,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withCookies(App));
