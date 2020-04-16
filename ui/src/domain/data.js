@@ -16,6 +16,7 @@ const defaultState = {
 const setSessionId = createAction("SET_SESSION_ID");
 const setResults = createAction("SET_RESULTS");
 const setToolStatus = createAction("SET_TOOL_STATUS");
+const setTools = createAction("SET_TOOLS");
 
 // REDUCERS
 const reducer = handleActions(
@@ -27,6 +28,10 @@ const reducer = handleActions(
     [setResults]: (state, { payload }) => {
       const resultRows = payload;
       state.results.rows = resultRows
+      return { ...state};
+    },
+    [setTools]: (state, { payload }) => {
+      state.tools = payload;
       return { ...state};
     },
     [setToolStatus]: (state, { payload }) => {
@@ -65,6 +70,10 @@ const _getToolStatuses = (toolStatuses, toolId) => {
   return status;
 }
 
+const _getTools = (results) => {
+  return results || {};
+}
+
 // SELECTORS
 const getResults = (state) => {
   return _getResults(state.data.results);
@@ -75,7 +84,10 @@ const getToolStatus = (state, toolId) => {
 const getToolStatuses = (state) => {
   return _getToolStatuses(state.data.toolStatus || {}, null)
 }
+const getTools = (state) => {
+  return _getTools(state.data.tools || [], null)
+}
 
 export default reducer;
 
-export { setSessionId, setResults, getResults, setToolStatus, getToolStatus, getToolStatuses }
+export { setSessionId, setResults, getTools, getResults, setToolStatus, setTools, getToolStatus, getToolStatuses }
