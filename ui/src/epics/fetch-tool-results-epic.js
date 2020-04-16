@@ -8,19 +8,22 @@ import { setResults } from "domain/data";
 //import { setError } from "domain/error";
 
 // ACTIONS
-const fetchResults = createAction('FETCH_RESULTS');
+const fetchToolResults = createAction('FETCH_TOOL_RESULTS');
 
 // EPIC
-const fetchResultsEpic = (action$, store, ajax = rxAjax) => {
+const fetchToolResultsEpic = (action$, store, ajax = rxAjax) => {
   return action$.pipe(
-    ofType(fetchResults.toString())
+    ofType(fetchToolResults.toString())
     ,debounceTime(500)
     ,mergeMap((action) => {
+      const tool = action.payload.tool;
+      const counter = action.payload.counter;
       const sessionId = action.payload.sessionId;
-      const url = '/ids/' + sessionId;
+      const reqId = action.payload.reqId;
+      const url = "/raw/" + tool + "/" + counter + "/" + sessionId + "/" + reqId;
       return ajax({ 'url': url, 'crossDomain': true, 'responseType': 'json' }).pipe(
-        map((result) => {
-          console.log(result);
+        map((result) => { 
+
           return result.response ;
         })
         ,map(setResults)
@@ -35,5 +38,5 @@ const fetchResultsEpic = (action$, store, ajax = rxAjax) => {
   );
 }
 
-export default fetchResultsEpic;
-export { fetchResults };
+export default fetchToolResultsEpic;
+export { fetchToolResults };
