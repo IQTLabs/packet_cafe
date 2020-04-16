@@ -1,8 +1,21 @@
 # Storage
 
-TODO
+All of the results of each tool is stored on the filesystem. If a worker output isn't a new file such as a modified PCAP or an image, but is instead metadata, this gets stored in a `JSON` file.
 
-For example, downloading `smallFlows.pcap` \([https://tcpreplay.appneta.com/wiki/captures.html](https://tcpreplay.appneta.com/wiki/captures.html)\) and running it through the Packet Café service will result in the following file outputs and storage structure:
+By default, the files and results are stored in 4 directories:
+
+```text
+/definitions
+/files
+/id
+/redis
+```
+
+{% hint style="info" %}
+The default location of those 4 directories can be overridden with an environment variable `VOL_PREFIX`
+{% endhint %}
+
+With all of the default tools enabled, here's an example of what Packet Café will do. First download `smallFlows.pcap` \([https://tcpreplay.appneta.com/wiki/captures.html](https://tcpreplay.appneta.com/wiki/captures.html)\) and then upload it through the home page of the Packet Café service \([http://0.0.0.0/](http://0.0.0.0/)\) and once all of the workers have finished it will result in the following file outputs and storage structure \(see: [Getting Started](https://cyberreboot.gitbook.io/packet-cafe/getting-started)\):
 
 ```text
 ├── definitions

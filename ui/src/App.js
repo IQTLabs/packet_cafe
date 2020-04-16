@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Grid, Button } from 'semantic-ui-react';
 
+import { startFetchResults, stopFetchResults } from "epics/auto-fetch-results-epic"
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
 import { setSessionId, getResults, getToolStatuses } from 'domain/data';
@@ -32,6 +33,17 @@ class App extends React.Component {
     };
   }
 
+  componentWillMount() {
+    const interval = this.props.refreshInterval || 5;
+    const sessionId = this.state.sessionId;
+    this.props.startFetchResults({ 'sessionId': sessionId, 'interval': interval });
+  }
+
+  componentWillUnmount() {
+    console.log("unmount called");
+    this.props.stopFetchResults();
+  }
+
   fetchResults = () => {
       console.log("Peasant Burnination initiated...");
       this.props.fetchResults({ 'sessionId': this.state.sessionId });
@@ -47,26 +59,14 @@ class App extends React.Component {
       console.log("This House Oldification complete")
   }
 
-  handleCookies = (termsAccepted) => {
-    const { cookies } = this.props;
-    cookies.set('sessionID', this.state.sessionId, { 
-      path: '/',
-      maxAge:'3600' 
-    });
-    cookies.set('termsAccepted', termsAccepted, { 
-      path: '/',
-      maxAge:'3600'
-    });
-  }
-
-  render() { 
+  render() {
     return (
       <>
         <Navbar/>
         <Grid textAlign='center' container style={{ height: '100vh' }}>
           <Grid.Row columns={1}>
             <Grid.Column style={{ maxWidth: 240 }}>
-              <Upload onSelectCookies={this.handleCookies} sessionId={this.state.sessionId}/>
+              <Upload sessionId={this.state.sessionId}/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
@@ -76,6 +76,9 @@ class App extends React.Component {
                 </Button>
                 <Button circular basic color='teal' onClick={this.fetchStatuses}>
                   Bob Villa was useless. (Fetch Statuses)
+                </Button>
+                <Button circular basic color='orange' onClick={() => { localStorage.clear() }}>
+                  Clear Results
                 </Button>
             </Grid.Column>
           </Grid.Row>
@@ -104,6 +107,8 @@ const mapDispatchToProps = {
     setSessionId,
     fetchResults,
     fetchToolStatus,
+    startFetchResults,
+    stopFetchResults,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withCookies(App));

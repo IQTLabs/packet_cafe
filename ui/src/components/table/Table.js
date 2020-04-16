@@ -37,8 +37,7 @@ const getPanes = (results, statuses, columns, tableLoading) => {
       ...statuses[key]
     }));
   }
-  console.log(statusArray);
-  console.log(results);
+
   return results.map(function(result){
     return {
       menuItem: result.filename,
@@ -89,38 +88,6 @@ class Table extends React.Component{
     )
   }
 
-  renderStatus = (item) => {
-    const id = item.id;
-    const url = `/status/${this.props.sessionId}/${id}`;
-    return(
-          <p key={id}>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              Check Status
-            </a>
-          </p>
-    );
-  }
-
-  getTableColumns = () => {
-    const tableColumns = [
-      // { name: 'ID', selector: 'id' },
-      // { name: 'Filename', selector: 'original_filename' },
-      { name: 'Tools', className: 'text-center',
-        cell: row => <div>{this.renderTools(row, 'results')}</div>,
-      },
-      { name: 'Tools (Raw)', className: 'text-center',
-        cell: row => <div>{this.renderTools(row, 'raw')}</div>,
-      },
-      // { title: 'Results', render: renderResultsUrl, className: 'text-center' },
-      { name: 'Report', selector: 'report', cell: row => <p>{ row.report ? row.report : 'no report available' }</p> },
-      { name: 'Status', className: 'text-center',
-        cell: row => <div>{this.renderStatus(row)}</div>,
-      },
-    ];
-
-    return tableColumns;
-  }
-
   //NEW
   getToolsTableColumns = () => {
     const tableColumns = [
@@ -135,7 +102,13 @@ class Table extends React.Component{
           </div>,
       },
       { name: 'Timestamp', className: '',
-        cell: row => <div>{row.timestamp}</div>,
+        //cell: row => <div>{d.setUTCSeconds(row.timestamp)}</div>,
+        //var d = new Date(0);
+        cell: row => {
+            const d = new Date(0);
+            d.setUTCSeconds(row.timestamp/1000);
+            return <div>{d.toString().split("GMT")[0]}</div>
+        },
       },
       { name: 'Results', className: 'text-center',
         cell: row => <div>{this.renderTool(row, 'results')}</div>,
@@ -149,7 +122,6 @@ class Table extends React.Component{
   }
 
   render() {
-    // const columns = this.getTableColumns(); //original
     const columns = this.getToolsTableColumns();
     const { rows, isLoading, statuses } = this.props;
 

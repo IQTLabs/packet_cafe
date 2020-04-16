@@ -3,7 +3,7 @@
     {
       "name": "pcapplot",
       "image": "cyberreboot/pcapplot",
-      "version": "v0.1.4",
+      "version": "v0.1.5",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -17,7 +17,7 @@
     {
       "name": "pcap-splitter",
       "image": "cyberreboot/pcap-to-node-pcap",
-      "version": "v0.11.0",
+      "version": "v0.11.6",
       "labels": "",
       "stage": "preprocessing",
       "viewableOutput": false,
@@ -34,7 +34,7 @@
     {
       "name": "ncapture",
       "image": "cyberreboot/ncapture",
-      "version": "latest",
+      "version": "v0.11.6",
       "labels": "",
       "stage": "preprocessing",
       "viewableOutput": false,
@@ -53,7 +53,7 @@
     {
       "name": "pcap-dot1q",
       "image": "cyberreboot/tcprewrite-dot1q",
-      "version": "v0.11.0",
+      "version": "v0.11.6",
       "labels": "",
       "stage": "preprocessing",
       "viewableOutput": false,
@@ -70,7 +70,7 @@
     {
       "name": "networkml",
       "image": "cyberreboot/networkml",
-      "version": "v0.4.5",
+      "version": "v0.4.8",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -96,7 +96,7 @@
     {
       "name": "snort",
       "image": "cyberreboot/snort",
-      "version": "v0.11.0",
+      "version": "v0.11.6",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -115,7 +115,7 @@
     {
       "name": "pcap-stats",
       "image": "cyberreboot/pcap-stats",
-      "version": "v0.11.0",
+      "version": "v0.11.6",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -134,7 +134,7 @@
     {
       "name": "mercury",
       "image": "cyberreboot/mercury",
-      "version": "latest",
+      "version": "v0.11.6",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
@@ -153,7 +153,7 @@
     {
       "name": "p0f",
       "image": "cyberreboot/p0f",
-      "version": "v0.11.0",
+      "version": "v0.11.6",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
