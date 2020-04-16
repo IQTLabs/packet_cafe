@@ -79,7 +79,6 @@ class Table extends React.Component{
     const id = item.id;
     const value = item.tool;
 
-    console.log(this.props.tools);
     for(const tool of this.props.tools){
       if(tool.name == value && tool.viewableOutput == false) {
         return(
