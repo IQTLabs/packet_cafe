@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Tab, Icon, Label } from 'semantic-ui-react';
 import './Table.css';
 
-import { getResults, getToolStatuses } from 'domain/data';
+import { getResults, getToolStatuses, getTools } from 'domain/data';
 
 const customStyles = {
   rows: {
@@ -78,6 +78,16 @@ class Table extends React.Component{
   renderTool = (item, type) => {
     const id = item.id;
     const value = item.tool;
+
+    console.log(this.props.tools);
+    for(const tool of this.props.tools){
+      if(tool.name == value && tool.viewableOutput == false) {
+        return(
+          <p>This tool does not generate results.</p>
+        )
+      }
+    }
+
     const url = `/${type}/${this.props.sessionId}/${id}/${value}`
     return(
       <p key={id + ":" +value}>
@@ -133,9 +143,11 @@ const mapStateToProps = (state, ownProps) => {
 
   const results = getResults(state);
   const toolStatuses = getToolStatuses(state);
+  const tools = getTools(state);
   return{
     rows: results.rows || [],
     statuses: toolStatuses || {},
+    tools: tools || [],
   }
 };
 

@@ -9,6 +9,7 @@ import { Grid, Button } from 'semantic-ui-react';
 import { startFetchResults, stopFetchResults } from "epics/auto-fetch-results-epic"
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
+import { fetchTools } from 'epics/fetch-tools-epic'
 import { setSessionId, getResults, getToolStatuses } from 'domain/data';
 
 import './App.css';
@@ -47,6 +48,7 @@ class App extends React.Component {
   fetchResults = () => {
       console.log("Peasant Burnination initiated...");
       this.props.fetchResults({ 'sessionId': this.state.sessionId });
+      this.props.fetchTools();
       console.log("Peasant Burnination complete!");
   }
 
@@ -58,6 +60,7 @@ class App extends React.Component {
       console.log("statuses: %o", this.props.statuses)
       console.log("This House Oldification complete")
   }
+
 
   render() {
     return (
@@ -107,6 +110,7 @@ const mapDispatchToProps = {
     setSessionId,
     fetchResults,
     fetchToolStatus,
+    fetchTools,
     startFetchResults,
     stopFetchResults,
 };
