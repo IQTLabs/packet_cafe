@@ -30,4 +30,3 @@ ui/uploads
 ui/coverage
 *.swp
 sample.pcap
-ui/src/components/heatmap/data.json

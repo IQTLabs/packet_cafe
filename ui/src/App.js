@@ -8,7 +8,7 @@ import { Grid, Button } from 'semantic-ui-react';
 
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
-import { setHeatmapData, getDataWranglingState } from 'domain/data_wrangling';
+import { setHeatmapData, setPacketStatisticsData,  getDataWranglingState } from 'domain/data_wrangling';
 import { setSessionId, getResults, getToolStatuses } from 'domain/data';
 
 import './App.css';
@@ -16,6 +16,10 @@ import Upload from 'components/upload/Upload';
 import Navbar from 'components/Navbar';
 import Table from 'components/table/Table.js';
 import Heatmap from 'components/heatmap/Heatmap.js';
+import PcapCard from 'components/pcapstats/PcapCard.js';
+
+import mercuryData from 'components/heatmap/data.json';
+import pcapStatsData from 'components/pcapstats/data.json';
 
 const SESSION_ID = uuidv4();
 
@@ -30,25 +34,37 @@ class App extends React.Component {
     const sessionId = cookies.get('sessionID') || SESSION_ID
     this.props.setSessionId(sessionId);
     this.state = {
-      ipResults: [],
-      portResults:[],
+      ipResults:null,
+      portResults: null,
+      packetStats:null,
       sessionId: sessionId
     };
   }
-
+  componentDidMount(){
+    this.fetchHeatmapData()
+    this.fetchStatsData()
+  }
   static getDerivedStateFromProps(props, state) {
     // Any time the current user changes,
     // Reset any parts of state that are tied to that user.
     // In this simple example, that's just the email.
-    const { ipResults, portResults } = props.vizData.heatmap;
-    if (props.ipResults !== state.ipResults) {
+    const { vizData } = props;
+    if (vizData !== state.vizData) {
       return {
-        ipResults: ipResults,
-        portResults: portResults
+        ipResults: vizData.heatmap.ipResults,
+        portResults: vizData.heatmap.portResults,
+        packetStats: vizData.packetstats
       };
     }
-    return null;
   }
+
+  // componentDidUpdate(prevProps){
+  //   const { vizData } = this.props;
+  //   if (vizData !== prevProps.vizData) {
+  //       this.fetchHeatmapData()
+  //       this.fetchStatsData()
+  //   }
+  // }
 
   fetchResults = () => {
       console.log("Peasant Burnination initiated...");
@@ -68,33 +84,33 @@ class App extends React.Component {
 
   fetchHeatmapData = async () => {
     const { setHeatmapData, rows, statuses } = this.props;
-    const { sessionId } = this.state;
+    // const { sessionId } = this.state;
 
-    const statusArray = Object.keys(statuses).map(key => ({
-      tool: String(key), 
-      id: rows[0].id,
-      ...statuses[key]
-    }));
+    // const statusArray = Object.keys(statuses).map(key => ({
+    //   tool: String(key), 
+    //   id: rows[0].id,
+    //   ...statuses[key]
+    // }));
 
-    const mercury = statusArray.filter((data)=>{
-        return data.tool === "mercury"
-    })
+    // const mercury = statusArray.filter((data)=>{
+    //     return data.tool === "mercury"
+    // })
 
-    console.log(mercury);
+    // console.log(mercury);
 
-    const url = `/raw/${sessionId}/${mercury[0].id}/${mercury[0].tool}`;
-    console.log(url);
+    // const url = `/raw/${sessionId}/${mercury[0].id}/${mercury[0].tool}`;
+    // console.log(url);
 
-    if(mercury[0].status == "Complete"){
-      await fetch(url)
-        .then((response) => {
-          return response.json();
-        })
-        .then((jsonData) => {
+    // if(mercury[0].status == "Complete"){
+    //   await fetch(url)
+    //     .then((response) => {
+    //       return response.json();
+    //     })
+    //     .then((jsonData) => {
           var ipData = {
             type:"ip",
-            data:jsonData[0],
-            // data:json,
+            // data:jsonData[0],
+            data:mercuryData,
             firstKey:"dst_ip",
             secondKey:"src_ip"
           }
@@ -103,16 +119,24 @@ class App extends React.Component {
     
           var portData = {
             type:"port",
-            data:jsonData[0],
-            // data: json,
+            // data:jsonData[0],
+            data: mercuryData,
             firstKey:"dst_port",
             secondKey:"src_port"
           }
     
           setHeatmapData(portData);
-        });
-     }
+    //     });
+    //  }
 
+  }
+
+  fetchStatsData = async () => {
+    const { setPacketStatisticsData, rows, statuses } = this.props;
+
+    const tsharkObject = pcapStatsData[0]['tshark'];
+
+    setPacketStatisticsData(tsharkObject)
   }
 
   handleCookies = (termsAccepted) => {
@@ -128,7 +152,8 @@ class App extends React.Component {
   }
 
   render() { 
-    const { ipResults, portResults } = this.state;
+    const { ipResults, portResults, packetStats } = this.state; 
+    console.log(ipResults, portResults, packetStats) 
 
     return (
       <>
@@ -169,6 +194,26 @@ class App extends React.Component {
             </Grid.Column>
           </Grid.Row>
           }
+
+          {packetStats &&
+            <Grid.Row columns={3} >
+              <Grid.Column>
+                {packetStats.map((item, key)=>{
+                  return(<PcapCard subtitle={"Average Bytes Size"} title={item["Average Bytes Size"]} />)
+                })}
+              </Grid.Column>
+              <Grid.Column>
+                {packetStats.map((item, key)=>{
+                  return(<PcapCard subtitle={"Percentage of Total Packet Size"} title={item["Percentage of Total Packet Size"]} />)
+                })}
+              </Grid.Column>
+              <Grid.Column>
+                {packetStats.map((item, key)=>{
+                  return(<PcapCard subtitle={"Percentage of Total Byte Size"} title={item["Percentage of Total Byte Size"]} />)
+                })}
+              </Grid.Column>
+            </Grid.Row>
+          } 
         </Grid>
       </>
     );
@@ -192,7 +237,8 @@ const mapDispatchToProps = {
     setSessionId,
     fetchResults,
     fetchToolStatus,
-    setHeatmapData
+    setHeatmapData,
+    setPacketStatisticsData
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withCookies(App));
