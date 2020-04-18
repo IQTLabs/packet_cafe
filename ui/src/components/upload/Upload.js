@@ -6,6 +6,7 @@ import { instanceOf } from 'prop-types';
 
 import Dropzone  from 'components/dropzone/Dropzone';
 import Progress from 'components/progress/Progress';
+import { startFetchResults } from "epics/auto-fetch-results-epic"
 
 
 class Upload extends React.Component{
@@ -23,6 +24,9 @@ class Upload extends React.Component{
     }
 
     onFilesAdded = (files) => {
+        const interval = this.props.refreshInterval || 5;
+        const sessionId = this.props.sessionId;
+        this.props.startFetchResults({ 'sessionId': sessionId, 'interval': interval });
         this.setState(prevState => ({
             files: prevState.files.concat(files)
         }));
@@ -169,6 +173,8 @@ class Upload extends React.Component{
 
 const mapStateToProps = null;
 
-const mapDispatchToProps = null;
+const mapDispatchToProps = {
+    startFetchResults,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps) (Upload)

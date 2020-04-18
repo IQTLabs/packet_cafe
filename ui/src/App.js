@@ -34,12 +34,6 @@ class App extends React.Component {
     };
   }
 
-  componentWillMount() {
-    const interval = this.props.refreshInterval || 5;
-    const sessionId = this.state.sessionId;
-    this.props.startFetchResults({ 'sessionId': sessionId, 'interval': interval });
-  }
-
   componentWillUnmount() {
     console.log("unmount called");
     this.props.stopFetchResults();
@@ -69,7 +63,7 @@ class App extends React.Component {
         <Grid textAlign='center' container style={{ height: '100vh' }}>
           <Grid.Row columns={1}>
             <Grid.Column style={{ maxWidth: 240 }}>
-              <Upload sessionId={this.state.sessionId}/>
+              <Upload sessionId={this.state.sessionId} refreshInterval={this.props.refreshInterval}/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
