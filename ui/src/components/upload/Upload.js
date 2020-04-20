@@ -78,7 +78,6 @@ class Upload extends React.Component{
                 console.log("error event: %o", event);
                 reject(req.response);
             });
-            console.log("sessionId: %o", sessionId);
             
             const formData = new FormData();
             //
@@ -112,7 +111,6 @@ class Upload extends React.Component{
 
     renderActions = () => {
         if (this.state.successfullUploaded) {
-            console.log(this.props.data);
             return (
             <Button
                 onClick={() =>

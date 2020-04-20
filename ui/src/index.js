@@ -28,7 +28,7 @@ if (module.hot) {
     ReactDOM.render(
     <CookiesProvider>
       <Provider store={store}>
-        <App />
+        <App refreshInterval="3"/>
       </Provider>
     </CookiesProvider>,
       document.getElementById("root")

@@ -27,18 +27,23 @@ const customStyles = {
   },
 };
 
-const getPanes = (results, statuses, columns, tableLoading) => {
-  // handle case if results is an empty list
+const getStatusArray = (fileId, fileStatuses) => {
   var statusArray = [];
-  if (results.length > 0) {
+  const statuses = fileStatuses[fileId];
+
+  if(statuses){
     statusArray = Object.keys(statuses).map(key => ({
       tool: String(key),
-      id: results[0].id,
+      id: fileId,
       ...statuses[key]
     }));
   }
+  
+  return statusArray;
+}
 
-  return results.map(function(result){
+const getPanes = (results, statuses, columns, tableLoading) => {
+  return results.map((result) =>{
     return {
       menuItem: result.filename,
       render: () =>
@@ -47,7 +52,7 @@ const getPanes = (results, statuses, columns, tableLoading) => {
             keyField="id"
             title={result.id}
             columns={columns}
-            data={statusArray}
+            data={getStatusArray(result.id, statuses)}
             progressPending={tableLoading}
             customStyles={customStyles}
           />

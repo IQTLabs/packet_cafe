@@ -4,7 +4,7 @@ import { createEpicMiddleware } from 'redux-observable';
 import { of, throwError } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
-import { setResults } from "domain/data";
+import { setToolResults } from "domain/data";
 import rootEpic from 'epics/root-epic'
 import { fetchToolResults } from "epics/fetch-tool-results-epic"
 
@@ -16,8 +16,8 @@ describe("fetchToolResultsEpic", () => {
     const sessionId = uuidv4();
     const tool = "test";
 	const counter = "test";
-	const reqId = uuidv4();
-    const data = [
+	const fileId = uuidv4();
+    const results = [
     {
         "Alerts": [
             ""
@@ -223,6 +223,7 @@ describe("fetchToolResultsEpic", () => {
         ]
     }
 ]
+    const data = {'file': fileId, 'tool':tool, 'results': results };
     const mockResponse = data;
     const mockAjax = () => {
         return  of({ 'response': mockResponse });
@@ -251,9 +252,9 @@ describe("fetchToolResultsEpic", () => {
     });
 
     it("fetches an array of tool results", (done) => {
-        let typeToCheck = setResults.toString();
+        let typeToCheck = setToolResults.toString();
 
-        const action$ = of({'type': fetchToolResults.toString(), 'payload': { 'sessionId': sessionId, 'tool': tool, 'counter': counter, 'reqId': reqId } });
+        const action$ = of({'type': fetchToolResults.toString(), 'payload': { 'sessionId': sessionId, 'tool': tool, 'counter': counter, 'fileId': fileId } });
         fetchToolResultsEpic(action$, store, mockAjax)
              .subscribe((actions) => {
                 expect(actions.type).to.equal(typeToCheck);

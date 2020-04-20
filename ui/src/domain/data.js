@@ -7,6 +7,7 @@ const defaultState = {
     columns:['id']
   },
   toolStatus: {},
+  toolResults: {},
   isLoading: false
 };
 
@@ -16,6 +17,7 @@ const defaultState = {
 const setSessionId = createAction("SET_SESSION_ID");
 const setResults = createAction("SET_RESULTS");
 const setToolStatus = createAction("SET_TOOL_STATUS");
+const setToolResults = createAction("SET_TOOL_RESULTS");
 const setTools = createAction("SET_TOOLS");
 
 // REDUCERS
@@ -35,17 +37,30 @@ const reducer = handleActions(
       return { ...state};
     },
     [setToolStatus]: (state, { payload }) => {
+      console.log("setToolStatus called");
       if(!state.toolStatus) state.toolStatus ={};
-
-      const tools = payload;
-
+      const file = payload.file
+      const tools = payload.tools;
+      const fileToolStatus = state.toolStatus[file];
+      if(!fileToolStatus)
+        state.toolStatus[file] = {};
       for(const toolName in tools){
-        const existing = state.toolStatus[toolName];
+        const existing = fileToolStatus ? fileToolStatus[toolName] : null;
         const tool = tools[toolName];
         if(existing == null || tool.timestamp > existing.timestamp){
-           state.toolStatus[toolName] = tool;
+           state.toolStatus[file][toolName] = tool;
         }
       }
+      return { ...state};
+    },
+    [setToolResults]: (state, { payload }) => {
+      if(!state.toolResults) state.toolResults ={};
+      console.log("setToolResults payload: %o", payload);
+      const tool = payload.toolName;
+      const file = payload.file;
+      const results = payload.results;
+      if(!state.toolResults[file]) state.toolResults[file] ={};
+      state.toolResults[file][tool] = results;
 
       return { ...state};
     },
@@ -70,6 +85,11 @@ const _getToolStatuses = (toolStatuses, toolId) => {
   return status;
 }
 
+const _getToolResults = (toolResults, toolId) => {
+  const results = toolResults && toolId ? toolResults[toolId] : (toolResults || {} )
+  return results;
+}
+
 const _getTools = (tools) => {
   return tools;
 }
@@ -84,10 +104,17 @@ const getToolStatus = (state, toolId) => {
 const getToolStatuses = (state) => {
   return _getToolStatuses(state.data.toolStatus || {}, null)
 }
+const getAllToolResults = (state) => {
+  return _getToolResults(state.data.toolResults || {}, null)
+}
+const getToolResults = (state, toolId) => {
+  return _getToolResults(state.data.toolResults || {}, toolId)
+}
 const getTools = (state) => {
   return _getTools(state.data.tools || [], null)
 }
 
 export default reducer;
 
-export { setSessionId, setResults, setTools, getResults, setToolStatus, getToolStatus, getToolStatuses, getTools }
+export { setSessionId, setResults, setTools, getResults, setToolStatus, getToolStatus, getToolStatuses, getTools, 
+        setToolResults, getAllToolResults, getToolResults }
