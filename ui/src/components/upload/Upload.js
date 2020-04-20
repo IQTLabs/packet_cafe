@@ -2,8 +2,6 @@ import React from 'react';
 import { Button, Form, Header, Segment } from 'semantic-ui-react';
 import { connect } from "react-redux";
 
-import { instanceOf } from 'prop-types';
-
 import Dropzone  from 'components/dropzone/Dropzone';
 import Progress from 'components/progress/Progress';
 import { startFetchResults } from "epics/auto-fetch-results-epic"

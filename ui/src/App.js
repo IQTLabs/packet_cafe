@@ -10,7 +10,7 @@ import { startFetchResults, stopFetchResults } from "epics/auto-fetch-results-ep
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
 import { fetchTools } from 'epics/fetch-tools-epic'
-import { setSessionId, getResults, getToolStatuses, getToolResults } from 'domain/data';
+import { setSessionId, getResults, getToolStatuses } from 'domain/data';
 
 import './App.css';
 import Upload from 'components/upload/Upload';
@@ -33,6 +33,10 @@ class App extends React.Component {
     this.state = {
       sessionId: sessionId
     };
+  }
+
+  componentWillMount() {
+    this.props.fetchTools();
   }
 
   componentWillUnmount() {

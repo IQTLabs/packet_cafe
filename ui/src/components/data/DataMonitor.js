@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 
 import { stopFetchResults } from "epics/auto-fetch-results-epic"
@@ -48,7 +48,7 @@ const DataMonitor = (props) => {
                 dispatch(action$);
             }
 
-            if(props.statuses[file.id] && completed.length == Object.keys(props.statuses[file.id]).length){
+            if(props.statuses[file.id] && completed.length === Object.keys(props.statuses[file.id]).length){
                 const action$ = { 'type': stopFetchResults.toString() };
                 dispatch(action$);
             }

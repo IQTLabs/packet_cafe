@@ -109,7 +109,7 @@ const getToolResults = (state, toolId) => {
   return _getToolResults(state.data.toolResults || {}, toolId)
 }
 const getTools = (state) => {
-  return _getTools(state.data.tools || [], null)
+  return _getTools(state.data.tools || [])
 }
 
 export default reducer;

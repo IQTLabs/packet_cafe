@@ -83,9 +83,8 @@ class Table extends React.Component{
   renderTool = (item, type) => {
     const id = item.id;
     const value = item.tool;
-
     for(const tool of this.props.tools){
-      if(tool.name == value && tool.viewableOutput == false) {
+      if(tool.name === value && !tool.viewableOutput) {
         return(
           <p>This tool does not generate results.</p>
         )
@@ -110,9 +109,9 @@ class Table extends React.Component{
       },
       { name: 'Status', className: '',
         cell: row => <div>
-            {row.status == 'Queued' && <Icon title="Queued" color='grey' size='big' name='pause circle' />}
-            {row.status == 'In progress' && <Icon title="In Progress" loading size='big' color='yellow' name='cog' />}
-            {row.status == 'Complete' && <Icon title="Complete" size='big' color='green' name='check circle' />}
+            {row.status === 'Queued' && <Icon title="Queued" color='grey' size='big' name='pause circle' />}
+            {row.status === 'In progress' && <Icon title="In Progress" loading size='big' color='yellow' name='cog' />}
+            {row.status === 'Complete' && <Icon title="Complete" size='big' color='green' name='check circle' />}
           </div>,
       },
       { name: 'Timestamp', className: '',
@@ -138,7 +137,7 @@ class Table extends React.Component{
     const { rows, isLoading, statuses } = this.props;
 
     return (
-      <Tab className={` ${rows === undefined || rows.length == 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns, isLoading)} />
+      <Tab className={` ${rows === undefined || rows.length === 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns, isLoading)} />
     )
   }
 }

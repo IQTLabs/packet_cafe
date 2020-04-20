@@ -8,7 +8,6 @@ import {
 
 import { combineReducers } from "redux";
 import { expect } from "chai"
-import { v4 as uuidv4 } from 'uuid';
 
 const reducer = combineReducers({ data });
 
