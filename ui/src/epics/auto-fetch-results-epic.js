@@ -1,8 +1,8 @@
 import { createAction } from 'redux-actions';
 import { ofType } from 'redux-observable';
-import { timer, of, EMPTY } from 'rxjs';
+import { timer, of, } from 'rxjs';
 import { ajax  as rxAjax } from 'rxjs/ajax';
-import { catchError, debounceTime, mergeMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, mergeMap, takeUntil } from 'rxjs/operators';
 
 import { fetchResults } from 'epics/fetch-results-epic'
 
@@ -18,7 +18,6 @@ const autoFetchResultsEpic = (action$, store, ajax = rxAjax) => {
     ,mergeMap((action) => {
       const sessionId = action.payload.sessionId;
       const interval = action.payload.interval * 1000;
-      console.log("autoFetchResults Called");
       return timer(0, interval).pipe(
           mergeMap(() => {
             return of(

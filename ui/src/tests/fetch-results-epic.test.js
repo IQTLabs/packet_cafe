@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import configureMockStore from 'redux-mock-store';
 import { createEpicMiddleware } from 'redux-observable';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { setResults } from "domain/data";
@@ -34,12 +34,7 @@ describe("fetchResultsEpic", () => {
         };
     const mockResponse = data;
     const mockAjax = () => {
-        return  of({ 'response': mockResponse });
-      }
-
-    const errMsg = "Fetch Error Test";
-    const mockAjaxError = () => {
-        throwError(errMsg);
+      return  of({ 'response': mockResponse });
     }
 
     const dependencies = {

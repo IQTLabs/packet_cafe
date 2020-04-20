@@ -31,7 +31,7 @@ const fetchToolStatusEpic = (action$, store, ajax = rxAjax) => {
               tools[key] = {"status":item["state"], 'timestamp': ts};
             }
           }
-          return tools;
+          return {'file': fileId, 'tools': tools};
         })
         ,map(setToolStatus)
       );

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import configureMockStore from 'redux-mock-store';
 import { createEpicMiddleware } from 'redux-observable';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { setToolStatus } from "domain/data";
@@ -15,7 +15,7 @@ import fetchToolStatusEpic from "epics/fetch-status-epic"
 describe("fetchToolStatusEpic", () => {
     const sessionId = uuidv4();
     const fileId = uuidv4();
-    const data = {
+    const tools = {
           "tool1": {
             "state": "Queued",
             "timestamp": "2020-04-14 18:54:15.535827"
@@ -33,14 +33,10 @@ describe("fetchToolStatusEpic", () => {
             "timestamp": "2020-04-14 18:54:15.535827"
           },
         };
-    const mockResponse = data;
-    const mockAjax = () => {
-        return  of({ 'response': mockResponse });
-      }
 
-    const errMsg = "Fetch Error Test";
-    const mockAjaxError = () => {
-        throwError(errMsg);
+    const mockResponse = tools;
+    const mockAjax = () => {
+      return  of({ 'response': mockResponse });
     }
 
     const dependencies = {
@@ -62,25 +58,25 @@ describe("fetchToolStatusEpic", () => {
 
     it("fetches an array of tool results", (done) => {
         let typeToCheck = setToolStatus.toString();
-        const expected = {
+        const expectedTools = {
           "tool1": {
             "status": "Queued",
-            "timestamp": 1586890455535
+            "timestamp": 1586904855535
           },
           "tool2": {
             "status": "Complete",
-            "timestamp": 1586890455535
+            "timestamp": 1586904855535
           },
           "tool3": {
             "status": "Started",
-            "timestamp": 1586890455535
+            "timestamp": 1586904855535
           },
           "tool4": {
             "status": "In progress",
-            "timestamp": 1586890455535
+            "timestamp": 1586904855535
           },
         };
-
+        const expected = {'file': fileId, 'tools': expectedTools};
         const action$ = of({'type': fetchToolStatus.toString(), 'payload': { 'sessionId': sessionId, 'fileId': fileId } });
         fetchToolStatusEpic(action$, store, mockAjax)
              .subscribe((actions) => {

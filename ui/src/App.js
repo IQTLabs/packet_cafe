@@ -15,6 +15,7 @@ import { setSessionId, getResults, getToolStatuses } from 'domain/data';
 import './App.css';
 import Upload from 'components/upload/Upload';
 import Navbar from 'components/Navbar';
+import DataMonitor from 'components/data/DataMonitor';
 import Table from 'components/table/Table.js';
 
 const SESSION_ID = uuidv4();
@@ -35,13 +36,10 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    const interval = this.props.refreshInterval || 5;
-    const sessionId = this.state.sessionId;
-    this.props.startFetchResults({ 'sessionId': sessionId, 'interval': interval });
+    this.props.fetchTools();
   }
 
   componentWillUnmount() {
-    console.log("unmount called");
     this.props.stopFetchResults();
   }
 
@@ -63,13 +61,15 @@ class App extends React.Component {
 
 
   render() {
+    const refreshInterval = this.props.refreshInterval || 5;
     return (
       <>
         <Navbar/>
+        <DataMonitor sessionId={this.state.sessionId} files={this.props.rows} statuses={this.props.statuses} refreshInterval={refreshInterval}/>
         <Grid textAlign='center' container style={{ height: '100vh' }}>
           <Grid.Row columns={1}>
             <Grid.Column style={{ maxWidth: 240 }}>
-              <Upload sessionId={this.state.sessionId}/>
+              <Upload sessionId={this.state.sessionId} refreshInterval={refreshInterval}/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
@@ -100,6 +100,7 @@ const mapStateToProps = (state, ownProps) => {
 
   const results = getResults(state)
   const toolStatuses = getToolStatuses(state)
+
   return{
     rows: results.rows || [],
     statuses: toolStatuses || {},
