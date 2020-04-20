@@ -96,8 +96,7 @@ const mapStateToProps = (state, ownProps) => {
 
   const results = getResults(state)
   const toolStatuses = getToolStatuses(state)
-  const toolResults = getToolResults(state)
-  console.log("toolResults: %o", toolResults);
+
   return{
     rows: results.rows || [],
     statuses: toolStatuses || {},

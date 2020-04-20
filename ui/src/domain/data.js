@@ -54,7 +54,6 @@ const reducer = handleActions(
     },
     [setToolResults]: (state, { payload }) => {
       if(!state.toolResults) state.toolResults ={};
-      console.log("setToolResults payload: %o", payload);
       const tool = payload.tool;
       const file = payload.file;
       const results = payload.results;
