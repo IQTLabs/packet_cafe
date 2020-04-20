@@ -36,7 +36,6 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log("unmount called");
     this.props.stopFetchResults();
   }
 
@@ -49,7 +48,6 @@ class App extends React.Component {
 
   fetchStatuses = () => {
       console.log("Norm Abrams is doing all of the real work....")
-      console.log("rows: %o", this.props.rows)
       for(const row of this.props.rows){
         this.props.fetchToolStatus({ 'sessionId': this.state.sessionId, 'fileId':row.id });
       }
@@ -99,7 +97,6 @@ const mapStateToProps = (state, ownProps) => {
   const results = getResults(state)
   const toolStatuses = getToolStatuses(state)
   const toolResults = getToolResults(state)
-  console.log("toolStatuses: %o", toolStatuses);
   console.log("toolResults: %o", toolResults);
   return{
     rows: results.rows || [],

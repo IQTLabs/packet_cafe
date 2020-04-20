@@ -37,7 +37,6 @@ const reducer = handleActions(
       return { ...state};
     },
     [setToolStatus]: (state, { payload }) => {
-      console.log("setToolStatus called");
       if(!state.toolStatus) state.toolStatus ={};
       const file = payload.file
       const tools = payload.tools;

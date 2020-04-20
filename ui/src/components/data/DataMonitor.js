@@ -31,21 +31,13 @@ const DataMonitor = (props) => {
 
             //props.startFetchToolStatus(payload);
             const action$ = { 'type': fetchToolStatus.toString(), 'payload': payload };
-            console.log("dispatching acvtion for file %s", file.id);
             dispatch(action$);
         }
     }, [props.files]);
 
     useEffect(() => {
-        console.log("use Effect props: %o", props);
-        console.log("status effect called");
-        console.log("files: %o", props.files);
-        console.log("statuses: %o", props.statuses);
-
         if(props.files && props.statuses)
         for(const file of props.files){
-            console.log("file for getComplete: %o", file);
-            console.log("statuses for getComplete: %o", props.statuses[file.id]);
             const completed = getCompleted(props.statuses[file.id]);
             console.log("completed: %o", completed);
             for(const tool of completed){
