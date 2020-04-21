@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Tab, Icon, Label } from 'semantic-ui-react';
 import './Table.css';
 
-import { getResults, getToolStatuses } from 'domain/data';
+import { getResults, getToolStatuses, getTools } from 'domain/data';
 
 const customStyles = {
   rows: {
@@ -27,18 +27,23 @@ const customStyles = {
   },
 };
 
-const getPanes = (results, statuses, columns, tableLoading) => {
-  // handle case if results is an empty list
+const getStatusArray = (fileId, fileStatuses) => {
   var statusArray = [];
-  if (results.length > 0) {
+  const statuses = fileStatuses[fileId];
+
+  if(statuses){
     statusArray = Object.keys(statuses).map(key => ({
       tool: String(key),
-      id: results[0].id,
+      id: fileId,
       ...statuses[key]
     }));
   }
+  
+  return statusArray;
+}
 
-  return results.map(function(result){
+const getPanes = (results, statuses, columns, tableLoading) => {
+  return results.map((result) =>{
     return {
       menuItem: result.filename,
       render: () =>
@@ -47,7 +52,7 @@ const getPanes = (results, statuses, columns, tableLoading) => {
             keyField="id"
             title={result.id}
             columns={columns}
-            data={statusArray}
+            data={getStatusArray(result.id, statuses)}
             progressPending={tableLoading}
             customStyles={customStyles}
           />
@@ -78,6 +83,14 @@ class Table extends React.Component{
   renderTool = (item, type) => {
     const id = item.id;
     const value = item.tool;
+    for(const tool of this.props.tools){
+      if(tool.name === value && !tool.viewableOutput) {
+        return(
+          <p>This tool does not generate results.</p>
+        )
+      }
+    }
+
     const url = `/${type}/${this.props.sessionId}/${id}/${value}`
     return(
       <p key={id + ":" +value}>
@@ -96,14 +109,12 @@ class Table extends React.Component{
       },
       { name: 'Status', className: '',
         cell: row => <div>
-            {row.status == 'Queued' && <Icon title="Queued" color='grey' size='big' name='pause circle' />}
-            {row.status == 'In progress' && <Icon title="In Progress" loading size='big' color='yellow' name='cog' />}
-            {row.status == 'Complete' && <Icon title="Complete" size='big' color='green' name='check circle' />}
+            {row.status === 'Queued' && <Icon title="Queued" color='grey' size='big' name='pause circle' />}
+            {row.status === 'In progress' && <Icon title="In Progress" loading size='big' color='yellow' name='cog' />}
+            {row.status === 'Complete' && <Icon title="Complete" size='big' color='green' name='check circle' />}
           </div>,
       },
       { name: 'Timestamp', className: '',
-        //cell: row => <div>{d.setUTCSeconds(row.timestamp)}</div>,
-        //var d = new Date(0);
         cell: row => {
             const d = new Date(0);
             d.setUTCSeconds(row.timestamp/1000);
@@ -126,7 +137,7 @@ class Table extends React.Component{
     const { rows, isLoading, statuses } = this.props;
 
     return (
-      <Tab className={` ${rows === undefined || rows.length == 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns, isLoading)} />
+      <Tab className={` ${rows === undefined || rows.length === 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns, isLoading)} />
     )
   }
 }
@@ -135,9 +146,11 @@ const mapStateToProps = (state, ownProps) => {
 
   const results = getResults(state);
   const toolStatuses = getToolStatuses(state);
+  const tools = getTools(state);
   return{
     rows: results.rows || [],
     statuses: toolStatuses || {},
+    tools: tools || [],
   }
 };
 
