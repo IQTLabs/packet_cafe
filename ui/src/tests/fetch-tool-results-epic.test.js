@@ -15,7 +15,6 @@ import fetchToolResultsEpic from "epics/fetch-tool-results-epic"
 describe("fetchToolResultsEpic", () => {
     const sessionId = uuidv4();
     const tool = "test";
-	const counter = "test";
 	const fileId = uuidv4();
     const results = [
     {
@@ -224,7 +223,7 @@ describe("fetchToolResultsEpic", () => {
     }
 ]
     const data = {'file': fileId, 'tool':tool, 'results': results };
-    const mockResponse = data;
+    const mockResponse = results;
     const mockAjax = () => {
         return  of({ 'response': mockResponse });
       }
@@ -249,11 +248,11 @@ describe("fetchToolResultsEpic", () => {
     it("fetches an array of tool results", (done) => {
         let typeToCheck = setToolResults.toString();
 
-        const action$ = of({'type': fetchToolResults.toString(), 'payload': { 'sessionId': sessionId, 'tool': tool, 'counter': counter, 'fileId': fileId } });
+        const action$ = of({'type': fetchToolResults.toString(), 'payload': { 'sessionId': sessionId, 'tool': tool, 'fileId': fileId } });
         fetchToolResultsEpic(action$, store, mockAjax)
              .subscribe((actions) => {
                 expect(actions.type).to.equal(typeToCheck);
-                expect(actions.payload).to.equal(data);
+                expect(actions.payload).to.deep.equal(data);
 
                 done();
             });
