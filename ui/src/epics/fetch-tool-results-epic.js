@@ -4,7 +4,7 @@ import { of, EMPTY } from 'rxjs';
 import { ajax  as rxAjax } from 'rxjs/ajax';
 import { catchError, debounceTime, mergeMap, map } from 'rxjs/operators';
 
-import { setResults } from "domain/data";
+import { setToolResults } from "domain/data";
 //import { setError } from "domain/error";
 
 // ACTIONS
@@ -17,16 +17,14 @@ const fetchToolResultsEpic = (action$, store, ajax = rxAjax) => {
     ,debounceTime(500)
     ,mergeMap((action) => {
       const tool = action.payload.tool;
-      const counter = action.payload.counter;
       const sessionId = action.payload.sessionId;
-      const reqId = action.payload.reqId;
-      const url = "/raw/" + tool + "/" + counter + "/" + sessionId + "/" + reqId;
+      const fileId = action.payload.fileId;
+      const url = "/raw/"  + sessionId + "/" + fileId + "/" + tool;
       return ajax({ 'url': url, 'crossDomain': true, 'responseType': 'json' }).pipe(
         map((result) => { 
-
-          return result.response ;
+          return {'tool': tool, 'file': fileId, 'results': result.response };
         })
-        ,map(setResults)
+        ,map(setToolResults)
       );
     })
     ,catchError((error) => {

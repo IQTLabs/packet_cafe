@@ -2,10 +2,9 @@ import React from 'react';
 import { Button, Form, Header, Segment } from 'semantic-ui-react';
 import { connect } from "react-redux";
 
-import { instanceOf } from 'prop-types';
-
 import Dropzone  from 'components/dropzone/Dropzone';
 import Progress from 'components/progress/Progress';
+import { startFetchResults } from "epics/auto-fetch-results-epic"
 
 
 class Upload extends React.Component{
@@ -23,6 +22,9 @@ class Upload extends React.Component{
     }
 
     onFilesAdded = (files) => {
+        const interval = this.props.refreshInterval || 5;
+        const sessionId = this.props.sessionId;
+        this.props.startFetchResults({ 'sessionId': sessionId, 'interval': interval });
         this.setState(prevState => ({
             files: prevState.files.concat(files)
         }));
@@ -74,7 +76,6 @@ class Upload extends React.Component{
                 console.log("error event: %o", event);
                 reject(req.response);
             });
-            console.log("sessionId: %o", sessionId);
             
             const formData = new FormData();
             //
@@ -108,7 +109,6 @@ class Upload extends React.Component{
 
     renderActions = () => {
         if (this.state.successfullUploaded) {
-            console.log(this.props.data);
             return (
             <Button
                 onClick={() =>
@@ -169,6 +169,8 @@ class Upload extends React.Component{
 
 const mapStateToProps = null;
 
-const mapDispatchToProps = null;
+const mapDispatchToProps = {
+    startFetchResults,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps) (Upload)
