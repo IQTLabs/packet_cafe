@@ -61,19 +61,19 @@ describe("fetchToolStatusEpic", () => {
         const expectedTools = {
           "tool1": {
             "status": "Queued",
-            "timestamp": 1586904855535
+            "timestamp": 1586890455535
           },
           "tool2": {
             "status": "Complete",
-            "timestamp": 1586904855535
+            "timestamp": 1586890455535
           },
           "tool3": {
             "status": "Started",
-            "timestamp": 1586904855535
+            "timestamp": 1586890455535
           },
           "tool4": {
             "status": "In progress",
-            "timestamp": 1586904855535
+            "timestamp": 1586890455535
           },
         };
         const expected = {'file': fileId, 'tools': expectedTools};
