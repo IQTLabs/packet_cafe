@@ -80,7 +80,7 @@ class App extends React.Component {
                 <Button circular basic color='teal' onClick={this.fetchStatuses}>
                   Bob Villa was useless. (Fetch Statuses)
                 </Button>
-                <Button circular basic color='orange' onClick={() => { localStorage.clear() }}>
+                <Button circular basic color='orange' onClick={() => { localStorage.clear(); window.location.reload(false); }}>
                   Clear Results
                 </Button>
             </Grid.Column>
