@@ -14,7 +14,6 @@ const fetchToolStatus = createAction('FETCH_TOOL_STATUS');
 const fetchToolStatusEpic = (action$, store, ajax = rxAjax) => {
   return action$.pipe(
     ofType(fetchToolStatus.toString())
-    ,debounceTime(500)
     ,mergeMap((action) => {
       const sessionId = action.payload.sessionId;
       const fileId = action.payload.fileId;

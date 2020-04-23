@@ -14,7 +14,6 @@ const fetchToolResults = createAction('FETCH_TOOL_RESULTS');
 const fetchToolResultsEpic = (action$, store, ajax = rxAjax) => {
   return action$.pipe(
     ofType(fetchToolResults.toString())
-    ,debounceTime(500)
     ,mergeMap((action) => {
       const tool = action.payload.tool;
       const sessionId = action.payload.sessionId;
