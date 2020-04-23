@@ -34,11 +34,10 @@ const getStatusArray = (fileId, fileStatuses) => {
   if(statuses){
     statusArray = Object.keys(statuses).map(key => ({
       tool: String(key),
-      id: fileId,
+      id: fileId + "-" + String(key),
       ...statuses[key]
     }));
   }
-  
   return statusArray;
 }
 
