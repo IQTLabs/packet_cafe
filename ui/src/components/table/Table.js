@@ -33,8 +33,9 @@ const getStatusArray = (fileId, fileStatuses) => {
 
   if(statuses){
     statusArray = Object.keys(statuses).map(key => ({
-      tool: String(key),
       id: fileId + "-" + String(key),
+      tool: String(key),
+      fileId: fileId,
       ...statuses[key]
     }));
   }
@@ -81,6 +82,7 @@ class Table extends React.Component{
   //NEW
   renderTool = (item, type) => {
     const id = item.id;
+    const fileId = item.fileId;
     const value = item.tool;
     for(const tool of this.props.tools){
       if(tool.name === value && !tool.viewableOutput) {
@@ -90,7 +92,7 @@ class Table extends React.Component{
       }
     }
 
-    const url = `/${type}/${this.props.sessionId}/${id.split('-')[0]}/${value}`
+    const url = `/${type}/${this.props.sessionId}/${fileId}/${value}`
     return(
       <p key={id + ":" +value}>
         <a href={url} target="_blank" rel="noopener noreferrer">
