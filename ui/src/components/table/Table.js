@@ -85,12 +85,12 @@ class Table extends React.Component{
     for(const tool of this.props.tools){
       if(tool.name === value && !tool.viewableOutput) {
         return(
-          <p>This tool does not generate results.</p>
+          <p>Tool does not generate results.</p>
         )
       }
     }
 
-    const url = `/${type}/${this.props.sessionId}/${id}/${value}`
+    const url = `/${type}/${this.props.sessionId}/${id.split('-')[0]}/${value}`
     return(
       <p key={id + ":" +value}>
         <a href={url} target="_blank" rel="noopener noreferrer">

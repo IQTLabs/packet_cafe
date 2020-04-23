@@ -2,7 +2,7 @@ import { createAction } from 'redux-actions';
 import { ofType } from 'redux-observable';
 import { of } from 'rxjs';
 import { ajax  as rxAjax } from 'rxjs/ajax';
-import { catchError, debounceTime, mergeMap, map } from 'rxjs/operators';
+import { catchError, mergeMap, map } from 'rxjs/operators';
 
 import { setToolStatus } from "domain/data";
 //import { setError } from "domain/error";
