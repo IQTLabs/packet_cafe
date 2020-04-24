@@ -18,7 +18,7 @@ import Navbar from 'components/Navbar';
 import DataMonitor from 'components/data/DataMonitor';
 import Table from 'components/table/Table.js';
 
-const SESSION_ID = uuidv4();
+const COOKIE_NAME = 'sessionID'
 
 class App extends React.Component {
   static propTypes = {
@@ -28,7 +28,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const { cookies } = props;
-    const sessionId = cookies.get('sessionID') || SESSION_ID
+    const cookieSessionId = cookies.get(COOKIE_NAME);
+    const sessionId = cookieSessionId || uuidv4();
+    if(!cookieSessionId){
+      const options = {
+        'path':'/',
+        'maxAge': 86400
+      };
+      cookies.set(COOKIE_NAME, sessionId, options);
+    }
     this.props.setSessionId(sessionId);
     this.state = {
       sessionId: sessionId
@@ -59,6 +67,13 @@ class App extends React.Component {
       console.log("This House Oldification complete")
   }
 
+  clearResults = () =>{
+    const { cookies } = this.props;
+    cookies.remove(COOKIE_NAME)
+    localStorage.clear(); 
+    window.location.reload(false);
+  }
+
 
   render() {
     const refreshInterval = this.props.refreshInterval || 5;
@@ -80,7 +95,7 @@ class App extends React.Component {
                 <Button circular basic color='teal' onClick={this.fetchStatuses}>
                   Bob Villa was useless. (Fetch Statuses)
                 </Button>
-                <Button circular basic color='orange' onClick={() => { localStorage.clear(); window.location.reload(false); }}>
+                <Button circular basic color='orange' onClick={this.clearResults}>
                   Clear Results
                 </Button>
             </Grid.Column>
@@ -97,7 +112,6 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-
   const results = getResults(state)
   const toolStatuses = getToolStatuses(state)
 
