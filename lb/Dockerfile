@@ -1,4 +1,4 @@
-FROM nginx:1.17-alpine
+FROM nginx:1.18-alpine
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
 RUN apk add --no-cache --update \
