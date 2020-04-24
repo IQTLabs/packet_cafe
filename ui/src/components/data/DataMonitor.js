@@ -23,14 +23,14 @@ const DataMonitor = (props) => {
     useEffect(() => {
         for(const file of props.files){
             const payload = {
-                'sessionId': props.sessionId, 
+                'sessionId': props.sessionId,
                 'fileId':file.id,
             }
 
             const action$ = { 'type': fetchToolStatus.toString(), 'payload': payload };
             dispatch(action$);
         }
-    }, [props.files]);
+    }, [props.files, props.sessionId, dispatch]);
 
     useEffect(() => {
         if(props.files && props.statuses)
@@ -39,7 +39,7 @@ const DataMonitor = (props) => {
             const completed = getCompleted(props.statuses[file.id], fileResults);
             for(const tool of completed){
                 const payload = {
-                    'sessionId': props.sessionId, 
+                    'sessionId': props.sessionId,
                     'fileId':file.id,
                     'tool': tool,
                     'counter':0,
@@ -53,7 +53,7 @@ const DataMonitor = (props) => {
                 dispatch(action$);
             }
         }
-    }, [props.files, props.statuses]);
+    }, [props.files, props.statuses, props.sessionId, dispatch, toolResults]);
 
     return null;
 }
