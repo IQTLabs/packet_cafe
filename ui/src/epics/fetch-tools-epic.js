@@ -27,8 +27,6 @@ const fetchToolsEpic = (action$, store, ajax = rxAjax) => {
               tools.push(item);
             }
           }
-          console.log("tools: ");
-          console.log(tools);
           return tools;
         })
         ,map(setTools)
