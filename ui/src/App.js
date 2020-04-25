@@ -4,7 +4,7 @@ import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Grid, Button } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 
 import { startFetchResults, stopFetchResults } from "epics/auto-fetch-results-epic"
 import { fetchResults } from 'epics/fetch-results-epic'

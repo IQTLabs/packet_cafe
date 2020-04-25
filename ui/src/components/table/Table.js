@@ -8,8 +8,6 @@ import './Table.css';
 import { getResults, getToolStatuses, getTools } from 'domain/data';
 import { fetchToolStatus } from 'epics/fetch-status-epic'
 
-const COOKIE_NAME = 'sessionID'
-
 const customStyles = {
   rows: {
     style: {
