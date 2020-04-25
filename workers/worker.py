@@ -62,7 +62,7 @@ def callback(ch, method, properties, body):
                                  network=worker['stage'],
                                  volumes={vol_prefix + '/files': {'bind': '/files', 'mode': 'rw'}},
                                  environment=environment,
-                                 remove=True,
+                                 remove=False,
                                  command=command,
                                  detach=True)
                 status[worker['name']] = json.dumps({'state': 'In progress', 'timestamp': str(datetime.datetime.utcnow())})

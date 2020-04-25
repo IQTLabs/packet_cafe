@@ -74,7 +74,7 @@
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
-      "command": ["-p"],
+      "command": ["-r"],
       "environment": {
         "POSEIDON_PUBLIC_SESSIONS":"1",
         "RABBIT": "True",
