@@ -2,10 +2,13 @@ import React from 'react';
 import DataTable from 'react-data-table-component';
 import { connect } from "react-redux";
 
-import { Tab, Icon, Label } from 'semantic-ui-react';
+import { Tab, Icon, Label, Button } from 'semantic-ui-react';
 import './Table.css';
 
 import { getResults, getToolStatuses, getTools } from 'domain/data';
+import { fetchToolStatus } from 'epics/fetch-status-epic'
+
+const COOKIE_NAME = 'sessionID'
 
 const customStyles = {
   rows: {
@@ -63,20 +66,14 @@ const getPanes = (results, statuses, columns, tableLoading) => {
 
 class Table extends React.Component{
 
-  renderTools = (item, type) => {
-    const tools = item.tools;
-    const id = item.id;
-    return tools.map((value) => {
-        const url = `/${type}/${this.props.sessionId}/${id}/${value}`
-        return(
-          <p key={id + ":" +value}>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              {value}
-            </a>
-          </p>
-        )
+  fetchStatuses = () => {
+      for(const row of this.props.rows){
+        this.props.fetchToolStatus({ 'sessionId': this.state.sessionId, 'fileId':row.id });
       }
-    );
+  }
+
+  fetchResults = () => {
+      this.props.fetchResults({ 'sessionId': this.state.sessionId });
   }
 
   //NEW
@@ -136,9 +133,21 @@ class Table extends React.Component{
   render() {
     const columns = this.getToolsTableColumns();
     const { rows, isLoading, statuses } = this.props;
-
     return (
-      <Tab className={` ${rows === undefined || rows.length === 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns, isLoading)} />
+      <div>
+        <div className="buttonContainer">
+          <Button circular basic color='green' className={` ${rows && rows.length > 0 ? '' : 'hidden'}`} onClick={this.fetchResults}>
+            Refresh Files
+          </Button>
+          <Button circular basic color='teal' className={` ${statuses && Object.keys(statuses).length > 0 ? '' : 'hidden'}`} onClick={this.fetchStatuses}>
+            Refresh Statuses
+          </Button>
+          <Button circular basic color='orange' className={` ${(rows || statuses) && (rows.length > 0 || Object.keys(statuses).length > 0 ) ? '' : 'hidden'}`} onClick={this.props.clearResults}>
+            Clear Results
+          </Button>
+        </div>
+        <Tab className={` ${rows === undefined || rows.length === 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns, isLoading)} />
+      </div>
     )
   }
 }
@@ -155,6 +164,8 @@ const mapStateToProps = (state, ownProps) => {
   }
 };
 
-const mapDispatchToProps = null;
+const mapDispatchToProps = {
+    fetchToolStatus,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps) (Table);
