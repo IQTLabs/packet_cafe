@@ -337,24 +337,499 @@ Returns basic information about the service, such as version.
 {% endapi-method-spec %}
 {% endapi-method %}
 
-TODO
-
-## `ui` \(port 80\)
-
-{% api-method method="get" host="" path="" %}
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/raw/:tool/:counter/:sess\_id/:req\_id" %}
 {% api-method-summary %}
-
+/api/v1/raw/:tool/:counter/:sess\_id/:req\_id
 {% endapi-method-summary %}
 
 {% api-method-description %}
-
+Returns the raw JSON results from a tool.
 {% endapi-method-description %}
 
 {% api-method-spec %}
 {% api-method-request %}
 {% api-method-path-parameters %}
-{% api-method-parameter name="" type="string" required=false %}
+{% api-method-parameter name="req\_id" type="string" required=true %}
+The ID of the file request.
+{% endapi-method-parameter %}
 
+{% api-method-parameter name="sess\_id" type="string" required=true %}
+Session ID
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="counter" type="number" required=true %}
+A tool might have more than 1 result, otherwise use 0.
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="tool" type="string" required=true %}
+Name of the tool to get results for.
+{% endapi-method-parameter %}
+{% endapi-method-path-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+This is an example output of the tool p0f.
+{% endapi-method-response-example-description %}
+
+```
+[
+    {},
+    {},
+    {},
+    {},
+    {
+        "10.0.2.15": {
+            "full_os": "Windows NT kernel",
+            "short_os": "Windows",
+            "link": "Ethernet or modem",
+            "raw_mtu": "1500",
+            "mac": "08:00:27:cc:3f:1b"
+        }
+    }
+]
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/results/:tool/:counter/:sess\_id/:req\_id" %}
+{% api-method-summary %}
+/api/v1/results/:tool/:counter/:sess\_id/:req\_id
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Returns the results from a tool for rendering.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-path-parameters %}
+{% api-method-parameter name="req\_id" type="string" required=true %}
+The ID of the file request.
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="sess\_id" type="string" required=true %}
+Session ID
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="counter" type="number" required=true %}
+A tool might have more than 1 results, otherwise use 0.
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="tool" type="string" required=true %}
+Name of the tool to get results for.
+{% endapi-method-parameter %}
+{% endapi-method-path-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+This will render actual html and/or imagery.
+{% endapi-method-response-example-description %}
+
+```
+
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/status/:sess\_id/:req\_id" %}
+{% api-method-summary %}
+/api/v1/status/:sess\_id/:req\_id
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Return the status of all tools for a request ID.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-path-parameters %}
+{% api-method-parameter name="req\_id" type="string" required=true %}
+The ID of the file request.
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="sess\_id" type="string" required=true %}
+Session ID
+{% endapi-method-parameter %}
+{% endapi-method-path-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+Returns the status of all tools for a request ID.
+{% endapi-method-response-example-description %}
+
+```
+{
+	"cleaned": true,
+	"mercury": {
+		"state": "Complete",
+		"timestamp": "2020-04-24 19:07:51.507362"
+	},
+	"pcap-stats": {
+		"state": "Complete",
+		"timestamp": "2020-04-24 19:07:43.972380"
+	},
+	"pcapplot": {
+		"state": "Complete",
+		"timestamp": "2020-04-24 19:10:54.366903"
+	},
+	"networkml": {
+		"state": "Complete",
+		"timestamp": "2020-04-24 19:09:17.470786"
+	},
+	"p0f": {
+		"state": "Complete",
+		"timestamp": "2020-04-24 19:09:26.266748"
+	},
+	"pcap-dot1q": {
+		"state": "Complete",
+		"timestamp": "2020-04-24 19:07:43.362974"
+	},
+	"snort": {
+		"state": "Complete",
+		"timestamp": "2020-04-24 19:07:54.466032"
+	},
+	"ncapture": {
+		"state": "Complete",
+		"timestamp": "2020-04-24 19:07:38.438424"
+	},
+	"pcap-splitter": {
+		"state": "Complete",
+		"timestamp": "2020-04-24 19:08:47.088579"
+	}
+}
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/stop/:sess\_id/:req\_id" %}
+{% api-method-summary %}
+/api/v1/stop/:sess\_id/:req\_id
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Stops jobs of a request ID.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-path-parameters %}
+{% api-method-parameter name="req\_id" type="string" required=true %}
+The ID of the file request.
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="sess\_id" type="string" required=true %}
+Session ID
+{% endapi-method-parameter %}
+{% endapi-method-path-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+
+{% endapi-method-response-example-description %}
+
+```
+TO BE IMPLEMENTED
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/tools" %}
+{% api-method-summary %}
+/api/v1/tools
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Returns list of available tools
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+Returns the list of available tools.
+{% endapi-method-response-example-description %}
+
+```
+{
+    "workers": [
+        {
+            "name": "pcapplot",
+            "image": "cyberreboot/pcapplot",
+            "version": "v0.1.5",
+            "labels": "",
+            "stage": "analysis",
+            "viewableOutput": true,
+            "outputs": [
+                "file"
+            ],
+            "inputs": [
+                "pcap-splitter"
+            ]
+        },
+        {
+            "name": "pcap-splitter",
+            "image": "cyberreboot/pcap-to-node-pcap",
+            "version": "v0.11.7",
+            "labels": "",
+            "stage": "preprocessing",
+            "viewableOutput": false,
+            "environment": {
+                "rabbit": "true"
+            },
+            "outputs": [
+                "pcap"
+            ],
+            "inputs": [
+                "pcap-dot1q"
+            ]
+        },
+        {
+            "name": "ncapture",
+            "image": "cyberreboot/ncapture",
+            "version": "v0.11.7",
+            "labels": "",
+            "stage": "preprocessing",
+            "viewableOutput": false,
+            "command": [
+                "/tmp/run.sh",
+                "pcapfile:",
+                "60",
+                "id",
+                "1",
+                "ip"
+            ],
+            "environment": {
+                "rabbit": "true"
+            },
+            "outputs": [
+                "pcap"
+            ],
+            "inputs": [
+                "pcap",
+                "pcapng"
+            ]
+        },
+        {
+            "name": "pcap-dot1q",
+            "image": "cyberreboot/tcprewrite-dot1q",
+            "version": "v0.11.7",
+            "labels": "",
+            "stage": "preprocessing",
+            "viewableOutput": false,
+            "environment": {
+                "rabbit": "true"
+            },
+            "outputs": [
+                "pcap"
+            ],
+            "inputs": [
+                "ncapture"
+            ]
+        },
+        {
+            "name": "networkml",
+            "image": "cyberreboot/networkml",
+            "version": "v0.4.8",
+            "labels": "",
+            "stage": "analysis",
+            "viewableOutput": true,
+            "command": [
+                "-p"
+            ],
+            "environment": {
+                "POSEIDON_PUBLIC_SESSIONS": "1",
+                "RABBIT": "True",
+                "RABBIT_HOST": "messenger",
+                "RABBIT_EXCHANGE": "",
+                "RABBIT_ROUTING_KEY": "task_queue",
+                "RABBIT_QUEUE": "True",
+                "RABBIT_QUEUE_NAME": "task_queue",
+                "REDIS": "False"
+            },
+            "contentType": "application/json",
+            "outputs": [
+                "rabbitmq"
+            ],
+            "inputs": [
+                "pcap-splitter"
+            ]
+        },
+        {
+            "name": "snort",
+            "image": "cyberreboot/snort",
+            "version": "v0.11.7",
+            "labels": "",
+            "stage": "analysis",
+            "viewableOutput": true,
+            "environment": {
+                "rabbit": "true"
+            },
+            "contentType": "application/json",
+            "outputs": [
+                "rabbitmq"
+            ],
+            "inputs": [
+                "pcap",
+                "pcapng"
+            ]
+        },
+        {
+            "name": "pcap-stats",
+            "image": "cyberreboot/pcap-stats",
+            "version": "v0.11.7",
+            "labels": "",
+            "stage": "analysis",
+            "viewableOutput": true,
+            "environment": {
+                "rabbit": "true"
+            },
+            "contentType": "application/json",
+            "outputs": [
+                "rabbitmq"
+            ],
+            "inputs": [
+                "pcap",
+                "pcapng"
+            ]
+        },
+        {
+            "name": "mercury",
+            "image": "cyberreboot/mercury",
+            "version": "v0.11.7",
+            "labels": "",
+            "stage": "analysis",
+            "viewableOutput": true,
+            "environment": {
+                "rabbit": "true"
+            },
+            "contentType": "application/json",
+            "outputs": [
+                "rabbitmq"
+            ],
+            "inputs": [
+                "pcap",
+                "pcapng"
+            ]
+        },
+        {
+            "name": "p0f",
+            "image": "cyberreboot/p0f",
+            "version": "v0.11.7",
+            "labels": "",
+            "stage": "analysis",
+            "viewableOutput": true,
+            "contentType": "application/json",
+            "outputs": [
+                "rabbitmq"
+            ],
+            "inputs": [
+                "pcap-splitter"
+            ]
+        }
+    ]
+}
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+{% api-method method="post" host="http://0.0.0.0" path="/api/v1/upload" %}
+{% api-method-summary %}
+/api/v1/upload
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Upload a PCAP file.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-form-data-parameters %}
+{% api-method-parameter name="file" type="object" required=true %}
+The file to upload
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="sessionId" type="string" required=true %}
+Session ID
+{% endapi-method-parameter %}
+{% endapi-method-form-data-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+Upload a PCAP file.
+{% endapi-method-response-example-description %}
+
+```
+{'filename': filename, 'uuid': uid, 'status': 'Success'}
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+## `ui` \(port 80\)
+
+{% api-method method="get" host="http://0.0.0.0" path="/" %}
+{% api-method-summary %}
+/
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Retrieves the main home page.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+Retrieves the main home page.
+{% endapi-method-response-example-description %}
+
+```
+
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+{% api-method method="post" host="http://0.0.0.0" path="/express-upload" %}
+{% api-method-summary %}
+/express-upload
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Processing uploading a file and passes it on the API.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-path-parameters %}
+{% api-method-parameter name="file" type="object" required=false %}
+File to upload.
 {% endapi-method-parameter %}
 {% endapi-method-path-parameters %}
 {% endapi-method-request %}
@@ -372,8 +847,6 @@ TODO
 {% endapi-method-response %}
 {% endapi-method-spec %}
 {% endapi-method %}
-
-TODO
 
 
 
