@@ -110,7 +110,7 @@ class Upload extends React.Component{
     renderActions = () => {
         if (this.state.successfullUploaded) {
             return (
-            <Button
+            <Button circular basic color='red'
                 onClick={() =>
                 this.setState({ files: [], successfullUploaded: false })
                 }
@@ -120,7 +120,7 @@ class Upload extends React.Component{
             );
         } else {
             return (
-            <Button
+            <Button circular basic color='purple'
                 disabled={this.state.files.length < 0 || this.state.uploading}
                 onClick={this.uploadFiles}
             >
