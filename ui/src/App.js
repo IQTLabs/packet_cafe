@@ -63,7 +63,6 @@ class App extends React.Component {
     return (
       <>
         <Navbar/>
-        <DataMonitor sessionId={this.state.sessionId} files={this.props.rows} statuses={this.props.statuses} refreshInterval={refreshInterval}/>
         <Grid textAlign='center' container style={{ height: '100vh' }}>
           <Grid.Row columns={1}>
             <Grid.Column style={{ maxWidth: 240 }}>
@@ -72,7 +71,7 @@ class App extends React.Component {
           </Grid.Row>
           <Grid.Row columns={1}>
             <Grid.Column>
-                
+              <DataMonitor sessionId={this.state.sessionId} files={this.props.rows} statuses={this.props.statuses} refreshInterval={refreshInterval}/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
