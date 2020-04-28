@@ -163,7 +163,13 @@ class App extends React.Component {
             </Grid.Column>
           </Grid.Row>
           }
-
+          {portResults &&
+          <Grid.Row >
+            <Grid.Column >
+              <Heatmap key="1" data={portResults.data} keys={portResults.keys} index="firstKey" name="Destination Port" width={800} height={500}/>
+            </Grid.Column>
+          </Grid.Row>
+          }
         </Grid>
       </>
     );
