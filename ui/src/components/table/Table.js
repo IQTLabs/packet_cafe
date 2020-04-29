@@ -66,12 +66,12 @@ class Table extends React.Component{
 
   fetchStatuses = () => {
       for(const row of this.props.rows){
-        this.props.fetchToolStatus({ 'sessionId': this.state.sessionId, 'fileId':row.id });
+        this.props.fetchToolStatus({ 'sessionId': this.props.sessionId, 'fileId':row.id });
       }
   }
 
   fetchResults = () => {
-      this.props.fetchResults({ 'sessionId': this.state.sessionId });
+      this.props.fetchResults({ 'sessionId': this.props.sessionId });
   }
 
   //NEW

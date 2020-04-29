@@ -147,7 +147,7 @@ class App extends React.Component {
           </Grid.Row>
           <Grid.Row columns={1}>
             <Grid.Column>
-              <DataMonitor sessionId={this.state.sessionId} files={this.props.rows} statuses={this.props.statuses} refreshInterval={refreshInterval}/>
+              <DataMonitor sessionId={this.state.sessionId} files={this.props.files} statuses={this.props.statuses} refreshInterval={refreshInterval}/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
