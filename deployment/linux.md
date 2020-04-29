@@ -12,6 +12,7 @@ cd packet_cafe
 To build and start Packet Café \(from the repository directory\):
 
 ```bash
+docker-compose pull
 docker-compose up -d --build
 ```
 

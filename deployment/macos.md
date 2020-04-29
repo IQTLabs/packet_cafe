@@ -22,6 +22,7 @@ export VOL_PREFIX=~/packet_cafe_data
 Once a path has been picked for the data to live build and start Packet Café \(from the repository directory\):
 
 ```text
+docker-compose pull
 docker-compose up -d --build
 ```
 
