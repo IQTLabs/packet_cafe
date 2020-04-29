@@ -1,5 +1,21 @@
 version: '3.7'
 services:
+  networkml:
+    image: 'cyberreboot/networkml:v0.5.3'
+  pcapplot:
+    image: 'cyberreboot/pcapplot:v0.1.5'
+  pcap-splitter:
+    image: 'cyberreboot/pcap-to-node-pcap:v0.11.8'
+  ncapture:
+    image: 'cyberreboot/ncapture:v0.11.8'
+  pcap-dot1q:
+    image: 'cyberreboot/tcprewrite-dot1q:v0.11.8'
+  snort:
+    image: 'cyberreboot/snort:v0.11.8'
+  pcap-stats:
+    image: 'cyberreboot/pcap-stats:v0.11.8'
+  mercury:
+    image: 'cyberreboot/mercury:v0.11.8'
   admin:
     restart: always
     build:
