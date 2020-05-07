@@ -9,7 +9,7 @@ services:
   ncapture:
     image: 'cyberreboot/ncapture:v0.11.9'
   pcap-dot1q:
-    image: 'cyberreboot/tcprewrite-dot1q:v0.11.8'
+    image: 'cyberreboot/tcprewrite-dot1q:v0.11.9'
   snort:
     image: 'cyberreboot/snort:v0.11.8'
   pcap-stats:
