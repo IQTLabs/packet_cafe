@@ -13,7 +13,7 @@ services:
   snort:
     image: 'cyberreboot/snort:v0.11.8'
   pcap-stats:
-    image: 'cyberreboot/pcap-stats:v0.11.8'
+    image: 'cyberreboot/pcap-stats:v0.11.9'
   mercury:
     image: 'cyberreboot/mercury:v0.11.9'
   admin:
