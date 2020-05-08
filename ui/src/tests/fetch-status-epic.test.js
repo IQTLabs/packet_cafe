@@ -18,19 +18,19 @@ describe("fetchToolStatusEpic", () => {
     const tools = {
           "tool1": {
             "state": "Queued",
-            "timestamp": "2020-04-14 18:54:15.535827"
+            "timestamp": "2020-04-14T18:54:15.535827+00:00"
           },
           "tool2": {
             "state": "Complete",
-            "timestamp": "2020-04-14 18:54:15.535827"
+            "timestamp": "2020-04-14T18:54:15.535827+00:00"
           },
           "tool3": {
             "state": "Started",
-            "timestamp": "2020-04-14 18:54:15.535827"
+            "timestamp": "2020-04-14T18:54:15.535827+00:00"
           },
           "tool4": {
             "state": "In progress",
-            "timestamp": "2020-04-14 18:54:15.535827"
+            "timestamp": "2020-04-14T18:54:15.535827+00:00"
           },
         };
 

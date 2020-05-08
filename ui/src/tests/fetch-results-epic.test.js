@@ -17,19 +17,19 @@ describe("fetchResultsEpic", () => {
     const data = {
           "tool1": {
             "status": "Queued",
-            "timestamp": "2020-04-14 18:54:15.535827"
+            "timestamp": "2020-04-14T18:54:15.535827+00:00"
           },
           "tool2": {
             "status": "Complete",
-            "timestamp": "2020-04-14 18:54:15.535827"
+            "timestamp": "2020-04-14T18:54:15.535827+00:00"
           },
           "tool3": {
             "status": "Started",
-            "timestamp": "2020-04-14 18:54:15.535827"
+            "timestamp": "2020-04-14T18:54:15.535827+00:00"
           },
           "tool4": {
             "status": "In progress",
-            "timestamp": "2020-04-14 18:54:15.535827"
+            "timestamp": "2020-04-14T18:54:15.535827+00:00"
           },
         };
     const mockResponse = data;

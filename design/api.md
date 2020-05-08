@@ -472,39 +472,39 @@ Returns the status of all tools for a request ID.
 	"cleaned": true,
 	"mercury": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:07:51.507362"
+		"timestamp": "2020-04-24T19:07:51.507362+00:00"
 	},
 	"pcap-stats": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:07:43.972380"
+		"timestamp": "2020-04-24T19:07:43.972380+00:00"
 	},
 	"pcapplot": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:10:54.366903"
+		"timestamp": "2020-04-24T19:10:54.366903+00:00"
 	},
 	"networkml": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:09:17.470786"
+		"timestamp": "2020-04-24T19:09:17.470786+00:00"
 	},
 	"p0f": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:09:26.266748"
+		"timestamp": "2020-04-24T19:09:26.266748+00:00"
 	},
 	"pcap-dot1q": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:07:43.362974"
+		"timestamp": "2020-04-24T19:07:43.362974+00:00"
 	},
 	"snort": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:07:54.466032"
+		"timestamp": "2020-04-24T19:07:54.466032+00:00"
 	},
 	"ncapture": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:07:38.438424"
+		"timestamp": "2020-04-24T19:07:38.438424+00:00"
 	},
 	"pcap-splitter": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:08:47.088579"
+		"timestamp": "2020-04-24T19:08:47.088579+00:00"
 	}
 }
 ```
