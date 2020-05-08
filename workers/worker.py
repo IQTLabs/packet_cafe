@@ -1,3 +1,4 @@
+import arrow
 import datetime
 import json
 import os
@@ -52,7 +53,7 @@ def callback(ch, method, properties, body):
             if 'rabbit' not in pipeline:
                 pipeline['rabbit'] = 'true'
             try:
-                print(" [Create container] %s UTC %r:%r:%r:%r" % (str(datetime.datetime.utcnow()),
+                print(" [Create container] %s UTC %r:%r:%r:%r" % (str(arrow.utcnow()),
                                                                   method.routing_key,
                                                                   pipeline['id'],
                                                                   image,
@@ -65,35 +66,35 @@ def callback(ch, method, properties, body):
                                  remove=True,
                                  command=command,
                                  detach=True)
-                status[worker['name']] = json.dumps({'state': 'In progress', 'timestamp': str(datetime.datetime.utcnow())})
+                status[worker['name']] = json.dumps({'state': 'In progress', 'timestamp': str(arrow.utcnow())})
                 worker_found = True
             except Exception as e:  # pragma: no cover
                 print('failed: {0}'.format(str(e)))
-                status[worker['name']] = json.dumps({'state': 'Error', 'timestamp': str(datetime.datetime.utcnow())})
+                status[worker['name']] = json.dumps({'state': 'Error', 'timestamp': str(arrow.utcnow())})
         else:
-            extra_workers[worker['name']] = json.dumps({'state': 'Queued', 'timestamp': str(datetime.datetime.utcnow())})
+            extra_workers[worker['name']] = json.dumps({'state': 'Queued', 'timestamp': str(arrow.utcnow())})
     if 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'data':
-        print(" [Data] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
+        print(" [Data] %s UTC %r:%r:%r" % (str(arrow.utcnow()),
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
         r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], pipeline['results']['counter'], session_id, pipeline['id']), data=json.dumps(pipeline))
-        status[pipeline['results']['tool']] = json.dumps({'state': 'In progress', 'timestamp': str(datetime.datetime.utcnow())})
+        status[pipeline['results']['tool']] = json.dumps({'state': 'In progress', 'timestamp': str(arrow.utcnow())})
     elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'metadata':
         if 'data' in pipeline and pipeline['data'] != '':
-            print(" [Metadata] %s UTC %r:%r:%r" % (str(datetime.datetime.utcnow()),
+            print(" [Metadata] %s UTC %r:%r:%r" % (str(arrow.utcnow()),
                                             method.routing_key,
                                             pipeline['id'],
                                             pipeline['results']))
             r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], 0, session_id, pipeline['id']), data=json.dumps(pipeline))
-            status[pipeline['results']['tool']] = json.dumps({'state': 'In progress', 'timestamp': str(datetime.datetime.utcnow())})
+            status[pipeline['results']['tool']] = json.dumps({'state': 'In progress', 'timestamp': str(arrow.utcnow())})
         else:
-            print(" [Finished] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
+            print(" [Finished] %s UTC %r:%r" % (str(arrow.utcnow()),
                                          method.routing_key,
                                          pipeline))
-            status[pipeline['results']['tool']] = json.dumps({'state': 'Complete', 'timestamp': str(datetime.datetime.utcnow())})
+            status[pipeline['results']['tool']] = json.dumps({'state': 'Complete', 'timestamp': str(arrow.utcnow())})
     elif not worker_found:
-        print(" [X no match] %s UTC %r:%r" % (str(datetime.datetime.utcnow()),
+        print(" [X no match] %s UTC %r:%r" % (str(arrow.utcnow()),
                                      method.routing_key,
                                      pipeline))
 
@@ -125,7 +126,7 @@ def callback(ch, method, properties, body):
                         orig_file = filenames[0]
                     open(f'/files/{session_id}/{id_dir}/{orig_file}', 'w').close()
                     status['cleaned'] = json.dumps(True)
-                    print(" [Cleaned] %s UTC %s:%s:%s" % (str(datetime.datetime.utcnow()),
+                    print(" [Cleaned] %s UTC %s:%s:%s" % (str(arrow.utcnow()),
                                                  str(session_id), str(id_dir), str(orig_file)))
             except Exception as e:  # pragma: no cover
                 print('failed to clean file because: {0}'.format(str(e)))
