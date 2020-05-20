@@ -12,6 +12,7 @@ jobs:
     - name: test
       run: |
         pip3 install -U pip && \
+        pip3 install -U setuptools && \
         pip3 install codecov && \
         docker build -t packet_cafe/ui -f ./ui/Dockerfile ./ui && \
         docker build -t packet_cafe/ui-test -f ./ui/Dockerfile.test ./ui && \
