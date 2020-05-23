@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import socket
 
 import falcon
@@ -18,6 +19,41 @@ class Endpoints(object):
         resp.body = json.dumps(endpoints)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
+
+
+class IDDelete(object):
+
+    def on_get(self, req, resp, session_id):
+        id_path = f'/id/{session_id}'
+        file_path = f'/files/{session_id}'
+        errors = []
+        if not (os.path.exists(id_path) or os.path.exists(file_path)):
+            print(f"no data found for session: {session_id}")
+            resp.media = {'status': 'Error',
+                          'error': f'No data found for session {session_id}'}
+            resp.status = falcon.HTTP_500
+        else:
+            # If an internal server error occurred on 'upload' there may
+            # be something in /files but not in /id. Handle gracefully.
+            if os.path.exists(file_path):
+                try:
+                    shutil.rmtree(file_path)
+                except Exception as e:  # pragma: no cover
+                    print(f'Failed to delete {file_path} because: {e}')
+                    errors.append(str(e))
+            if os.path.exists(id_path):
+                try:
+                    shutil.rmtree(id_path)
+                except Exception as e:  # pragma: no cover
+                    print(f'Failed to delete {id_path} because: {e}')
+                    errors.append(str(e))
+            if bool(len(errors)):
+                resp.media = {'status': 'Error',
+                              'error(s)': f'{"; ".join(errors)}'}
+                resp.status = falcon.HTTP_500
+            else:
+                resp.media = {'status': 'Success'}
+                resp.status = falcon.HTTP_200
 
 
 class IDFiles(object):
