@@ -555,7 +555,7 @@ TO BE IMPLEMENTED
 {% endapi-method-summary %}
 
 {% api-method-description %}
-Deletes files and id associated with a session.
+Deletes files and id directories associated with a session.
 {% endapi-method-description %}
 
 {% api-method-spec %}
@@ -574,7 +574,7 @@ Session ID
 {% endapi-method-response-example-description %}
 
 ```
-TO BE IMPLEMENTED
+{ "status": "Success" }
 ```
 {% endapi-method-response-example %}
 {% endapi-method-response %}
