@@ -16,10 +16,19 @@ def routes():
 
 
 def paths():
-    return ['', '/id/{session_id}/{req_id}/{tool}/{pcap}/{counter}/{filename}',
-            '/ids/{session_id}',
-            '/info', '/raw/{tool}/{counter}/{session_id}/{req_id}', '/results/{tool}/{counter}/{session_id}/{req_id}', '/status/{session_id}/{req_id}',
-            '/stop/{session_id}/{req_id}', '/tools', '/upload']
+    return [
+        '',
+        '/id/{session_id}/{req_id}/{tool}/{pcap}/{counter}/{filename}',
+        '/ids/{session_id}',
+        '/info',
+        '/raw/{tool}/{counter}/{session_id}/{req_id}',
+        '/results/{tool}/{counter}/{session_id}/{req_id}',
+        '/status/{session_id}/{req_id}',
+        '/stop/{session_id}/{req_id}',
+        '/tools',
+        '/upload'
+    ]
+
 
 def version():
     return '/api/v1'
