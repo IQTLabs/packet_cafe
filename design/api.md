@@ -224,6 +224,38 @@ Returns a list of of the available API endpoints for this service.
 {% endapi-method-spec %}
 {% endapi-method %}
 
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/delete/:sess\_id" %}
+{% api-method-summary %}
+/api/v1/delete/:sess\_id
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Deletes files and id directories associated with a session.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-path-parameters %}
+{% api-method-parameter name="sess\_id" type="string" required=true %}
+Session ID
+{% endapi-method-parameter %}
+{% endapi-method-path-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+
+{% endapi-method-response-example-description %}
+
+```
+{ "status": "Success" }
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
 {% api-method method="get" host="http://0.0.0.0" path="/api/v1/id/:sess\_id/:req\_id/:tool/:pcap/:counter/:filename" %}
 {% api-method-summary %}
 /api/v1/id/:sess\_id/:req\_id/:tool/:pcap/:counter/:filename
@@ -543,38 +575,6 @@ Session ID
 
 ```
 TO BE IMPLEMENTED
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
-{% api-method method="get" host="http://0.0.0.0" path="/api/v1/delete/:sess\_id" %}
-{% api-method-summary %}
-/api/v1/delete/:sess\_id
-{% endapi-method-summary %}
-
-{% api-method-description %}
-Deletes files and id directories associated with a session.
-{% endapi-method-description %}
-
-{% api-method-spec %}
-{% api-method-request %}
-{% api-method-path-parameters %}
-{% api-method-parameter name="sess\_id" type="string" required=true %}
-Session ID
-{% endapi-method-parameter %}
-{% endapi-method-path-parameters %}
-{% endapi-method-request %}
-
-{% api-method-response %}
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-
-{% endapi-method-response-example-description %}
-
-```
-{ "status": "Success" }
 ```
 {% endapi-method-response-example %}
 {% endapi-method-response %}
