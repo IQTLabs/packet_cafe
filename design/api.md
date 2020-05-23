@@ -25,7 +25,7 @@ Returns a list of the available API endpoints for this service.
 {% endapi-method-response-example-description %}
 
 ```
-["/v1", "/v1/id/files", "/v1/id/results", "/v1/ids", "/v1/info", "/v1/logs/{req_id}"]
+["/v1", "/v1/id/delete/{session_id}", "/v1/id/files", "/v1/id/results", "/v1/ids", "/v1/info", "/v1/logs/{req_id}"]
 ```
 {% endapi-method-response-example %}
 {% endapi-method-response %}
