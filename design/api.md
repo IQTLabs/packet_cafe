@@ -549,6 +549,38 @@ TO BE IMPLEMENTED
 {% endapi-method-spec %}
 {% endapi-method %}
 
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/delete/:sess\_id" %}
+{% api-method-summary %}
+/api/v1/delete/:sess\_id
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Deletes files and id associated with a session.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-path-parameters %}
+{% api-method-parameter name="sess\_id" type="string" required=true %}
+Session ID
+{% endapi-method-parameter %}
+{% endapi-method-path-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+
+{% endapi-method-response-example-description %}
+
+```
+TO BE IMPLEMENTED
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
 {% api-method method="get" host="http://0.0.0.0" path="/api/v1/tools" %}
 {% api-method-summary %}
 /api/v1/tools
