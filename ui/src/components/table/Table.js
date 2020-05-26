@@ -165,6 +165,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
     fetchToolStatus,
+    fetchResults,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps) (Table);
