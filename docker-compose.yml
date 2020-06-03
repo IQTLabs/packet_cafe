@@ -3,7 +3,7 @@ services:
   networkml:
     image: 'cyberreboot/networkml:v0.5.4'
   pcapplot:
-    image: 'cyberreboot/pcapplot:v0.1.5'
+    image: 'cyberreboot/pcapplot:v0.1.6'
   pcap-splitter:
     image: 'cyberreboot/pcap-to-node-pcap:v0.11.9'
   ncapture:
