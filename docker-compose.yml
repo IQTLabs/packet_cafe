@@ -5,7 +5,7 @@ services:
   pcapplot:
     image: 'cyberreboot/pcapplot:v0.1.6'
   pcap-splitter:
-    image: 'cyberreboot/pcap-to-node-pcap:v0.11.9'
+    image: 'cyberreboot/pcap-to-node-pcap:v0.11.10'
   ncapture:
     image: 'cyberreboot/ncapture:v0.11.10'
   pcap-dot1q:
