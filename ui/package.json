@@ -23,7 +23,7 @@
     "semantic-ui-react": "0.88.2",
     "serve": "11.3.2",
     "styled-components": "5.1.1",
-    "uuid": "8.1.0"
+    "uuid": "8.2.0"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
