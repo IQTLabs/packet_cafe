@@ -7,6 +7,7 @@ import './Table.css';
 
 import { getResults, getToolStatuses, getTools } from 'domain/data';
 import { fetchToolStatus } from 'epics/fetch-status-epic'
+import { fetchResults } from 'epics/fetch-results-epic'
 
 const customStyles = {
   rows: {
@@ -66,12 +67,12 @@ class Table extends React.Component{
 
   fetchStatuses = () => {
       for(const row of this.props.rows){
-        this.props.fetchToolStatus({ 'sessionId': this.state.sessionId, 'fileId':row.id });
+        this.props.fetchToolStatus({ 'sessionId': this.props.sessionId, 'fileId':row.id });
       }
   }
 
   fetchResults = () => {
-      this.props.fetchResults({ 'sessionId': this.state.sessionId });
+      this.props.fetchResults({ 'sessionId': this.props.sessionId });
   }
 
   //NEW
@@ -164,6 +165,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
     fetchToolStatus,
+    fetchResults,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps) (Table);
