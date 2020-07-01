@@ -105,7 +105,7 @@ def callback(ch, method, properties, body):
     print("redis: {0}".format(status))
     if r:
         r.sadd(session_id, pipeline['id'])
-        r.hmset(pipeline['id']+"_status", status)
+        r.hset(pipeline['id']+"_status", status)
         statuses = r.hgetall(pipeline['id']+"_status")
         for s in statuses:
             statuses[s] = json.loads(statuses[s])
@@ -130,7 +130,7 @@ def callback(ch, method, properties, body):
                                                  str(session_id), str(id_dir), str(orig_file)))
             except Exception as e:  # pragma: no cover
                 print('failed to clean file because: {0}'.format(str(e)))
-            r.hmset(f'{id_dir}_status', status)
+            r.hset(f'{id_dir}_status', status)
         r.close()
 
 
