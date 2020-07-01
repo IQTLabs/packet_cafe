@@ -15,7 +15,7 @@ services:
   pcap-stats:
     image: 'cyberreboot/pcap-stats:v0.11.10'
   mercury:
-    image: 'cyberreboot/mercury:v0.11.10'
+    image: 'cyberreboot/mercury:v0.11.11'
   admin:
     restart: always
     build:
