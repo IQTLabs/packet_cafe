@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   networkml:
-    image: 'cyberreboot/networkml:v0.5.6'
+    image: 'cyberreboot/networkml:v0.5.7'
   pcapplot:
     image: 'cyberreboot/pcapplot:v0.1.6'
   pcap-splitter:
