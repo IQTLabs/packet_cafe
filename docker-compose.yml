@@ -11,7 +11,7 @@ services:
   pcap-dot1q:
     image: 'cyberreboot/tcprewrite-dot1q:v0.11.11'
   snort:
-    image: 'cyberreboot/snort:v0.11.10'
+    image: 'cyberreboot/snort:v0.11.11'
   pcap-stats:
     image: 'cyberreboot/pcap-stats:v0.11.11'
   mercury:
