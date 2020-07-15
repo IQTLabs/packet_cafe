@@ -7,7 +7,7 @@ services:
   pcap-splitter:
     image: 'cyberreboot/pcap-to-node-pcap:v0.11.11'
   ncapture:
-    image: 'cyberreboot/ncapture:v0.11.11'
+    image: 'cyberreboot/ncapture:v0.11.12'
   pcap-dot1q:
     image: 'cyberreboot/tcprewrite-dot1q:v0.11.11'
   snort:
