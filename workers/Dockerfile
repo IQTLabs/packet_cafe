@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.12
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
 COPY requirements.txt requirements.txt
@@ -9,9 +9,9 @@ RUN apk add --update \
     gcc \
     linux-headers \
     musl-dev \
+    py3-pip \
     python3 \
     python3-dev \
-    && pip3 install --no-cache-dir --upgrade pip==19.1.1 \
     && pip3 install --no-cache-dir -r requirements.txt \
     && pip3 install --no-cache-dir -r /healthcheck/requirements.txt \
     && apk del \

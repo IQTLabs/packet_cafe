@@ -367,8 +367,8 @@ class Upload(object):
 
         # Test if the file was uploaded
         if input_file.filename:
-            # Retrieve filename
-            filename = input_file.filename
+            # Retrieve file basename (avoid path traversal)
+            filename = os.path.basename(input_file.filename)
 
             uid = str(uuid.uuid4()).replace('-', '')
             file_dir = '/files/{0}/{1}'.format(session_id, uid)

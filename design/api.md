@@ -25,7 +25,7 @@ Returns a list of the available API endpoints for this service.
 {% endapi-method-response-example-description %}
 
 ```
-["/v1", "/v1/id/files", "/v1/id/results", "/v1/ids", "/v1/info", "/v1/logs/{req_id}"]
+["/v1", "/v1/id/delete/{session_id}", "/v1/id/files", "/v1/id/results", "/v1/ids", "/v1/info", "/v1/logs/{req_id}"]
 ```
 {% endapi-method-response-example %}
 {% endapi-method-response %}
@@ -218,6 +218,38 @@ Returns a list of of the available API endpoints for this service.
     "/api/v1/tools",
     "/api/v1/upload"
 ]
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+{% api-method method="get" host="http://0.0.0.0" path="/api/v1/delete/:sess\_id" %}
+{% api-method-summary %}
+/api/v1/delete/:sess\_id
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Deletes files and id directories associated with a session.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-path-parameters %}
+{% api-method-parameter name="sess\_id" type="string" required=true %}
+Session ID
+{% endapi-method-parameter %}
+{% endapi-method-path-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+
+{% endapi-method-response-example-description %}
+
+```
+{ "status": "Success" }
 ```
 {% endapi-method-response-example %}
 {% endapi-method-response %}
@@ -472,39 +504,39 @@ Returns the status of all tools for a request ID.
 	"cleaned": true,
 	"mercury": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:07:51.507362"
+		"timestamp": "2020-04-24T19:07:51.507362+00:00"
 	},
 	"pcap-stats": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:07:43.972380"
+		"timestamp": "2020-04-24T19:07:43.972380+00:00"
 	},
 	"pcapplot": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:10:54.366903"
+		"timestamp": "2020-04-24T19:10:54.366903+00:00"
 	},
 	"networkml": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:09:17.470786"
+		"timestamp": "2020-04-24T19:09:17.470786+00:00"
 	},
 	"p0f": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:09:26.266748"
+		"timestamp": "2020-04-24T19:09:26.266748+00:00"
 	},
 	"pcap-dot1q": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:07:43.362974"
+		"timestamp": "2020-04-24T19:07:43.362974+00:00"
 	},
 	"snort": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:07:54.466032"
+		"timestamp": "2020-04-24T19:07:54.466032+00:00"
 	},
 	"ncapture": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:07:38.438424"
+		"timestamp": "2020-04-24T19:07:38.438424+00:00"
 	},
 	"pcap-splitter": {
 		"state": "Complete",
-		"timestamp": "2020-04-24 19:08:47.088579"
+		"timestamp": "2020-04-24T19:08:47.088579+00:00"
 	}
 }
 ```

@@ -7,6 +7,7 @@ import './Table.css';
 
 import { getResults, getToolStatuses, getTools } from 'domain/data';
 import { fetchToolStatus } from 'epics/fetch-status-epic'
+import { fetchResults } from 'epics/fetch-results-epic'
 
 const customStyles = {
   rows: {
@@ -164,6 +165,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
     fetchToolStatus,
+    fetchResults,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps) (Table);
