@@ -1,8 +1,7 @@
 import { createAction } from 'redux-actions';
 import { ofType } from 'redux-observable';
-import { of } from 'rxjs';
 import { ajax  as rxAjax } from 'rxjs/ajax';
-import { catchError, debounceTime, mergeMap, map } from 'rxjs/operators';
+import { catchError, mergeMap, map } from 'rxjs/operators';
 
 import { setToolStatus } from "domain/data";
 //import { setError } from "domain/error";
@@ -14,13 +13,12 @@ const fetchToolStatus = createAction('FETCH_TOOL_STATUS');
 const fetchToolStatusEpic = (action$, store, ajax = rxAjax) => {
   return action$.pipe(
     ofType(fetchToolStatus.toString())
-    ,debounceTime(500)
     ,mergeMap((action) => {
       const sessionId = action.payload.sessionId;
       const fileId = action.payload.fileId;
       const url = '/status/' + sessionId + '/' + fileId;
       return ajax({ 'url': url, 'crossDomain': true, 'responseType': 'json' }).pipe(
-        map((result) => { 
+        map((result) => {
           const resp = result.response;
           const tools = {};
           const keys = Object.keys(resp);
@@ -31,15 +29,13 @@ const fetchToolStatusEpic = (action$, store, ajax = rxAjax) => {
               tools[key] = {"status":item["state"], 'timestamp': ts};
             }
           }
-          return tools;
+          return {'file': fileId, 'tools': tools};
         })
         ,map(setToolStatus)
       );
     })
     ,catchError((error) => {
       console.log("error xhr: %o", error)
-      const newErr = new Error("Error fetching Status: " + error.message);
-      //return of(setError(newErr));
     })
   );
 }

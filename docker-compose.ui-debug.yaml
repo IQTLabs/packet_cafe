@@ -13,21 +13,6 @@ services:
     volumes:
       - files:/files
       - id:/id
-  ui:
-    restart: always
-    build:
-      context: ui
-      dockerfile: Dockerfile.debug
-    image: 'cyberreboot/packet_cafe_ui:latest'
-    ports:
-      - 9229:9229
-    networks:
-      - frontend
-    deploy:
-      replicas: 1
-    volumes:
-      - definitions:/definitions
-      - ./ui:/ui_src
   web:
     restart: always
     build:
@@ -83,16 +68,22 @@ services:
 networks:
   admin:
     name: admin
+    driver: bridge
   frontend:
     name: frontend
+    driver: bridge
   backend:
     name: backend
+    driver: bridge
   analysis:
     name: analysis
+    driver: bridge
   preprocessing:
     name: preprocessing
+    driver: bridge
   results:
     name: results
+    driver: bridge
 volumes:
   files:
   id:

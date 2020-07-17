@@ -4,20 +4,26 @@ import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Grid, Button } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 
+import { startFetchResults, stopFetchResults } from "epics/auto-fetch-results-epic"
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
+<<<<<<< HEAD
 import { setHeatmapData, getDataWranglingState } from 'domain/data_wrangling';
+=======
+import { fetchTools } from 'epics/fetch-tools-epic'
+>>>>>>> cf11b1644903bcb359730349b002cc06679b4c7e
 import { setSessionId, getResults, getToolStatuses } from 'domain/data';
 
 import './App.css';
 import Upload from 'components/upload/Upload';
 import Navbar from 'components/Navbar';
+import DataMonitor from 'components/data/DataMonitor';
 import Table from 'components/table/Table.js';
 import Heatmap from 'components/heatmap/Heatmap.js';
 
-const SESSION_ID = uuidv4();
+const COOKIE_NAME = 'sessionID'
 
 class App extends React.Component {
   static propTypes = {
@@ -27,7 +33,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const { cookies } = props;
-    const sessionId = cookies.get('sessionID') || SESSION_ID
+    const cookieSessionId = cookies.get(COOKIE_NAME);
+    const sessionId = cookieSessionId || uuidv4();
+    if(!cookieSessionId){
+      const options = {
+        'path':'/',
+        'maxAge': 86400
+      };
+      cookies.set(COOKIE_NAME, sessionId, options);
+    }
     this.props.setSessionId(sessionId);
     this.state = {
       ipResults: [],
@@ -36,6 +50,7 @@ class App extends React.Component {
     };
   }
 
+<<<<<<< HEAD
   static getDerivedStateFromProps(props, state) {
     // Any time the current user changes,
     // Reset any parts of state that are tied to that user.
@@ -55,17 +70,17 @@ class App extends React.Component {
       this.props.fetchResults({ 'sessionId': this.state.sessionId });
       console.log("Peasant Burnination complete!");
       this.fetchHeatmapData();
+=======
+  componentWillMount() {
+    this.props.fetchTools();
+>>>>>>> cf11b1644903bcb359730349b002cc06679b4c7e
   }
 
-  fetchStatuses = () => {
-      console.log("Norm Abrams is doing all of the real work....")
-      for(const row of this.props.rows){
-        this.props.fetchToolStatus({ 'sessionId': this.state.sessionId, 'fileId':row.id });
-      }
-      console.log("statuses: %o", this.props.statuses)
-      console.log("This House Oldification complete")
+  componentWillUnmount() {
+    this.props.stopFetchResults();
   }
 
+<<<<<<< HEAD
   fetchHeatmapData = async () => {
     const { setHeatmapData, rows, statuses } = this.props;
     const { sessionId } = this.state;
@@ -116,42 +131,40 @@ class App extends React.Component {
   }
 
   handleCookies = (termsAccepted) => {
+=======
+  clearResults = () =>{
+>>>>>>> cf11b1644903bcb359730349b002cc06679b4c7e
     const { cookies } = this.props;
-    cookies.set('sessionID', this.state.sessionId, { 
-      path: '/',
-      maxAge:'3600' 
-    });
-    cookies.set('termsAccepted', termsAccepted, { 
-      path: '/',
-      maxAge:'3600'
-    });
+    cookies.remove(COOKIE_NAME)
+    localStorage.clear(); 
+    window.location.reload(false);
   }
 
+<<<<<<< HEAD
   render() { 
     const { ipResults, portResults } = this.state;
 
+=======
+  render() {
+    const refreshInterval = this.props.refreshInterval || 5;
+>>>>>>> cf11b1644903bcb359730349b002cc06679b4c7e
     return (
       <>
         <Navbar/>
         <Grid textAlign='center' container style={{ height: '100vh' }}>
           <Grid.Row columns={1}>
             <Grid.Column style={{ maxWidth: 240 }}>
-              <Upload onSelectCookies={this.handleCookies} sessionId={this.state.sessionId}/>
+              <Upload sessionId={this.state.sessionId} refreshInterval={refreshInterval}/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
             <Grid.Column>
-                <Button circular basic color='green'  onClick={this.fetchResults}>
-                  Burninate Peasants (Fetch Results)
-                </Button>
-                <Button circular basic color='teal' onClick={this.fetchStatuses}>
-                  Bob Villa was useless. (Fetch Statuses)
-                </Button>
+              <DataMonitor sessionId={this.state.sessionId} files={this.props.rows} statuses={this.props.statuses} refreshInterval={refreshInterval}/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
             <Grid.Column>
-              <Table sessionId={this.state.sessionId}/>
+              <Table sessionId={this.state.sessionId} clearResults={this.clearResults}/>
             </Grid.Column>
           </Grid.Row>
           {ipResults &&
@@ -176,10 +189,15 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+<<<<<<< HEAD
 
   const results = getResults(state);
   const toolStatuses = getToolStatuses(state);
   const wrangledData = getDataWranglingState(state);
+=======
+  const results = getResults(state)
+  const toolStatuses = getToolStatuses(state)
+>>>>>>> cf11b1644903bcb359730349b002cc06679b4c7e
 
   return{
     rows: results.rows || [],
@@ -192,7 +210,13 @@ const mapDispatchToProps = {
     setSessionId,
     fetchResults,
     fetchToolStatus,
+<<<<<<< HEAD
     setHeatmapData
+=======
+    fetchTools,
+    startFetchResults,
+    stopFetchResults,
+>>>>>>> cf11b1644903bcb359730349b002cc06679b4c7e
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withCookies(App));

@@ -1,4 +1,5 @@
-docker==4.2.0
+arrow==0.15.7
+docker==4.2.2
 pika==1.1.0
-redis==3.4.1
-requests==2.23.0
+redis==3.5.3
+requests==2.24.0

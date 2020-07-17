@@ -12,6 +12,7 @@ jobs:
     - name: test
       run: |
         pip3 install -U pip && \
+        pip3 install -U setuptools && \
         pip3 install codecov && \
         docker build -t packet_cafe/ui -f ./ui/Dockerfile ./ui && \
         docker build -t packet_cafe/ui-test -f ./ui/Dockerfile.test ./ui && \
@@ -22,7 +23,7 @@ jobs:
         export PATH=/home/runner/.local/bin:$PATH
         #coverage report && coverage xml
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1.0.5
+      uses: codecov/codecov-action@v1.0.6
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:

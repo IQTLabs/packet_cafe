@@ -2,10 +2,12 @@ import React from 'react';
 import DataTable from 'react-data-table-component';
 import { connect } from "react-redux";
 
-import { Tab, Icon, Label } from 'semantic-ui-react';
+import { Tab, Icon, Label, Button } from 'semantic-ui-react';
 import './Table.css';
 
-import { getResults, getToolStatuses } from 'domain/data';
+import { getResults, getToolStatuses, getTools } from 'domain/data';
+import { fetchToolStatus } from 'epics/fetch-status-epic'
+import { fetchResults } from 'epics/fetch-results-epic'
 
 const customStyles = {
   rows: {
@@ -27,19 +29,23 @@ const customStyles = {
   },
 };
 
-const getPanes = (results, statuses, columns, tableLoading) => {
-  // handle case if results is an empty list
+const getStatusArray = (fileId, fileStatuses) => {
   var statusArray = [];
-  if (results.length > 0) {
+  const statuses = fileStatuses[fileId];
+
+  if(statuses){
     statusArray = Object.keys(statuses).map(key => ({
+      id: fileId + "-" + String(key),
       tool: String(key),
-      id: results[0].id,
+      fileId: fileId,
       ...statuses[key]
     }));
   }
-  console.log(statusArray);
-  console.log(results);
-  return results.map(function(result){
+  return statusArray;
+}
+
+const getPanes = (results, statuses, columns, tableLoading) => {
+  return results.map((result) =>{
     return {
       menuItem: result.filename,
       render: () =>
@@ -48,7 +54,7 @@ const getPanes = (results, statuses, columns, tableLoading) => {
             keyField="id"
             title={result.id}
             columns={columns}
-            data={statusArray}
+            data={getStatusArray(result.id, statuses)}
             progressPending={tableLoading}
             customStyles={customStyles}
           />
@@ -59,27 +65,30 @@ const getPanes = (results, statuses, columns, tableLoading) => {
 
 class Table extends React.Component{
 
-  renderTools = (item, type) => {
-    const tools = item.tools;
-    const id = item.id;
-    return tools.map((value) => {
-        const url = `/${type}/${this.props.sessionId}/${id}/${value}`
-        return(
-          <p key={id + ":" +value}>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              {value}
-            </a>
-          </p>
-        )
+  fetchStatuses = () => {
+      for(const row of this.props.rows){
+        this.props.fetchToolStatus({ 'sessionId': this.props.sessionId, 'fileId':row.id });
       }
-    );
+  }
+
+  fetchResults = () => {
+      this.props.fetchResults({ 'sessionId': this.props.sessionId });
   }
 
   //NEW
   renderTool = (item, type) => {
     const id = item.id;
+    const fileId = item.fileId;
     const value = item.tool;
-    const url = `/${type}/${this.props.sessionId}/${id}/${value}`
+    for(const tool of this.props.tools){
+      if(tool.name === value && !tool.viewableOutput) {
+        return(
+          <p>Tool does not generate results.</p>
+        )
+      }
+    }
+
+    const url = `/${type}/${this.props.sessionId}/${fileId}/${value}`
     return(
       <p key={id + ":" +value}>
         <a href={url} target="_blank" rel="noopener noreferrer">
@@ -87,38 +96,6 @@ class Table extends React.Component{
         </a>
       </p>
     )
-  }
-
-  renderStatus = (item) => {
-    const id = item.id;
-    const url = `/status/${this.props.sessionId}/${id}`;
-    return(
-          <p key={id}>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              Check Status
-            </a>
-          </p>
-    );
-  }
-
-  getTableColumns = () => {
-    const tableColumns = [
-      // { name: 'ID', selector: 'id' },
-      // { name: 'Filename', selector: 'original_filename' },
-      { name: 'Tools', className: 'text-center',
-        cell: row => <div>{this.renderTools(row, 'results')}</div>,
-      },
-      { name: 'Tools (Raw)', className: 'text-center',
-        cell: row => <div>{this.renderTools(row, 'raw')}</div>,
-      },
-      // { title: 'Results', render: renderResultsUrl, className: 'text-center' },
-      { name: 'Report', selector: 'report', cell: row => <p>{ row.report ? row.report : 'no report available' }</p> },
-      { name: 'Status', className: 'text-center',
-        cell: row => <div>{this.renderStatus(row)}</div>,
-      },
-    ];
-
-    return tableColumns;
   }
 
   //NEW
@@ -129,13 +106,17 @@ class Table extends React.Component{
       },
       { name: 'Status', className: '',
         cell: row => <div>
-            {row.status == 'Queued' && <Icon title="Queued" color='grey' size='big' name='pause circle' />}
-            {row.status == 'In progress' && <Icon title="In Progress" loading size='big' color='yellow' name='cog' />}
-            {row.status == 'Complete' && <Icon title="Complete" size='big' color='green' name='check circle' />}
+            {row.status === 'Queued' && <Icon title="Queued" color='grey' size='big' name='pause circle' />}
+            {row.status === 'In progress' && <Icon title="In Progress" loading size='big' color='yellow' name='cog' />}
+            {row.status === 'Complete' && <Icon title="Complete" size='big' color='green' name='check circle' />}
           </div>,
       },
       { name: 'Timestamp', className: '',
-        cell: row => <div>{row.timestamp}</div>,
+        cell: row => {
+            const d = new Date(0);
+            d.setUTCSeconds(row.timestamp/1000);
+            return <div>{d.toString().split("GMT")[0]}</div>
+        },
       },
       { name: 'Results', className: 'text-center',
         cell: row => <div>{this.renderTool(row, 'results')}</div>,
@@ -149,12 +130,23 @@ class Table extends React.Component{
   }
 
   render() {
-    // const columns = this.getTableColumns(); //original
     const columns = this.getToolsTableColumns();
     const { rows, isLoading, statuses } = this.props;
-
     return (
-      <Tab className={` ${rows === undefined || rows.length == 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns, isLoading)} />
+      <div>
+        <div className="buttonContainer">
+          <Button circular basic color='green' className={` ${rows && rows.length > 0 ? '' : 'hidden'}`} onClick={this.fetchResults}>
+            Refresh Files
+          </Button>
+          <Button circular basic color='teal' className={` ${statuses && Object.keys(statuses).length > 0 ? '' : 'hidden'}`} onClick={this.fetchStatuses}>
+            Refresh Statuses
+          </Button>
+          <Button circular basic color='orange' className={` ${(rows || statuses) && (rows.length > 0 || Object.keys(statuses).length > 0 ) ? '' : 'hidden'}`} onClick={this.props.clearResults}>
+            Clear Results
+          </Button>
+        </div>
+        <Tab className={` ${rows === undefined || rows.length === 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns, isLoading)} />
+      </div>
     )
   }
 }
@@ -163,12 +155,17 @@ const mapStateToProps = (state, ownProps) => {
 
   const results = getResults(state);
   const toolStatuses = getToolStatuses(state);
-  return {
+  const tools = getTools(state);
+  return{
     rows: results.rows || [],
     statuses: toolStatuses || {},
+    tools: tools || [],
   }
 };
 
-const mapDispatchToProps = null;
+const mapDispatchToProps = {
+    fetchToolStatus,
+    fetchResults,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps) (Table);

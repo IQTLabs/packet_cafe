@@ -13,19 +13,19 @@
     "ramda": "0.27.0",
     "react": "16.13.1",
     "react-cookie": "4.0.3",
-    "react-data-table-component": "6.4.0",
+    "react-data-table-component": "6.9.7",
     "react-dom": "16.13.1",
     "react-redux": "7.2.0",
     "react-scripts": "3.4.1",
-    "react-tabs": "3.1.0",
+    "react-tabs": "3.1.1",
     "redux": "4.0.5",
     "redux-actions": "2.6.5",
     "redux-mock-store": "1.5.4",
     "redux-observable": "1.2.0",
     "semantic-ui-react": "0.88.2",
-    "serve": "11.3.0",
-    "styled-components": "5.1.0",
-    "uuid": "7.0.3"
+    "serve": "11.3.2",
+    "styled-components": "5.1.1",
+    "uuid": "8.2.0"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
@@ -34,7 +34,8 @@
     "build": "react-scripts build",
     "test": "NODE_ENV=test NODE_PATH=./src nyc mocha src/tests/**/*.test.js*",
     "eject": "react-scripts eject",
-    "start-server": "node server.js"
+    "start-server": "node server.js",
+    "lint": "eslint --ext=js --ext=jsx ."
   },
   "proxy": "http://localhost:5001",
   "eslintConfig": {
@@ -86,18 +87,19 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "7.9.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
-    "@babel/plugin-proposal-object-rest-spread": "7.9.5",
-    "@babel/plugin-transform-modules-commonjs": "7.9.0",
-    "@babel/preset-env": "7.9.5",
-    "@babel/preset-react": "7.9.4",
-    "@babel/register": "7.9.0",
+    "@babel/core": "7.10.5",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.10.4",
+    "@babel/plugin-transform-modules-commonjs": "7.10.4",
+    "@babel/preset-env": "7.10.4",
+    "@babel/preset-react": "7.10.4",
+    "@babel/register": "7.10.5",
     "chai": "4.2.0",
-    "concurrently": "5.1.0",
+    "concurrently": "5.2.0",
     "enzyme": "3.11.0",
-    "mocha": "7.1.1",
-    "nodemon": "2.0.2",
-    "nyc": "15.0.1"
+    "mocha": "8.0.1",
+    "nodemon": "2.0.4",
+    "nyc": "15.1.0",
+    "typescript": "3.9.7"
   }
 }
