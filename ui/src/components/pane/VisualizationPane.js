@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -13,12 +12,10 @@ import { fetchTools } from 'epics/fetch-tools-epic'
 import { setPacketStatisticsData,  getDataWranglingState, configureHeatmapData } from 'domain/data_wrangling';
 import { setSessionId, getResults, getToolStatuses, getToolResults } from 'domain/data';
 
-import './App.css';
 import Upload from 'components/upload/Upload';
 import Navbar from 'components/Navbar';
 import DataMonitor from 'components/data/DataMonitor';
 import Table from 'components/table/Table';
-import VisualizationPane from 'components/pane/VisualizationPane';
 import Heatmap from 'components/heatmap/Heatmap';
 import PcapCard from 'components/pcapstats/PcapCard';
 
@@ -63,35 +60,19 @@ const formatHeatmapData = (files, results) => {
     return { 'ipResults': ipData, 'portResults': portData }
   }
 
-class App extends React.Component {
-  static propTypes = {
-    cookies: instanceOf(Cookies).isRequired
-  };
+class VizualizationPane extends React.Component {
 
   constructor(props) {
     super(props);
-    const { cookies } = props;
-    const cookieSessionId = cookies.get(COOKIE_NAME);
-    const sessionId = cookieSessionId || uuidv4();
-    if(!cookieSessionId){
-      const options = {
-        'path':'/',
-        'maxAge': 86400
-      };
-      cookies.set(COOKIE_NAME, sessionId, options);
-    }
-    this.props.setSessionId(sessionId);
     this.state = {
       ipResults:null,
       portResults: null,
       packetStats:null,
-      sessionId: sessionId
     };
   }
 
   componentDidMount(){
     this.props.fetchTools();
-    this.fetchStatsData()
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -100,7 +81,7 @@ class App extends React.Component {
     // In this simple example, that's just the email.
     const { vizData } = props;
     const hmData = formatHeatmapData(props.files, props.results);
-
+    console.log("heatmap data: %o", hmData);
     if (hmData !== state.vizData) {
       return {
         ipResults: hmData.ipResults,
@@ -111,58 +92,40 @@ class App extends React.Component {
   }
 
   getPanes = () => {
-    return this.props.files.map((file) =>{
-      return {
-        menuItem: file.filename,
+    let { ipResults, portResults, packetStats } = this.state; 
+    console.log("heatmap ip data: %o", ipResults)
+    console.log("heatmap port data: %o", portResults)
+    return[
+      {
+        menuItem: "Data Status",
         render: () =>
           <Tab.Pane attached={true}>
-            <VisualizationPane sessionId={this.state.sessionId} fileId={file.id} files={this.props.files} results={this.props.results}/>
+            <Table sessionId={this.props.sessionId} fileId={this.props.fileId} clearResults={this.clearResults}/>
+          </Tab.Pane>
+      },
+      {
+        menuItem: "IP Heatmap",
+        render: () =>
+          <Tab.Pane attached={true}>
+            <Heatmap key="1" data={ipResults.data} keys={ipResults.keys} index="firstKey" name="Destination IP" width={800} height={500}/>
+          </Tab.Pane>
+      },
+      {
+        menuItem: "Port Heatmap",
+        render: () =>
+          <Tab.Pane attached={true}>
+            <Heatmap key="1" data={portResults.data} keys={portResults.keys} index="firstKey" name="Destination Port" width={800} height={500}/>
           </Tab.Pane>
       }
-    })
-  }
-
-  componentWillUnmount() {
-    this.props.stopFetchResults();
-  }
-
-  clearResults = () =>{
-    const { cookies } = this.props;
-    cookies.remove(COOKIE_NAME)
-    localStorage.clear(); 
-    window.location.reload(false);
-  }
-
-  fetchStatsData = async () => {
-    const { setPacketStatisticsData, files, statuses } = this.props;
-
-    const tsharkObject = pcapStatsData[0]['tshark'];
-
-    setPacketStatisticsData(tsharkObject);
+    ];
   }
   
   render() {
-    const refreshInterval = this.props.refreshInterval 
-    let { ipResults, portResults, packetStats } = this.state; 
+    
 
     return (
       <>
-        <Navbar/>
-        <Grid textAlign='center' container style={{ height: '100vh' }}>
-          <Grid.Row columns={1}>
-            <Grid.Column style={{ maxWidth: 240 }}>
-              <Upload sessionId={this.state.sessionId} refreshInterval={refreshInterval}/>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns={1}>
-            <Grid.Column>
-              <DataMonitor sessionId={this.state.sessionId} files={this.props.files} statuses={this.props.statuses} refreshInterval={refreshInterval}/>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row columns={1}>
-            <Tab menu={{ secondary: true }} panes={this.getPanes()} />
-          </Grid.Row>
-        </Grid>
+        <Tab menu={{ secondary: true }} panes={this.getPanes()} />
       </>
     );
   }
@@ -183,7 +146,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-    setSessionId,
     fetchResults,
     fetchToolStatus,
     fetchTools,
@@ -192,4 +154,4 @@ const mapDispatchToProps = {
     setPacketStatisticsData
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withCookies(App));
+export default connect(mapStateToProps, mapDispatchToProps)(VizualizationPane);

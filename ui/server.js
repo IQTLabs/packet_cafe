@@ -10,9 +10,10 @@ const fs = require('fs');
 const UPLOAD_PATH = 'uploads';
 const upload = multer({ dest: `${UPLOAD_PATH}/`});
 const app = express();
+const server_name = 'lb'
 
 const upload_file = async (formData) => {
-    request.post({url:'http://lb/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
+    request.post({url:'http://' + server_name + '/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
       if (err) {
         return console.error('upload failed:', err);
       }
@@ -31,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.get('/raw/:session/:id/:tool', function(req, res) {
   // '/0/' is the counter of results for that tool
   // if '0' it means return all results from that tool
-  var url = 'http://lb/api/v1/raw/' + req.params['tool'] + '/0/' + req.params['session'] + '/' + req.params['id']
+  var url = 'http://' + server_name + '/api/v1/raw/' + req.params['tool'] + '/0/' + req.params['session'] + '/' + req.params['id']
 
   request.get({url:url}, function optionalCallback(err, httpResponse, body) {
     if (err) {
@@ -45,7 +46,7 @@ app.get('/raw/:session/:id/:tool', function(req, res) {
 
 // render status from ID
 app.get('/status/:session/:id', function(req, res) {
-  var url = 'http://lb/api/v1/status/' + req.params['session'] + '/' + req.params['id']
+  var url = 'http://' + server_name + '/api/v1/status/' + req.params['session'] + '/' + req.params['id']
 
   request.get({url:url}, function optionalCallback(err, httpResponse, body) {
     if (err) {
@@ -61,7 +62,7 @@ app.get('/status/:session/:id', function(req, res) {
 app.get('/results/:session/:id/:tool', function(req, res) {
   // '/0/' is the counter of results for that tool
   // if '0' it means return all results from that tool
-  var url = 'http://lb/api/v1/results/' + req.params['tool'] + '/0/' + req.params['session'] + '/' + req.params['id']
+  var url = 'http://' + server_name + '/api/v1/results/' + req.params['tool'] + '/0/' + req.params['session'] + '/' + req.params['id']
 
   request.get({url:url}, function optionalCallback(err, httpResponse, body) {
     if (err) {
@@ -77,7 +78,7 @@ app.get('/results/:session/:id/:tool', function(req, res) {
 app.get('/ids/:session', function(req, res) {
   // '/0/' is the counter of results for that tool
   // if '0' it means return all results from that tool
-  var url = 'http://lb/api/v1/ids/' + req.params['session']
+  var url = 'http://' + server_name + '/api/v1/ids/' + req.params['session']
 
   request.get({url:url}, function optionalCallback(err, httpResponse, body) {
     if (err) {
@@ -94,7 +95,7 @@ app.get('/ids/:session', function(req, res) {
 
 // render images from tools
 app.get('/id/:session/:id/:tool/:pcap/:counter/:file', function(req, res) {
-  var url = 'http://lb/api/v1/id/' + req.params['session'] + '/' + req.params['id'] + '/' + req.params['tool'] + '/' + req.params['pcap'] + '/' + req.params['counter'] + '/' + req.params['file']
+  var url = 'http://' + server_name + '/api/v1/id/' + req.params['session'] + '/' + req.params['id'] + '/' + req.params['tool'] + '/' + req.params['pcap'] + '/' + req.params['counter'] + '/' + req.params['file']
 
   request.get({url:url, encoding: null}, function optionalCallback(err, httpResponse, body) {
 
@@ -111,7 +112,7 @@ app.get('/id/:session/:id/:tool/:pcap/:counter/:file', function(req, res) {
 
 // render tools available
 app.get('/tools', function(req, res) {
-  var url = 'http://lb/api/v1/tools'
+  var url = 'http://' + server_name + '/api/v1/tools'
 
   request.get({url:url}, function optionalCallback(err, httpResponse, body) {
     if (err) {
@@ -151,7 +152,7 @@ app.post('/express-upload', upload.single("file"), async function(req, res) {
     sessionId: sessionId
   };
 
-  request.post({url:'http://lb/api/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
+  request.post({url:'http://' + server_name + '/api/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
     if (err) {
       res.sendStatus(500)
       return console.error('upload failed:', err);
