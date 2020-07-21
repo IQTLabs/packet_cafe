@@ -22,7 +22,7 @@
     "redux-actions": "2.6.5",
     "redux-mock-store": "1.5.4",
     "redux-observable": "1.2.0",
-    "semantic-ui-react": "0.88.2",
+    "semantic-ui-react": "1.0.0",
     "serve": "11.3.2",
     "styled-components": "5.1.1",
     "uuid": "8.2.0"
