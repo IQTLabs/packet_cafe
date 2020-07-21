@@ -44,25 +44,6 @@ const getStatusArray = (fileId, fileStatuses) => {
   return statusArray;
 }
 
-const getPanes = (results, statuses, columns, tableLoading) => {
-  return results.map((result) =>{
-    return {
-      menuItem: result.filename,
-      render: () =>
-        <Tab.Pane attached={true}>
-          <DataTable
-            keyField="id"
-            title={result.id}
-            columns={columns}
-            data={getStatusArray(result.id, statuses)}
-            progressPending={tableLoading}
-            customStyles={customStyles}
-          />
-        </Tab.Pane>
-    }
-  })
-}
-
 class Table extends React.Component{
 
   fetchStatuses = () => {
@@ -145,7 +126,13 @@ class Table extends React.Component{
             Clear Results
           </Button>
         </div>
-        <Tab className={` ${rows === undefined || rows.length === 0 ? '' : 'Table'}`} menu={{ secondary: true }} panes={getPanes(rows, statuses, columns, isLoading)} />
+        <DataTable
+            keyField="id"
+            title={this.props.fileId}
+            columns={columns}
+            data={getStatusArray(this.props.fileId, statuses)}
+            customStyles={customStyles}
+          />
       </div>
     )
   }

@@ -4,15 +4,14 @@ services:
     restart: always
     build:
       context: admin
-      dockerfile: Dockerfile
     image: 'cyberreboot/packet_cafe_admin:latest'
     ports:
       - 5001:5001
     networks:
       - admin
     volumes:
-      - files:/files
-      - id:/id
+      - '${VOL_PREFIX}/files:/files'
+      - '${VOL_PREFIX}/id:/id'
   web:
     restart: always
     build:

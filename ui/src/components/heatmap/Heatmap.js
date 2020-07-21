@@ -8,53 +8,57 @@ class Heatmap extends React.Component{
 
   render() {
     const { data, keys, index, name, height, width} = this.props;
-    
+    console.log("rendering heatmap");
+    console.log("data: %o", data);
+    console.log("keys: %o", keys);
     return (
+      <div style={{height: height, width: width}}>
       <ResponsiveHeatMap
         data={data}
         keys={keys}
         indexBy={index}
         height={height}
         width={width}
-        margin={{ top: 100, right: 100, bottom: 100, left: 100 }}
-        forceSquare={false}
-        axisTop={{ orient: 'top', tickSize: 5, tickPadding: 5, tickRotation: -90, legend: '', legendOffset: 36 }}
-        axisRight={null}
-        axisBottom={null}
-        axisLeft={{
-            orient: 'left',
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: name,
-            legendPosition: 'middle',
-            legendOffset: -80
-        }}
-        cellOpacity={1}
-        cellBorderColor={{ from: 'color', modifiers: [ [ 'darker', 0.4 ] ] }}
-        labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.8 ] ] }}
-        defs={[
-            {
-                id: 'lines',
-                type: 'patternLines',
-                background: 'inherit',
-                color: 'rgba(0, 0, 0, 0.1)',
-                rotation: -45,
-                lineWidth: 4,
-                spacing: 7
-            }
-        ]}
-        fill={[ { id: 'lines' } ]}
-        animate={true}
-        motionStiffness={80}
-        motionDamping={9}
-        hoverTarget="cell"
-        cellHoverOthersOpacity={0.25}
+        // margin={{ top: 100, right: 100, bottom: 100, left: 100 }}
+        // forceSquare={false}
+        // axisTop={{ orient: 'top', tickSize: 5, tickPadding: 5, tickRotation: -90, legend: '', legendOffset: 36 }}
+        // axisRight={null}
+        // axisBottom={null}
+        // axisLeft={{
+        //     orient: 'left',
+        //     tickSize: 5,
+        //     tickPadding: 5,
+        //     tickRotation: 0,
+        //     legend: name,
+        //     legendPosition: 'middle',
+        //     legendOffset: -80
+        // }}
+        // cellOpacity={1}
+        // cellBorderColor={{ from: 'color', modifiers: [ [ 'darker', 0.4 ] ] }}
+        // labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.8 ] ] }}
+        // defs={[
+        //     {
+        //         id: 'lines',
+        //         type: 'patternLines',
+        //         background: 'inherit',
+        //         color: 'rgba(0, 0, 0, 0.1)',
+        //         rotation: -45,
+        //         lineWidth: 4,
+        //         spacing: 7
+        //     }
+        // ]}
+        // fill={[ { id: 'lines' } ]}
+        // animate={true}
+        // motionStiffness={80}
+        // motionDamping={9}
+        // hoverTarget="cell"
+        // cellHoverOthersOpacity={0.25}
 
-        minValue={1}
-        // sizeVariation={.15}
-        cellShape="rect"
+        // minValue={1}
+        // // sizeVariation={.15}
+        // cellShape="rect"
     />
+    </div>
     )
   }
 }

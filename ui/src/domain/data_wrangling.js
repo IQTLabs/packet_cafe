@@ -76,7 +76,7 @@ const configureHeatmapData = (payload) => {
   return {
     data: combinedData,
     keys: uniquemappedfirstKey,
-    dataType: payload.type
+    dataType: payload.type,
   }
 }
 
@@ -110,8 +110,6 @@ const configurePacketStatistics = (payload) => {
 
     return obj;
   });
-
-
 
   const filteredArray = fullArray.filter((obj)=>{
     //Remove undefined

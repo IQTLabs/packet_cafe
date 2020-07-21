@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "PORT=5001 nodemon --inspect=0.0.0.0:9229 server.js",
+    "server": "PORT=5002 nodemon --inspect=0.0.0.0:9229 server.js",
     "client": "PORT=5000 react-scripts start",
     "build": "react-scripts build",
     "test": "NODE_ENV=test NODE_PATH=./src nyc mocha src/tests/**/*.test.js*",
@@ -37,7 +37,7 @@
     "start-server": "node server.js",
     "lint": "eslint --ext=js --ext=jsx ."
   },
-  "proxy": "http://localhost:5001",
+  "proxy": "http://localhost:5002",
   "eslintConfig": {
     "extends": "react-app"
   },
