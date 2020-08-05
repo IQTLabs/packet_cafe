@@ -22,14 +22,16 @@ const DataMonitor = (props) => {
     }
 
     useEffect(() => {
-        for (const file of props.files) {
-            const payload = {
-                'sessionId': props.sessionId,
-                'fileId':file.id,
-            }
+        if (props.files) {  
+            for (const file of props.files) {
+                const payload = {
+                    'sessionId': props.sessionId,
+                    'fileId':file.id,
+                }
 
-            const action$ = { 'type': fetchToolStatus.toString(), 'payload': payload };
-            dispatch(action$);
+                const action$ = { 'type': fetchToolStatus.toString(), 'payload': payload };
+                dispatch(action$);
+            }
         }
     }, [props.files, props.sessionId, dispatch]);
 
@@ -57,7 +59,7 @@ const DataMonitor = (props) => {
         }
     }, [props.files, props.statuses, props.sessionId, dispatch, toolResults]);
 
-    if (props.files.length !== 0 && Object.keys(props.statuses).length === 0) {
+    if (props.files && props.files.length !== 0 && Object.keys(props.statuses).length === 0) {
         loading = true;
     } else {
         loading = false;

@@ -3,31 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nivo/heatmap": "0.62.0",
     "body-parser": "1.19.0",
     "cors": "2.8.5",
+    "d3": "5.16.0",
     "express": "4.17.1",
     "multer": "1.4.2",
     "prop-types": "15.7.2",
-    "ramda": "0.27.0",
+    "ramda": "0.27.1",
     "react": "16.13.1",
     "react-cookie": "4.0.3",
-    "react-data-table-component": "6.9.6",
+    "react-data-table-component": "6.11.0",
     "react-dom": "16.13.1",
-    "react-redux": "7.2.0",
+    "react-redux": "7.2.1",
     "react-scripts": "3.4.1",
     "react-tabs": "3.1.1",
     "redux": "4.0.5",
     "redux-actions": "2.6.5",
     "redux-mock-store": "1.5.4",
     "redux-observable": "1.2.0",
-    "semantic-ui-react": "0.88.2",
+    "semantic-ui-react": "1.1.1",
     "serve": "11.3.2",
     "styled-components": "5.1.1",
-    "uuid": "8.2.0"
+    "uuid": "8.3.0"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "PORT=5001 nodemon --inspect=0.0.0.0:9229 server.js",
+    "server": "PORT=5002 nodemon --inspect=0.0.0.0:9229 server.js",
     "client": "PORT=5000 react-scripts start",
     "build": "react-scripts build",
     "test": "NODE_ENV=test NODE_PATH=./src nyc mocha src/tests/**/*.test.js*",
@@ -35,7 +37,7 @@
     "start-server": "node server.js",
     "lint": "eslint --ext=js --ext=jsx ."
   },
-  "proxy": "http://localhost:5001",
+  "proxy": "http://localhost:5002",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -85,19 +87,19 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "7.10.4",
+    "@babel/core": "7.11.0",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.10.4",
-    "@babel/plugin-proposal-object-rest-spread": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.11.0",
     "@babel/plugin-transform-modules-commonjs": "7.10.4",
-    "@babel/preset-env": "7.10.4",
+    "@babel/preset-env": "7.11.0",
     "@babel/preset-react": "7.10.4",
-    "@babel/register": "7.10.4",
+    "@babel/register": "7.10.5",
     "chai": "4.2.0",
     "concurrently": "5.2.0",
     "enzyme": "3.11.0",
-    "mocha": "8.0.1",
+    "mocha": "8.1.0",
     "nodemon": "2.0.4",
     "nyc": "15.1.0",
-    "typescript": "3.9.6"
+    "typescript": "3.9.7"
   }
 }
