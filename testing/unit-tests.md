@@ -1,6 +1,6 @@
 # Unit Tests
 
-Tests are run automatically using GitHub Actions and are defined [here](https://github.com/CyberReboot/packet_cafe/blob/master/.github/workflows/test.yml). Currently there are tests written for the `ui` container and the `web` container. 
+Tests are run automatically using GitHub Actions and are defined [here](https://github.com/IQTLabs/packet_cafe/blob/master/.github/workflows/test.yml). Currently there are tests written for the `ui` container and the `web` container. 
 
 The `ui` container uses `npm` for running unit tests and the `web` container uses `py.test` . Each container has a `Dockerfile.test` defined that runs each container's respective tests.
 

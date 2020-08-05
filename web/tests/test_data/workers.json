@@ -2,7 +2,7 @@
   "workers": [
     {
       "name": "test-worker-1",
-      "image": "cyberreboot/test-worker-1",
+      "image": "iqtlabs/test-worker-1",
       "version": "latest",
       "labels": "",
       "stage": "analysis",
@@ -16,7 +16,7 @@
     },
     {
       "name": "test-worker-2",
-      "image": "cyberreboot/test-worker-2",
+      "image": "iqtlabs/test-worker-2",
       "version": "v0.1.6",
       "labels": "",
       "stage": "preprocessing",

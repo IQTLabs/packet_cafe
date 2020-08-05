@@ -1,11 +1,11 @@
 # Tools
 
-Currently Packet Café supports 9 tools, but is flexible to easily add or remove tools as needed. Each tool is defined [here](https://github.com/CyberReboot/packet_cafe/blob/master/workers/workers.json), which is a JSON file, where each entry looks something like this:
+Currently Packet Café supports 9 tools, but is flexible to easily add or remove tools as needed. Each tool is defined [here](https://github.com/IQTLabs/packet_cafe/blob/master/workers/workers.json), which is a JSON file, where each entry looks something like this:
 
 ```text
     {
       "name": "snort",
-      "image": "cyberreboot/snort",
+      "image": "iqtlabs/snort",
       "version": "v0.11.6",
       "labels": "",
       "stage": "analysis",
