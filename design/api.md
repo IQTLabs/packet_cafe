@@ -604,7 +604,7 @@ Returns the list of available tools.
     "workers": [
         {
             "name": "pcapplot",
-            "image": "cyberreboot/pcapplot",
+            "image": "iqtlabs/pcapplot",
             "version": "v0.1.5",
             "labels": "",
             "stage": "analysis",
@@ -618,7 +618,7 @@ Returns the list of available tools.
         },
         {
             "name": "pcap-splitter",
-            "image": "cyberreboot/pcap-to-node-pcap",
+            "image": "iqtlabs/pcap-to-node-pcap",
             "version": "v0.11.7",
             "labels": "",
             "stage": "preprocessing",
@@ -635,7 +635,7 @@ Returns the list of available tools.
         },
         {
             "name": "ncapture",
-            "image": "cyberreboot/ncapture",
+            "image": "iqtlabs/ncapture",
             "version": "v0.11.7",
             "labels": "",
             "stage": "preprocessing",
@@ -661,7 +661,7 @@ Returns the list of available tools.
         },
         {
             "name": "pcap-dot1q",
-            "image": "cyberreboot/tcprewrite-dot1q",
+            "image": "iqtlabs/tcprewrite-dot1q",
             "version": "v0.11.7",
             "labels": "",
             "stage": "preprocessing",
@@ -678,7 +678,7 @@ Returns the list of available tools.
         },
         {
             "name": "networkml",
-            "image": "cyberreboot/networkml",
+            "image": "iqtlabs/networkml",
             "version": "v0.4.8",
             "labels": "",
             "stage": "analysis",
@@ -706,7 +706,7 @@ Returns the list of available tools.
         },
         {
             "name": "snort",
-            "image": "cyberreboot/snort",
+            "image": "iqtlabs/snort",
             "version": "v0.11.7",
             "labels": "",
             "stage": "analysis",
@@ -725,7 +725,7 @@ Returns the list of available tools.
         },
         {
             "name": "pcap-stats",
-            "image": "cyberreboot/pcap-stats",
+            "image": "iqtlabs/pcap-stats",
             "version": "v0.11.7",
             "labels": "",
             "stage": "analysis",
@@ -744,7 +744,7 @@ Returns the list of available tools.
         },
         {
             "name": "mercury",
-            "image": "cyberreboot/mercury",
+            "image": "iqtlabs/mercury",
             "version": "v0.11.7",
             "labels": "",
             "stage": "analysis",
@@ -763,7 +763,7 @@ Returns the list of available tools.
         },
         {
             "name": "p0f",
-            "image": "cyberreboot/p0f",
+            "image": "iqtlabs/p0f",
             "version": "v0.11.7",
             "labels": "",
             "stage": "analysis",

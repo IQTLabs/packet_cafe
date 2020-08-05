@@ -5,7 +5,7 @@ services:
     build:
       context: admin
       dockerfile: Dockerfile
-    image: 'cyberreboot/packet_cafe_admin:latest'
+    image: 'iqtlabs/packet_cafe_admin:latest'
     ports:
       - 5001:5001
     networks:
@@ -18,7 +18,7 @@ services:
     build:
       context: ui
       dockerfile: Dockerfile.debug
-    image: 'cyberreboot/packet_cafe_ui:latest'
+    image: 'iqtlabs/packet_cafe_ui:latest'
     ports:
       - 9229:9229
     networks:
@@ -33,7 +33,7 @@ services:
     build:
       context: web
       dockerfile: Dockerfile
-    image: 'cyberreboot/packet_cafe_web:latest'
+    image: 'iqtlabs/packet_cafe_web:latest'
     networks:
       - frontend
     deploy:
@@ -47,7 +47,7 @@ services:
     build:
       context: lb
       dockerfile: Dockerfile
-    image: 'cyberreboot/packet_cafe_lb:latest'
+    image: 'iqtlabs/packet_cafe_lb:latest'
     ports:
       - 80:80
     networks:
@@ -58,7 +58,7 @@ services:
     build:
       context: messenger
       dockerfile: Dockerfile
-    image: 'cyberreboot/packet_cafe_messenger:latest'
+    image: 'iqtlabs/packet_cafe_messenger:latest'
     ports:
       - 15672:15672
     networks:
@@ -71,7 +71,7 @@ services:
     build:
       context: workers
       dockerfile: Dockerfile
-    image: 'cyberreboot/packet_cafe_workers:latest'
+    image: 'iqtlabs/packet_cafe_workers:latest'
     networks:
       - backend
       - results

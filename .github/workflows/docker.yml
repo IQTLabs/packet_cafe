@@ -29,7 +29,7 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
       run: |
         echo "${DOCKER_PASSWORD}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      if: github.repository == 'cyberreboot/packet_cafe' && github.event_name == 'push'
+      if: github.repository == 'iqtlabs/packet_cafe' && github.event_name == 'push'
 
     - name: Build and push platforms
       env:
@@ -38,29 +38,29 @@ jobs:
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t cyberreboot/packet_cafe_admin:${{ steps.change_version.outputs.VERSION }} admin && \
+          -t iqtlabs/packet_cafe_admin:${{ steps.change_version.outputs.VERSION }} admin && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t cyberreboot/packet_cafe_ui:${{ steps.change_version.outputs.VERSION }} ui && \
+          -t iqtlabs/packet_cafe_ui:${{ steps.change_version.outputs.VERSION }} ui && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t cyberreboot/packet_cafe_web:${{ steps.change_version.outputs.VERSION }} web && \
+          -t iqtlabs/packet_cafe_web:${{ steps.change_version.outputs.VERSION }} web && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t cyberreboot/packet_cafe_lb:${{ steps.change_version.outputs.VERSION }} lb && \
+          -t iqtlabs/packet_cafe_lb:${{ steps.change_version.outputs.VERSION }} lb && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t cyberreboot/packet_cafe_messenger:${{ steps.change_version.outputs.VERSION }} messenger && \
+          -t iqtlabs/packet_cafe_messenger:${{ steps.change_version.outputs.VERSION }} messenger && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t cyberreboot/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
+          -t iqtlabs/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t cyberreboot/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
-      if: github.repository == 'cyberreboot/packet_cafe' && github.event_name == 'push'
+          -t iqtlabs/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
+      if: github.repository == 'iqtlabs/packet_cafe' && github.event_name == 'push'
