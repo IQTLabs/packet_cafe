@@ -70,7 +70,7 @@
     {
       "name": "networkml",
       "image": "iqtlabs/networkml",
-      "version": "v0.5.9",
+      "version": "v0.6.0",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
