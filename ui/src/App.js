@@ -113,7 +113,7 @@ class App extends React.Component {
         menuItem: file.filename,
         render: () =>
           <Tab.Pane attached={true}>
-            <VisualizationPane sessionId={this.state.sessionId} fileId={file.id} files={this.props.files} results={this.props.results}/>
+            <VisualizationPane sessionId={this.state.sessionId} fileId={file.id} files={this.props.files} results={this.props.results} clearResults={this.clearResults}/>
           </Tab.Pane>
       }
     })
