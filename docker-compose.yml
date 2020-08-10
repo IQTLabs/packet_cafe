@@ -15,7 +15,7 @@ services:
   pcap-stats:
     image: 'iqtlabs/pcap-stats:v0.11.13'
   mercury:
-    image: 'iqtlabs/mercury:v0.11.13'
+    image: 'iqtlabs/mercury:v0.11.14'
   admin:
     restart: always
     build:
