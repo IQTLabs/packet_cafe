@@ -89,7 +89,7 @@ class VizualizationPane extends React.Component {
         menuItem: "Data Status",
         render: () =>
           <Tab.Pane attached={true}>
-            <Table sessionId={this.props.sessionId} fileId={this.props.fileId} clearResults={this.clearResults}/>
+            <Table sessionId={this.props.sessionId} fileId={this.props.fileId} clearResults={this.props.clearResults}/>
           </Tab.Pane>
       },
       {
