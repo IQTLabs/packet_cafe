@@ -1,27 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { instanceOf } from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
 
-import { Tab, Icon, Label, Button, Grid } from 'semantic-ui-react';
+import { Tab } from 'semantic-ui-react';
 
 import { startFetchResults, stopFetchResults } from "epics/auto-fetch-results-epic"
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
 import { fetchTools } from 'epics/fetch-tools-epic'
 import { setPacketStatisticsData,  getDataWranglingState, configureHeatmapData } from 'domain/data_wrangling';
-import { setSessionId, getResults, getToolStatuses, getToolResults } from 'domain/data';
+import { getResults, getToolStatuses, getToolResults } from 'domain/data';
 
-import Upload from 'components/upload/Upload';
-import Navbar from 'components/Navbar';
-import DataMonitor from 'components/data/DataMonitor';
 import Table from 'components/table/Table';
 import Heatmap from 'components/heatmap/Heatmap';
-import PcapCard from 'components/pcapstats/PcapCard';
-
-import pcapStatsData from 'components/pcapstats/data.json';
-
-const COOKIE_NAME = 'sessionID'
 
 const formatHeatmapData = (files, results) => {
     const selectedFile = files.length > 0 ? files[0].id : "";
@@ -81,7 +71,7 @@ class VizualizationPane extends React.Component {
     // In this simple example, that's just the email.
     const { vizData } = props;
     const hmData = formatHeatmapData(props.files, props.results);
-    console.log("heatmap data: %o", hmData);
+
     if (hmData !== state.vizData) {
       return {
         ipResults: hmData.ipResults,
@@ -92,9 +82,8 @@ class VizualizationPane extends React.Component {
   }
 
   getPanes = () => {
-    let { ipResults, portResults, packetStats } = this.state; 
-    console.log("heatmap ip data: %o", ipResults)
-    console.log("heatmap port data: %o", portResults)
+    let { ipResults, portResults } = this.state; 
+
     return[
       {
         menuItem: "Data Status",
