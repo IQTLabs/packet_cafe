@@ -4,7 +4,7 @@ import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Tab, Icon, Label, Button, Grid } from 'semantic-ui-react';
+import { Tab, Grid } from 'semantic-ui-react';
 
 import { startFetchResults, stopFetchResults } from "epics/auto-fetch-results-epic"
 import { fetchResults } from 'epics/fetch-results-epic'
@@ -17,10 +17,7 @@ import './App.css';
 import Upload from 'components/upload/Upload';
 import Navbar from 'components/Navbar';
 import DataMonitor from 'components/data/DataMonitor';
-import Table from 'components/table/Table';
 import VisualizationPane from 'components/pane/VisualizationPane';
-import Heatmap from 'components/heatmap/Heatmap';
-import PcapCard from 'components/pcapstats/PcapCard';
 
 import pcapStatsData from 'components/pcapstats/data.json';
 
@@ -134,7 +131,7 @@ class App extends React.Component {
   }
 
   fetchStatsData = async () => {
-    const { setPacketStatisticsData, files, statuses } = this.props;
+    const { setPacketStatisticsData } = this.props;
 
     const tsharkObject = pcapStatsData[0]['tshark'];
 
@@ -143,7 +140,6 @@ class App extends React.Component {
   
   render() {
     const refreshInterval = this.props.refreshInterval 
-    let { ipResults, portResults, packetStats } = this.state; 
 
     return (
       <>

@@ -12,17 +12,6 @@ const upload = multer({ dest: `${UPLOAD_PATH}/`});
 const app = express();
 const server_name = 'lb'
 
-const upload_file = async (formData) => {
-    request.post({url:'http://' + server_name + '/v1/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
-      if (err) {
-        return console.error('upload failed:', err);
-      }
-      console.log('Uploaded file, server responded with:', body);
-      return body.uuid;
-  });
-}
-
-
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());

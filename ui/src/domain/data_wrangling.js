@@ -10,20 +10,6 @@ const defaultState = {
   packetstats:null
 };
 
-const removeNumbersLessThan = (num, obj) => {
-  var items = [];
-  for (var key in obj) {                    // for each key in the object
-    if(!isNaN(obj[key]) && obj[key] < num)  // if the value of that key is not a NaN (is a number) and if that number is greater than num
-      delete obj[key];  
-    else
-      var item = {};
-      item[key] = obj[key];
-      items.push(item);                    // then delete the key-value from the object
-  }
-
-  return items;
-}
-
 const configureHeatmapData = (payload) => {
   const data = payload.data;
   const firstKey = payload.firstKey;
@@ -113,9 +99,7 @@ const configurePacketStatistics = (payload) => {
 
   const filteredArray = fullArray.filter((obj)=>{
     //Remove undefined
-    if (obj['data'].length > 1){
-      return obj
-    } 
+    return obj['data'].length > 1 
   });
 
   const packetsum = d3.sum(filteredArray, function(d) { return d['Sum Packet Size']; });
@@ -125,8 +109,8 @@ const configurePacketStatistics = (payload) => {
    * Percentages of Packet Size and Byte Size for each endpoint
   */
   var filteredArrayWithPercentages = filteredArray.map((item)=>{
-    item["Percentage of Total Packet Size"] = item['Sum Packet Size'] / packetsum
-    item["Percentage of Total Byte Size"] = item['Sum Byte Size'] / bytesum
+    item["Percentage of Total Packet Size"] = item['Sum Packet Size'] / packetsum;
+    item["Percentage of Total Byte Size"] = item['Sum Byte Size'] / bytesum;
 
     return item
   })
@@ -145,13 +129,13 @@ const reducer = handleActions(
   {
     [setHeatmapData]: (state, { payload }) => {
       const transformedData = configureHeatmapData(payload);
-      if(payload.type == "ip"){
+      if(payload.type === "ip"){
         state.heatmap.ipResults = transformedData;
         return{
           ...state
         }
       }
-      else if(payload.type == "port"){
+      else if(payload.type === "port"){
         state.heatmap.portResults = transformedData;
         return{
           ...state

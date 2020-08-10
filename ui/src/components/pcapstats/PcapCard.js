@@ -6,7 +6,7 @@ import './PcapCard.css';
 class PcapCard extends React.Component{
 
   render() {
-    const { title, subtitle, data} = this.props;
+    const { title, subtitle} = this.props;
     
     return (
       <>
