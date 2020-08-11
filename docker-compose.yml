@@ -13,7 +13,7 @@ services:
   snort:
     image: 'iqtlabs/snort:v0.11.14'
   pcap-stats:
-    image: 'iqtlabs/pcap-stats:v0.11.14'
+    image: 'iqtlabs/pcap-stats:v0.11.15'
   mercury:
     image: 'iqtlabs/mercury:v0.11.15'
   admin:
