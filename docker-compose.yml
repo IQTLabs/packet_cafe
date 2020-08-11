@@ -7,7 +7,7 @@ services:
   pcap-splitter:
     image: 'iqtlabs/pcap-to-node-pcap:v0.11.14'
   ncapture:
-    image: 'iqtlabs/ncapture:v0.11.14'
+    image: 'iqtlabs/ncapture:v0.11.15'
   pcap-dot1q:
     image: 'iqtlabs/tcprewrite-dot1q:v0.11.14'
   snort:
