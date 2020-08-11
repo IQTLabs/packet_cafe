@@ -18,9 +18,7 @@ services:
     image: 'iqtlabs/mercury:v0.11.15'
   admin:
     restart: always
-    build:
-      context: admin
-    image: 'iqtlabs/packet_cafe_admin:latest'
+    image: 'iqtlabs/packet_cafe_admin:v0.1.0'
     ports:
       - 5001:5001
     networks:
