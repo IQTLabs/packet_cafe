@@ -5,17 +5,17 @@ services:
   pcapplot:
     image: 'iqtlabs/pcapplot:v0.1.7'
   pcap-splitter:
-    image: 'iqtlabs/pcap-to-node-pcap:v0.11.14'
+    image: 'iqtlabs/pcap-to-node-pcap:v0.11.15'
   ncapture:
-    image: 'iqtlabs/ncapture:v0.11.14'
+    image: 'iqtlabs/ncapture:v0.11.15'
   pcap-dot1q:
-    image: 'iqtlabs/tcprewrite-dot1q:v0.11.14'
+    image: 'iqtlabs/tcprewrite-dot1q:v0.11.15'
   snort:
-    image: 'iqtlabs/snort:v0.11.14'
+    image: 'iqtlabs/snort:v0.11.15'
   pcap-stats:
-    image: 'iqtlabs/pcap-stats:v0.11.14'
+    image: 'iqtlabs/pcap-stats:v0.11.15'
   mercury:
-    image: 'iqtlabs/mercury:v0.11.14'
+    image: 'iqtlabs/mercury:v0.11.15'
   admin:
     restart: always
     build:

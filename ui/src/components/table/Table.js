@@ -2,7 +2,7 @@ import React from 'react';
 import DataTable from 'react-data-table-component';
 import { connect } from "react-redux";
 
-import { Tab, Icon, Label, Button } from 'semantic-ui-react';
+import { Icon, Label, Button } from 'semantic-ui-react';
 import './Table.css';
 
 import { getResults, getToolStatuses, getTools } from 'domain/data';
@@ -112,7 +112,7 @@ class Table extends React.Component{
 
   render() {
     const columns = this.getToolsTableColumns();
-    const { rows, isLoading, statuses } = this.props;
+    const { rows, statuses } = this.props;
     return (
       <div>
         <div className="buttonContainer">

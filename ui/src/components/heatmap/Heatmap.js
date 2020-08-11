@@ -7,10 +7,8 @@ import './Heatmap.css';
 class Heatmap extends React.Component{
 
   render() {
-    const { data, keys, index, name, height, width} = this.props;
-    console.log("rendering heatmap");
-    console.log("data: %o", data);
-    console.log("keys: %o", keys);
+    const { data, keys, index, height, width} = this.props;
+
     return (
       <div style={{height: height, width: width}}>
       <ResponsiveHeatMap
