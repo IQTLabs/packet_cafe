@@ -5,7 +5,7 @@ services:
   pcapplot:
     image: 'iqtlabs/pcapplot:v0.1.7'
   pcap-splitter:
-    image: 'iqtlabs/pcap-to-node-pcap:v0.11.14'
+    image: 'iqtlabs/pcap-to-node-pcap:v0.11.15'
   ncapture:
     image: 'iqtlabs/ncapture:v0.11.15'
   pcap-dot1q:
