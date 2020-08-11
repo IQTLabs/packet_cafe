@@ -30,18 +30,14 @@ services:
       - '${VOL_PREFIX}/id:/id'
   ui:
     restart: always
-    build:
-      context: ui
-    image: 'iqtlabs/packet_cafe_ui:latest'
+    image: 'iqtlabs/packet_cafe_ui:v0.1.0'
     networks:
       - frontend
     volumes:
       - '${VOL_PREFIX}/definitions:/definitions'
   web:
     restart: always
-    build:
-      context: web
-    image: 'iqtlabs/packet_cafe_web:latest'
+    image: 'iqtlabs/packet_cafe_web:v0.1.0'
     networks:
       - frontend
     volumes:
@@ -50,9 +46,7 @@ services:
       - '${VOL_PREFIX}/definitions:/definitions'
   lb:
     restart: always
-    build:
-      context: lb
-    image: 'iqtlabs/packet_cafe_lb:latest'
+    image: 'iqtlabs/packet_cafe_lb:v0.1.0'
     ports:
       - 80:80
     networks:
@@ -60,9 +54,7 @@ services:
       - results
   messenger:
     restart: always
-    build:
-      context: messenger
-    image: 'iqtlabs/packet_cafe_messenger:latest'
+    image: 'iqtlabs/packet_cafe_messenger:v0.1.0'
     networks:
       - frontend
       - backend
@@ -70,9 +62,7 @@ services:
       - preprocessing
   redis:
     restart: always
-    build:
-      context: redis
-    image: 'iqtlabs/packet_cafe_redis:latest'
+    image: 'iqtlabs/packet_cafe_redis:v0.1.0'
     networks:
       - frontend
       - backend
@@ -80,9 +70,7 @@ services:
       - '${VOL_PREFIX}/redis:/data'
   workers:
     restart: always
-    build:
-      context: workers
-    image: 'iqtlabs/packet_cafe_workers:latest'
+    image: 'iqtlabs/packet_cafe_workers:v0.1.0'
     networks:
       - backend
       - results
