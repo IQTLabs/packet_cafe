@@ -9,7 +9,7 @@ services:
   ncapture:
     image: 'iqtlabs/ncapture:v0.11.15'
   pcap-dot1q:
-    image: 'iqtlabs/tcprewrite-dot1q:v0.11.14'
+    image: 'iqtlabs/tcprewrite-dot1q:v0.11.15'
   snort:
     image: 'iqtlabs/snort:v0.11.15'
   pcap-stats:
