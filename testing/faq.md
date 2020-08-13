@@ -16,7 +16,7 @@ macOS has limitations on which paths Docker is allowed to mount. To get around t
 
 ```text
 export VOL_PREFIX=~/packet_cafe_data
-docker-compose up -d --build
+docker-compose up -d --build && docker-compose rm -f
 ```
 
 ## Browsing to http://0.0.0.0/ shows "This page isn't working", how come?
