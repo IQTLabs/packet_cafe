@@ -23,7 +23,7 @@ Once a path has been picked for the data to live build and start Packet Café \(
 
 ```text
 docker-compose pull
-docker-compose up -d --build
+docker-compose up -d --build && docker-compose rm -f
 ```
 
 Once it has finished, check the for the `healthy` status of the containers:
