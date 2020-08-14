@@ -22,6 +22,80 @@ from .helpers import load_tools
 ACCEPTED_FILE_TYPES = ['pcap', 'pcapng']
 
 
+# NOTE: The following variables are replicated in admin/app/data.py.
+LAST_SESSION_STATE = '/files/last_session_id'
+LAST_REQUEST_STATE = '/files/last_request_id'
+
+
+# NOTE: The following function is replicated in admin/app/data.py.
+def get_last_session_id():
+    """Return the last session ID if one is saved, else None."""
+    sess_id = None
+    if os.path.exists(LAST_SESSION_STATE):
+        try:
+            with open(LAST_SESSION_STATE, 'r') as sf:
+                sess_id = sf.read().strip()
+        except Exception:  # noqa
+            pass
+    return sess_id
+
+
+# NOTE: The following function is replicated in admin/app/data.py.
+def set_last_session_id(sess_id=None):
+    """
+    Save the last session ID for later use.
+
+    If sess_id is None, remove the saved state.
+
+    Return True if successful, else False
+    """
+    if sess_id is None:
+        os.remove(LAST_SESSION_STATE)
+        return True
+    else:
+        try:
+            with open(LAST_SESSION_STATE, 'w') as sf:
+                sf.write(str(sess_id) + '\n')
+        except:  # noqa
+            return False
+    return True
+
+
+# NOTE: The following function is replicated in admin/app/data.py.
+def get_last_request_id():
+    """
+    Return the last request ID if one is saved and it exists
+    in the last session, else None.
+    """
+    _req_id = None
+    try:
+        with open(LAST_REQUEST_STATE, 'r') as sf:
+            _req_id = sf.read().strip()
+    except FileNotFoundError:
+        pass
+    return _req_id
+
+
+# NOTE: The following function is replicated in admin/app/data.py.
+def set_last_request_id(req_id=None):
+    """
+    Save the last request ID for later use.
+
+    If req_id is None, remove the saved state.
+
+    Return True if successful, else False
+    """
+    if req_id is None:
+        os.remove(LAST_REQUEST_STATE)
+        return True
+    else:
+        try:
+            with open(LAST_REQUEST_STATE, 'w') as sf:
+                sf.write(str(req_id) + '\n')
+        except:  # noqa
+            return False
+    return True
+
 def load_template(name):
     path = os.path.join('app/templates', name)
     with open(os.path.abspath(path), 'r') as fp:
@@ -114,7 +188,14 @@ class Ids(object):
 class Info(object):
 
     def on_get(self, req, resp):
-        resp.body = json.dumps({'version': 'v0.1.0', 'hostname': socket.gethostname()}, indent=4)
+        resp.body = json.dumps(
+            {
+                'version': 'v0.1.0',
+                'hostname': socket.gethostname(),
+                'last_session_id': get_last_session_id(),
+                'last_request_id': get_last_request_id(),
+            },
+            indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -393,6 +474,10 @@ class Upload(object):
                 response = Start().request(pipeline)
                 # TODO
                 # check response
+
+                # Save state
+                set_last_session_id(sess_id=session_id)
+                set_last_request_id(req_id=uid)
 
                 resp.media = {'filename': filename, 'uuid': uid, 'status': 'Success'}
                 resp.status = falcon.HTTP_201
