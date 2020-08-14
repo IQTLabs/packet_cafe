@@ -143,10 +143,13 @@ Returns basic information about the service, such as the version
 {% api-method-response-example httpCode=200 %}
 {% api-method-response-example-description %}
 Returns JSON of basic information about the service.
+
+After a PCAP file has been uploaded, the last session ID and
+request ID will be returned.
 {% endapi-method-response-example-description %}
 
 ```
-{"version": "v0.1.0", "hostname": "ff1a02abc17c"}
+{"version": "v0.1.0", "hostname": "ff1a02abc17c", "last_session_id": null, "last_request_id": null}
 ```
 {% endapi-method-response-example %}
 {% endapi-method-response %}
@@ -230,7 +233,8 @@ Returns a list of of the available API endpoints for this service.
 {% endapi-method-summary %}
 
 {% api-method-description %}
-Deletes files and id directories associated with a session.
+Deletes files and id directories associated with a session. The last session ID
+and request ID will be reset if they referred to this session.
 {% endapi-method-description %}
 
 {% api-method-spec %}
