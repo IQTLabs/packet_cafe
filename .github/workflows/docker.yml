@@ -25,12 +25,7 @@ jobs:
         TAG_VERSION=$(git describe --abbrev=0 --tags)
         echo TAG_VERSION=${TAG_VERSION}
         echo ::set-output name=TAG_VERSION::${TAG_VERSION}
-
-        REF=${{ github.ref }}
-        URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/${REF##*/}"
-        status_code=$(curl -o -I -L -s -w "%{http_code}" -X GET -G $URL)
-        echo $status_code
-        if [[ "$status_code" == 200 ]]; then
+        if [[ ${VERSION} == ${TAG_VERSION} ]]; then
           IS_RELEASE="true"
         else
           IS_RELEASE="false"
