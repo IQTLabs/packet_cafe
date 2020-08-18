@@ -30,10 +30,10 @@ jobs:
         URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/${REF##*/}"
         status_code=$(curl -o -I -L -s -w "%{http_code}" -X GET -G $URL)
         echo $status_code
-        if [["$status_code" == 200]]; then
+        if [[ "$status_code" == 200 ]]; then
           IS_RELEASE="true"
         else
-          IS_RELEASE="true"
+          IS_RELEASE="false"
         fi
         echo IS_RELEASE=${IS_RELEASE}
         echo ::set-output name=IS_RELEASE::${IS_RELEASE}
