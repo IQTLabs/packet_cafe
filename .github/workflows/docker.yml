@@ -89,3 +89,18 @@ jobs:
           --push \
           -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
       if: steps.docker.outputs.USE_DOCKER && github.event_name == 'push'
+    - name: List available tags for images
+      env:
+        DOCKER_CLI_EXPERIMENTAL: enabled
+      run: |
+        for N in admin ui messenger web redis lb workers
+        do
+          image="${{ secrets.DOCKER_USERNAME }}/packet_cafe_${N}"
+          echo "${image}:" $(
+            wget -q https://registry.hub.docker.com/v1/repositories/${image}/tags -O - |
+              tr -d '[]" ' |
+              tr '}' '\n' |
+              awk -F: '{printf $3 " "}'
+          )
+        done
+      if: steps.docker.outputs.USE_DOCKER && github.event_name == 'push'
