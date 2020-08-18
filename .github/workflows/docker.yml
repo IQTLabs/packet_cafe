@@ -39,7 +39,7 @@ jobs:
         DOCKER_USERNAME:  ${{ secrets.DOCKER_USERNAME }}
       run: |
         PUSH_TO_DOCKER="false"
-        if [[ github.event_name == "push" ]] &&
+        if [[ "${{ github.event_name }}" == "push" ]] &&
            [[ -n $DOCKER_USERNAME ]] &&
            [[ -n $DOCKER_PASSWORD ]] &&
            [[ "${{ steps.get_version.outputs.IS_RELEASE }}" == "true" ]]
