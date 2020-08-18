@@ -31,11 +31,16 @@ jobs:
         DOCKER_PASSWORD:  ${{ secrets.DOCKER_TOKEN }}
         DOCKER_USERNAME:  ${{ secrets.DOCKER_USERNAME }}
       run: |
-        unset PUSH_TO_DOCKER
-        if [ -n $DOCKER_USERNAME ] && [ -n $DOCKER_PASSWORD ]; then PUSH_TO_DOCKER='true'; fi
+        PUSH_TO_DOCKER='false'
+        if [[ github.event_name == "push" ]] &&
+           [[ -n $DOCKER_USERNAME ]] &&
+           [[ -n $DOCKER_PASSWORD ]] &&
+           [[ ${{ steps.get_version.outputs.VERSION }} == ${{ steps.get_version.outputs.TAG_VERSION }} ]]
+        then
+          PUSH_TO_DOCKER='true'
+        fi
         echo ::set-output name=PUSH_TO_DOCKER::${PUSH_TO_DOCKER}
-        echo PUSH_DOCKER=${PUSH_TO_DOCKER}
-      if: github.event_name == 'push' && ${{ steps.get_version.outputs.VERSION }} == ${{ steps.get_version.outputs.TAG_VERSION }}
+        echo PUSH_TO_DOCKER=${PUSH_TO_DOCKER}
     - name: Change version for release
       id: change_version
       run: |
@@ -54,13 +59,13 @@ jobs:
       with:
         buildx-version: latest
         qemu-version: latest
-      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
+      if: steps.docker.outputs.PUSH_TO_DOCKER
     - name: Docker Login
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
       run: |
         echo "${DOCKER_PASSWORD}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
+      if: steps.docker.outputs.PUSH_TO_DOCKER
     - name: Build for test only
       run: |
         docker build \
@@ -77,7 +82,7 @@ jobs:
           -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
         docker build \
           -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
-      if: steps.docker.outputs.USE_DOCKER != 'true'
+      if: ! steps.docker.outputs.PUSH_TO_DOCKER
     - name: Build and push platforms
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
@@ -110,7 +115,7 @@ jobs:
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
           -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
-      if: steps.docker.outputs.USE_DOCKER == 'true'
+      if: steps.docker.outputs.PUSH_TO_DOCKER
     - name: List available tags for images
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
@@ -125,4 +130,4 @@ jobs:
               awk -F: '{printf $3 " "}'
           )
         done
-      if: steps.docker.outputs.USE_DOCKER && github.event_name == 'push'
+      if: steps.docker.outputs.PUSH_TO_DOCKER
