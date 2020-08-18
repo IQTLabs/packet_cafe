@@ -38,13 +38,13 @@ jobs:
         DOCKER_PASSWORD:  ${{ secrets.DOCKER_TOKEN }}
         DOCKER_USERNAME:  ${{ secrets.DOCKER_USERNAME }}
       run: |
-        PUSH_TO_DOCKER='false'
+        PUSH_TO_DOCKER="false"
         if [[ github.event_name == "push" ]] &&
            [[ -n $DOCKER_USERNAME ]] &&
            [[ -n $DOCKER_PASSWORD ]] &&
-           [[ ${{ steps.get_version.outputs.IS_RELEASE }} == 'true' ]]
+           [[ "${{ steps.get_version.outputs.IS_RELEASE }}" == "true" ]]
         then
-          PUSH_TO_DOCKER='true'
+          PUSH_TO_DOCKER="true"
         fi
         echo ::set-output name=PUSH_TO_DOCKER::${PUSH_TO_DOCKER}
         echo PUSH_TO_DOCKER=${PUSH_TO_DOCKER}
@@ -66,13 +66,13 @@ jobs:
       with:
         buildx-version: latest
         qemu-version: latest
-      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
+      if: steps.docker.outputs.PUSH_TO_DOCKER == true
     - name: Docker Login
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
       run: |
         echo "${DOCKER_PASSWORD}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
+      if: steps.docker.outputs.PUSH_TO_DOCKER == true
     - name: Build for test only
       run: |
         docker build \
@@ -122,7 +122,7 @@ jobs:
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
           -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
-      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
+      if: steps.docker.outputs.PUSH_TO_DOCKER == true
     - name: List available tags for images
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
@@ -137,4 +137,4 @@ jobs:
               awk -F: '{printf $3 " "}'
           )
         done
-      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
+      if: steps.docker.outputs.PUSH_TO_DOCKER == true
