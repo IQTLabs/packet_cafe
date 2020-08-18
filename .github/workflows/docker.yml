@@ -59,13 +59,13 @@ jobs:
       with:
         buildx-version: latest
         qemu-version: latest
-      if: steps.docker.outputs.PUSH_TO_DOCKER
+      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
     - name: Docker Login
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
       run: |
         echo "${DOCKER_PASSWORD}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      if: steps.docker.outputs.PUSH_TO_DOCKER
+      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
     - name: Build for test only
       run: |
         docker build \
@@ -82,7 +82,7 @@ jobs:
           -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
         docker build \
           -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
-      if: (! steps.docker.outputs.PUSH_TO_DOCKER)
+      if: steps.docker.outputs.PUSH_TO_DOCKER == 'false'
     - name: Build and push platforms
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
@@ -115,7 +115,7 @@ jobs:
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
           -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
-      if: steps.docker.outputs.PUSH_TO_DOCKER
+      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
     - name: List available tags for images
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
@@ -130,4 +130,4 @@ jobs:
               awk -F: '{printf $3 " "}'
           )
         done
-      if: steps.docker.outputs.PUSH_TO_DOCKER
+      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
