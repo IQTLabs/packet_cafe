@@ -2,7 +2,9 @@ name: buildx
 
 on:
   push:
-    branches: master
+    branches:
+      - master
+      - develop
     tags: 'v*'
 
 jobs:
@@ -12,25 +14,82 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Get the version
+      with:
+        fetch-depth: 0
+    - name: Get version number
       id: get_version
-      run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
-    - name: Change for master
+      run: |
+        VERSION=$(git describe --tags)
+        echo VERSION=${VERSION}
+        echo ::set-output name=VERSION::${VERSION}
+        TAG_VERSION=$(git describe --abbrev=0 --tags)
+        echo TAG_VERSION=${TAG_VERSION}
+        echo ::set-output name=TAG_VERSION::${TAG_VERSION}
+        if [[ ${VERSION} == ${TAG_VERSION} ]]; then
+          IS_RELEASE="true"
+        else
+          IS_RELEASE="false"
+        fi
+        echo IS_RELEASE=${IS_RELEASE}
+        echo ::set-output name=IS_RELEASE::${IS_RELEASE}
+    - name: Should this workflow push to Docker Hub?
+      id: docker
+      env:
+        DOCKER_PASSWORD:  ${{ secrets.DOCKER_TOKEN }}
+        DOCKER_USERNAME:  ${{ secrets.DOCKER_USERNAME }}
+      run: |
+        PUSH_TO_DOCKER="false"
+        if [[ "${{ github.event_name }}" == "push" ]] &&
+           [[ -n $DOCKER_USERNAME ]] &&
+           [[ -n $DOCKER_PASSWORD ]] &&
+           [[ "${{ steps.get_version.outputs.IS_RELEASE }}" == "true" ]]
+        then
+          PUSH_TO_DOCKER="true"
+        fi
+        echo ::set-output name=PUSH_TO_DOCKER::${PUSH_TO_DOCKER}
+        echo PUSH_TO_DOCKER=${PUSH_TO_DOCKER}
+    - name: Change version for release on master
       id: change_version
-      run: if [ "${{ steps.get_version.outputs.VERSION }}" == "master" ]; then echo ::set-output name=VERSION::latest; else echo ::set-output name=VERSION::${{ steps.get_version.outputs.VERSION }}; fi
+      run: |
+        if [ "${GITHUB_REF##*/}" == "master" ]; then
+          echo ::set-output name=VERSION::latest;
+          echo VERSION=latest
+        else
+          echo ::set-output name=VERSION::${VERSION};
+          echo VERSION=${VERSION}
+        fi
+      env:
+        VERSION: ${{ steps.get_version.outputs.VERSION }}
     - name: Set up Docker Buildx
       id: buildx
       uses: crazy-max/ghaction-docker-buildx@v3
       with:
         buildx-version: latest
         qemu-version: latest
+      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
     - name: Docker Login
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
       run: |
         echo "${DOCKER_PASSWORD}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      if: github.repository == 'iqtlabs/packet_cafe' && github.event_name == 'push'
-
+      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
+    - name: Build for test only
+      run: |
+        docker build \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_admin:${{ steps.change_version.outputs.VERSION }} admin && \
+        docker build \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_ui:${{ steps.change_version.outputs.VERSION }} ui && \
+        docker build \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_web:${{ steps.change_version.outputs.VERSION }} web && \
+        docker build \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_lb:${{ steps.change_version.outputs.VERSION }} lb && \
+        docker build \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_messenger:${{ steps.change_version.outputs.VERSION }} messenger && \
+        docker build \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
+        docker build \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
+      if: steps.docker.outputs.PUSH_TO_DOCKER == 'false'
     - name: Build and push platforms
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
@@ -38,29 +97,44 @@ jobs:
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_admin:${{ steps.change_version.outputs.VERSION }} admin && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_admin:${{ steps.change_version.outputs.VERSION }} admin && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_ui:${{ steps.change_version.outputs.VERSION }} ui && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_ui:${{ steps.change_version.outputs.VERSION }} ui && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_web:${{ steps.change_version.outputs.VERSION }} web && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_web:${{ steps.change_version.outputs.VERSION }} web && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_lb:${{ steps.change_version.outputs.VERSION }} lb && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_lb:${{ steps.change_version.outputs.VERSION }} lb && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_messenger:${{ steps.change_version.outputs.VERSION }} messenger && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_messenger:${{ steps.change_version.outputs.VERSION }} messenger && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
-      if: github.repository == 'iqtlabs/packet_cafe' && github.event_name == 'push'
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
+      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
+    - name: List available tags for images
+      env:
+        DOCKER_CLI_EXPERIMENTAL: enabled
+      run: |
+        for N in admin ui messenger web redis lb workers
+        do
+          image="${{ secrets.DOCKER_USERNAME }}/packet_cafe_${N}"
+          echo "${image}:" $(
+            wget -q https://registry.hub.docker.com/v1/repositories/${image}/tags -O - |
+              tr -d '[]" ' |
+              tr '}' '\n' |
+              awk -F: '{printf $3 " "}'
+          )
+        done
+      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
