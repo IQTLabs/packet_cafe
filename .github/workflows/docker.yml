@@ -19,8 +19,8 @@ jobs:
     - name: Get the version
       id: get_version
       run: |
-        echo VERSION=$(git describe --abbrev=0)
-        echo ::set-output name=VERSION::$(git describe --abbrev=0)
+        echo VERSION=$(git describe --abbrev=0 --tags)
+        echo ::set-output name=VERSION::$(git describe --abbrev=0 --tags)
     - name: Change version
       id: change_version
       run: |
