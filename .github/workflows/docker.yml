@@ -82,7 +82,7 @@ jobs:
           -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
         docker build \
           -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
-      if: ! steps.docker.outputs.PUSH_TO_DOCKER
+      if: (! steps.docker.outputs.PUSH_TO_DOCKER)
     - name: Build and push platforms
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
