@@ -2,7 +2,9 @@ name: buildx
 
 on:
   push:
-    branches: master
+    branches:
+      - master
+      - develop
     tags: 'v*'
 
 jobs:
@@ -12,25 +14,48 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Get the version
       id: get_version
-      run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
-    - name: Change for master
+      run: |
+        echo VERSION=$(git describe --abbrev=0)
+        echo ::set-output name=VERSION::$(git describe --abbrev=0)
+    - name: Change version
       id: change_version
-      run: if [ "${{ steps.get_version.outputs.VERSION }}" == "master" ]; then echo ::set-output name=VERSION::latest; else echo ::set-output name=VERSION::${{ steps.get_version.outputs.VERSION }}; fi
+      run: |
+        if [ "${GITHUB_REF##*/}" == "master" ]; then
+          echo ::set-output name=VERSION::latest;
+          echo VERSION=latest
+        else
+          echo ::set-output name=VERSION::${VERSION};
+          echo VERSION=${VERSION}
+        fi
+      env:
+        VERSION: ${{ steps.get_version.outputs.VERSION }}
+    - name: Using Docker Hub?
+      id: docker
+      env:
+        DOCKER_PASSWORD:  ${{ secrets.DOCKER_TOKEN }}
+        DOCKER_USERNAME:  ${{ secrets.DOCKER_USERNAME }}
+      run: |
+        unset USE_DOCKER
+        if [ -n $DOCKER_USERNAME ] && [ -n $DOCKER_PASSWORD ]; then USE_DOCKER='true'; fi
+        echo ::set-output name=USE_DOCKER::${USE_DOCKER}
+        echo USE_DOCKER=${USE_DOCKER}
     - name: Set up Docker Buildx
       id: buildx
       uses: crazy-max/ghaction-docker-buildx@v3
       with:
         buildx-version: latest
         qemu-version: latest
+      if: steps.docker.outputs.USE_DOCKER
     - name: Docker Login
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
       run: |
         echo "${DOCKER_PASSWORD}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      if: github.repository == 'iqtlabs/packet_cafe' && github.event_name == 'push'
-
+      if: steps.docker.outputs.USE_DOCKER && github.event_name == 'push'
     - name: Build and push platforms
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
@@ -38,29 +63,29 @@ jobs:
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_admin:${{ steps.change_version.outputs.VERSION }} admin && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_admin:${{ steps.change_version.outputs.VERSION }} admin && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_ui:${{ steps.change_version.outputs.VERSION }} ui && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_ui:${{ steps.change_version.outputs.VERSION }} ui && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_web:${{ steps.change_version.outputs.VERSION }} web && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_web:${{ steps.change_version.outputs.VERSION }} web && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_lb:${{ steps.change_version.outputs.VERSION }} lb && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_lb:${{ steps.change_version.outputs.VERSION }} lb && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_messenger:${{ steps.change_version.outputs.VERSION }} messenger && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_messenger:${{ steps.change_version.outputs.VERSION }} messenger && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
         docker buildx build \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
-          -t iqtlabs/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
-      if: github.repository == 'iqtlabs/packet_cafe' && github.event_name == 'push'
+          -t ${{ secrets.DOCKER_USERNAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
+      if: steps.docker.outputs.USE_DOCKER && github.event_name == 'push'
