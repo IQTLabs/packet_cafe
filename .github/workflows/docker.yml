@@ -25,6 +25,18 @@ jobs:
         TAG_VERSION=$(git describe --abbrev=0 --tags)
         echo TAG_VERSION=${TAG_VERSION}
         echo ::set-output name=TAG_VERSION::${TAG_VERSION}
+
+        REF=${{ github.ref }}
+        URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/${REF##*/}"
+        status_code=$(curl -o -I -L -s -w "%{http_code}" -X GET -G $URL)
+        echo $status_code
+        if [["$status_code" == 200]]; then
+          IS_RELEASE="true"
+        else
+          IS_RELEASE="true"
+        fi
+        echo IS_RELEASE=${IS_RELEASE}
+        echo ::set-output name=IS_RELEASE::${IS_RELEASE}
     - name: Should this workflow push to Docker Hub?
       id: docker
       env:
@@ -35,13 +47,13 @@ jobs:
         if [[ github.event_name == "push" ]] &&
            [[ -n $DOCKER_USERNAME ]] &&
            [[ -n $DOCKER_PASSWORD ]] &&
-           [[ ${{ steps.get_version.outputs.VERSION }} == ${{ steps.get_version.outputs.TAG_VERSION }} ]]
+           [[ ${{ steps.get_version.outputs.IS_RELEASE }} == 'true' ]]
         then
           PUSH_TO_DOCKER='true'
         fi
         echo ::set-output name=PUSH_TO_DOCKER::${PUSH_TO_DOCKER}
         echo PUSH_TO_DOCKER=${PUSH_TO_DOCKER}
-    - name: Change version for release
+    - name: Change version for release on master
       id: change_version
       run: |
         if [ "${GITHUB_REF##*/}" == "master" ]; then
