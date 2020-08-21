@@ -16,15 +16,23 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+    - name: Define list of containers to build
+        id: containers
+      run: |
+        echo ::set-output name=NAMES::${NAMES}
+      env:
+        NAMES: admin ui messenger web redis lb workers
     - name: Get version number
       id: get_version
       run: |
         VERSION=$(git describe --tags)
         echo VERSION=${VERSION}
         echo ::set-output name=VERSION::${VERSION}
+
         TAG_VERSION=$(git describe --abbrev=0 --tags)
         echo TAG_VERSION=${TAG_VERSION}
         echo ::set-output name=TAG_VERSION::${TAG_VERSION}
+
         if [[ ${VERSION} == ${TAG_VERSION} ]]; then
           IS_RELEASE="true"
         else
@@ -49,15 +57,17 @@ jobs:
         fi
         echo ::set-output name=PUSH_TO_DOCKER::${PUSH_TO_DOCKER}
         echo PUSH_TO_DOCKER=${PUSH_TO_DOCKER}
-    - name: Change version for release on master
-      id: change_version
+    - name: Change tag for release on master branch
+      id: publish_tag
       run: |
-        if [ "${GITHUB_REF##*/}" == "master" ]; then
+        echo GITHUB_REF=${GITHUB_REF}
+        echo 'GITHUB_REF##*/'=${GITHUB_REF##*/}
+        if [[ "${GITHUB_REF##*/}" == "master" ]]; then
           echo ::set-output name=VERSION::latest;
-          echo VERSION=latest
+          echo TAG=latest
         else
-          echo ::set-output name=VERSION::${VERSION};
-          echo VERSION=${VERSION}
+          echo ::set-output name=TAG::${VERSION};
+          echo TAG=${VERSION}
         fi
       env:
         VERSION: ${{ steps.get_version.outputs.VERSION }}
@@ -74,61 +84,31 @@ jobs:
       run: |
         echo "${DOCKER_PASSWORD}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
       if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
-    - name: Build for test only
+    - name: Test building only
       run: |
-        docker build \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_admin:${{ steps.change_version.outputs.VERSION }} admin && \
-        docker build \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_ui:${{ steps.change_version.outputs.VERSION }} ui && \
-        docker build \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_web:${{ steps.change_version.outputs.VERSION }} web && \
-        docker build \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_lb:${{ steps.change_version.outputs.VERSION }} lb && \
-        docker build \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_messenger:${{ steps.change_version.outputs.VERSION }} messenger && \
-        docker build \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
-        docker build \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
+        for N in ${{ steps.containers.outputs.NAMES }}
+        do
+          docker build ${N}
+        done
       if: steps.docker.outputs.PUSH_TO_DOCKER == 'false'
     - name: Build and push platforms
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
-        docker buildx build \
-          --platform linux/amd64,linux/arm/v7,linux/arm64 \
-          --push \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_admin:${{ steps.change_version.outputs.VERSION }} admin && \
-        docker buildx build \
-          --platform linux/amd64,linux/arm/v7,linux/arm64 \
-          --push \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_ui:${{ steps.change_version.outputs.VERSION }} ui && \
-        docker buildx build \
-          --platform linux/amd64,linux/arm/v7,linux/arm64 \
-          --push \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_web:${{ steps.change_version.outputs.VERSION }} web && \
-        docker buildx build \
-          --platform linux/amd64,linux/arm/v7,linux/arm64 \
-          --push \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_lb:${{ steps.change_version.outputs.VERSION }} lb && \
-        docker buildx build \
-          --platform linux/amd64,linux/arm/v7,linux/arm64 \
-          --push \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_messenger:${{ steps.change_version.outputs.VERSION }} messenger && \
-        docker buildx build \
-          --platform linux/amd64,linux/arm/v7,linux/arm64 \
-          --push \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_redis:${{ steps.change_version.outputs.VERSION }} redis && \
-        docker buildx build \
-          --platform linux/amd64,linux/arm/v7,linux/arm64 \
-          --push \
-          -t ${{ secrets.DOCKER_REPONAME }}/packet_cafe_workers:${{ steps.change_version.outputs.VERSION }} workers
+        for N in ${{ steps.containers.outputs.NAMES }}
+        do
+          TAGGED_IMAGE="${{ secrets.DOCKER_REPONAME }}}/packet_cafe_${N}:${{ steps.publish_tag.outputs.TAG }}"
+          docker buildx build \
+            --platform linux/amd64,linux/arm/v7,linux/arm64 \
+            --push \
+            ${TAGGED_IMAGE} ${N}
+        done
       if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
     - name: List available tags for images
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
-        for N in admin ui messenger web redis lb workers
+        for N in ${{ steps.containers.outputs.NAMES }}
         do
           image="${{ secrets.DOCKER_REPONAME }}/packet_cafe_${N}"
           echo "${image}:" $(
