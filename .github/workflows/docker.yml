@@ -101,7 +101,7 @@ jobs:
           docker buildx build \
             --platform linux/amd64,linux/arm/v7,linux/arm64 \
             --push \
-            ${TAGGED_IMAGE} ${N}
+            -t ${TAGGED_IMAGE} ${N}
         done
       if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
     - name: List available tags for images
