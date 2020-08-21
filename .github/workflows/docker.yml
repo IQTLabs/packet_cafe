@@ -16,8 +16,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: Define list of containers to build
-        id: containers
+    - name: Define list of images to build
+        id: get_images
       run: |
         echo ::set-output name=NAMES::${NAMES}
       env:
@@ -86,7 +86,7 @@ jobs:
       if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
     - name: Test building only
       run: |
-        for N in ${{ steps.containers.outputs.NAMES }}
+        for N in ${{ steps.get_images.outputs.NAMES }}
         do
           docker build ${N}
         done
@@ -95,7 +95,7 @@ jobs:
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
-        for N in ${{ steps.containers.outputs.NAMES }}
+        for N in ${{ steps.get_images.outputs.NAMES }}
         do
           TAGGED_IMAGE="${{ secrets.DOCKER_REPONAME }}}/packet_cafe_${N}:${{ steps.publish_tag.outputs.TAG }}"
           docker buildx build \
@@ -108,7 +108,7 @@ jobs:
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
-        for N in ${{ steps.containers.outputs.NAMES }}
+        for N in ${{ steps.get_images.outputs.NAMES }}
         do
           image="${{ secrets.DOCKER_REPONAME }}/packet_cafe_${N}"
           echo "${image}:" $(
