@@ -50,9 +50,14 @@ jobs:
         PUSH_TO_DOCKER="false"
         if [[ "${{ github.event_name }}" == "push" ]] &&
            [[ -n $DOCKER_USERNAME ]] &&
+           [[ -n $DOCKER_REPONAME ]] &&
            [[ -n $DOCKER_PASSWORD ]] &&
            [[ "${{ steps.get_version.outputs.IS_RELEASE }}" == "true" ]]
         then
+          # Must define all three variables for Docker Hub publishing to work
+          [[ -z "$DOCKER_USERNAME" ]] && (echo "Must define secret: DOCKER_USERNAME"; exit 1)
+          [[ -z "$DOCKER_PASSWORD" ]] && (echo "Must define secret: DOCKER_PASSWORD"; exit 1)
+          [[ -z "$DOCKER_REPONAME" ]] && (echo "Must define secret: DOCKER_REPONAME"; exit 1)
           PUSH_TO_DOCKER="true"
         fi
         echo ::set-output name=PUSH_TO_DOCKER::${PUSH_TO_DOCKER}
@@ -71,19 +76,6 @@ jobs:
         fi
       env:
         VERSION: ${{ steps.get_version.outputs.VERSION }}
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: crazy-max/ghaction-docker-buildx@v3
-      with:
-        buildx-version: latest
-        qemu-version: latest
-      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
-    - name: Docker Login
-      env:
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
-      run: |
-        echo "${DOCKER_PASSWORD}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
     - name: Test building only
       run: |
         for N in ${{ steps.get_images.outputs.NAMES }}
@@ -91,19 +83,32 @@ jobs:
           docker build ${N}
         done
       if: steps.docker.outputs.PUSH_TO_DOCKER == 'false'
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: crazy-max/ghaction-docker-buildx@v3
+      with:
+        buildx-version: latest
+        qemu-version: latest
+      if: success() && (steps.docker.outputs.PUSH_TO_DOCKER == 'true')
+    - name: Docker Login
+      env:
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+      run: |
+        echo "${DOCKER_PASSWORD}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      if: success() && (steps.docker.outputs.PUSH_TO_DOCKER == 'true')
     - name: Build and push platforms
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
         for N in ${{ steps.get_images.outputs.NAMES }}
         do
-          TAGGED_IMAGE="${{ secrets.DOCKER_REPONAME }}}/packet_cafe_${N}:${{ steps.publish_tag.outputs.TAG }}"
+          TAGGED_IMAGE="${{ secrets.DOCKER_REPONAME }}/packet_cafe_${N}:${{ steps.publish_tag.outputs.TAG }}"
           docker buildx build \
             --platform linux/amd64,linux/arm/v7,linux/arm64 \
             --push \
             -t ${TAGGED_IMAGE} ${N}
         done
-      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
+      if: success() && (steps.docker.outputs.PUSH_TO_DOCKER == 'true')
     - name: List available tags for images
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
@@ -118,4 +123,4 @@ jobs:
               awk -F: '{printf $3 " "}'
           )
         done
-      if: steps.docker.outputs.PUSH_TO_DOCKER == 'true'
+      if: success() && (steps.docker.outputs.PUSH_TO_DOCKER == 'true')
