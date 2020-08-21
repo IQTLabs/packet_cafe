@@ -49,9 +49,6 @@ jobs:
       run: |
         PUSH_TO_DOCKER="false"
         if [[ "${{ github.event_name }}" == "push" ]] &&
-           [[ -n $DOCKER_USERNAME ]] &&
-           [[ -n $DOCKER_REPONAME ]] &&
-           [[ -n $DOCKER_PASSWORD ]] &&
            [[ "${{ steps.get_version.outputs.IS_RELEASE }}" == "true" ]]
         then
           # Must define all three variables for Docker Hub publishing to work
