@@ -46,7 +46,7 @@ jobs:
       env:
         DOCKER_PASSWORD:  ${{ secrets.DOCKER_TOKEN }}
         DOCKER_USERNAME:  ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_REPONAME:  ${{ secrets.DOCKER_REPONAME }}
+        DOCKER_NAMESPACE:  ${{ secrets.DOCKER_NAMESPACE }}
       run: |
         PUSH_TO_DOCKER="false"
         if [[ "${{ github.event_name }}" == "push" ]] &&
@@ -55,7 +55,7 @@ jobs:
           # Must define all three variables for Docker Hub publishing to work
           [[ -z "$DOCKER_USERNAME" ]] && (echo "Must define secret: DOCKER_USERNAME"; exit 1)
           [[ -z "$DOCKER_PASSWORD" ]] && (echo "Must define secret: DOCKER_PASSWORD"; exit 1)
-          [[ -z "$DOCKER_REPONAME" ]] && (echo "Must define secret: DOCKER_REPONAME"; exit 1)
+          [[ -z "$DOCKER_NAMESPACE" ]] && (echo "Must define secret: DOCKER_NAMESPACE"; exit 1)
           PUSH_TO_DOCKER="true"
         fi
         echo ::set-output name=PUSH_TO_DOCKER::${PUSH_TO_DOCKER}
@@ -100,7 +100,7 @@ jobs:
       run: |
         for N in ${{ steps.get_images.outputs.NAMES }}
         do
-          TAGGED_IMAGE="${{ secrets.DOCKER_REPONAME }}/packet_cafe_${N}:${{ steps.publish_tag.outputs.TAG }}"
+          TAGGED_IMAGE="${{ secrets.DOCKER_NAMESPACE }}/packet_cafe_${N}:${{ steps.publish_tag.outputs.TAG }}"
           docker buildx build \
             --platform linux/amd64,linux/arm/v7,linux/arm64 \
             --push \
@@ -113,7 +113,7 @@ jobs:
       run: |
         for N in ${{ steps.get_images.outputs.NAMES }}
         do
-          image="${{ secrets.DOCKER_REPONAME }}/packet_cafe_${N}"
+          image="${{ secrets.DOCKER_NAMESPACE }}/packet_cafe_${N}"
           echo "${image}:" $(
             wget -q https://registry.hub.docker.com/v1/repositories/${image}/tags -O - |
               tr -d '[]" ' |
