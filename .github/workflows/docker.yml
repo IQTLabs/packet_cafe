@@ -66,7 +66,7 @@ jobs:
         echo GITHUB_REF=${GITHUB_REF}
         echo 'GITHUB_REF##*/'=${GITHUB_REF##*/}
         if [[ "${GITHUB_REF##*/}" == "master" ]]; then
-          echo ::set-output name=VERSION::latest;
+          echo ::set-output name=TAG::latest;
           echo TAG=latest
         else
           echo ::set-output name=TAG::${VERSION};
