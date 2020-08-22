@@ -33,7 +33,8 @@ jobs:
         echo TAG_VERSION=${TAG_VERSION}
         echo ::set-output name=TAG_VERSION::${TAG_VERSION}
 
-        if [[ ${VERSION} == ${TAG_VERSION} ]]; then
+        if [[ ${VERSION} == ${TAG_VERSION} ]] ||
+           [[ "${GITHUB_REF##*/}" == "master" ]]; then
           IS_RELEASE="true"
         else
           IS_RELEASE="false"
