@@ -22,10 +22,17 @@ jobs:
         docker run packet_cafe/web-test && \
         export PATH=/home/runner/.local/bin:$PATH
         #coverage report && coverage xml
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1.0.6
+    - name: Using Codecov?
+      id: codecov
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: |
+        unset USE_CODECOV
+        if [ -n $CODECOV_TOKEN ]; then USE_CODECOV='true'; fi
+        echo USE_CODECOV=${USE_CODECOV}
+        echo ::set-output name=USE_CODECOV::${USE_CODECOV}
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.0.6
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-      if: github.repository == 'iqtlabs/packet_cafe'
+      if: steps.codecov.outputs.USE_CODECOV
