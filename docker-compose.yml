@@ -1,26 +1,26 @@
 version: '3.7'
 services:
   networkml:
-    image: 'iqtlabs/networkml:v0.6.0'
+    image: '${TOOL_NAMESPACE}/networkml:v0.6.0'
   pcapplot:
-    image: 'iqtlabs/pcapplot:v0.1.7'
+    image: '${TOOL_NAMESPACE}/pcapplot:v0.1.7'
   pcap-splitter:
-    image: 'iqtlabs/pcap-to-node-pcap:v0.11.15'
+    image: '${TOOL_NAMESPACE}/pcap-to-node-pcap:v0.11.15'
   ncapture:
-    image: 'iqtlabs/ncapture:v0.11.15'
+    image: '${TOOL_NAMESPACE}/ncapture:v0.11.15'
   pcap-dot1q:
-    image: 'iqtlabs/tcprewrite-dot1q:v0.11.15'
+    image: '${TOOL_NAMESPACE}/tcprewrite-dot1q:v0.11.15'
   snort:
-    image: 'iqtlabs/snort:v0.11.15'
+    image: '${TOOL_NAMESPACE}/snort:v0.11.15'
   pcap-stats:
-    image: 'iqtlabs/pcap-stats:v0.11.15'
+    image: '${TOOL_NAMESPACE}/pcap-stats:v0.11.15'
   mercury:
-    image: 'iqtlabs/mercury:v0.11.15'
+    image: '${TOOL_NAMESPACE}/mercury:v0.11.15'
   admin:
     restart: always
     build:
       context: admin
-    image: 'iqtlabs/packet_cafe_admin:latest'
+    image: '${SERVICE_NAMESPACE}/packet_cafe_admin:${SERVICE_VERSION}'
     ports:
       - 5001:5001
     networks:
@@ -32,7 +32,7 @@ services:
     restart: always
     build:
       context: ui
-    image: 'iqtlabs/packet_cafe_ui:latest'
+    image: '${SERVICE_NAMESPACE}/packet_cafe_ui:${SERVICE_VERSION}'
     networks:
       - frontend
     volumes:
@@ -41,7 +41,7 @@ services:
     restart: always
     build:
       context: web
-    image: 'iqtlabs/packet_cafe_web:latest'
+    image: '${SERVICE_NAMESPACE}/packet_cafe_web:${SERVICE_VERSION}'
     networks:
       - frontend
     volumes:
@@ -52,7 +52,7 @@ services:
     restart: always
     build:
       context: lb
-    image: 'iqtlabs/packet_cafe_lb:latest'
+    image: '${SERVICE_NAMESPACE}/packet_cafe_lb:${SERVICE_VERSION}'
     ports:
       - 80:80
     networks:
@@ -62,7 +62,7 @@ services:
     restart: always
     build:
       context: messenger
-    image: 'iqtlabs/packet_cafe_messenger:latest'
+    image: '${SERVICE_NAMESPACE}/packet_cafe_messenger:${SERVICE_VERSION}'
     networks:
       - frontend
       - backend
@@ -72,7 +72,7 @@ services:
     restart: always
     build:
       context: redis
-    image: 'iqtlabs/packet_cafe_redis:latest'
+    image: '${SERVICE_NAMESPACE}/packet_cafe_redis:${SERVICE_VERSION}'
     networks:
       - frontend
       - backend
@@ -82,7 +82,7 @@ services:
     restart: always
     build:
       context: workers
-    image: 'iqtlabs/packet_cafe_workers:latest'
+    image: '${SERVICE_NAMESPACE}/packet_cafe_workers:${SERVICE_VERSION}'
     networks:
       - backend
       - results
