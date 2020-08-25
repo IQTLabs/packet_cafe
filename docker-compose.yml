@@ -1,19 +1,19 @@
 version: '3.7'
 services:
   networkml:
-    image: '${TOOL_NAMESPACE}/networkml:${TOOL_VERSION}'
+    image: 'iqtlabs/networkml:v0.6.0'
   pcapplot:
-    image: '${TOOL_NAMESPACE}/pcapplot:${TOOL_VERSION}'
+    image: 'iqtlabs/pcapplot:v0.1.7'
   pcap-splitter:
-    image: '${TOOL_NAMESPACE}/pcap-to-node-pcap:${TOOL_VERSION}'
+    image: '${TOOL_NAMESPACE}/pcap_to_node_pcap:${TOOL_VERSION}'
   ncapture:
     image: '${TOOL_NAMESPACE}/ncapture:${TOOL_VERSION}'
   pcap-dot1q:
-    image: '${TOOL_NAMESPACE}/tcprewrite-dot1q:${TOOL_VERSION}'
+    image: '${TOOL_NAMESPACE}/tcprewrite_dot1q:${TOOL_VERSION}'
   snort:
     image: '${TOOL_NAMESPACE}/snort:${TOOL_VERSION}'
   pcap-stats:
-    image: '${TOOL_NAMESPACE}/pcap-stats:${TOOL_VERSION}'
+    image: '${TOOL_NAMESPACE}/pcap_stats:${TOOL_VERSION}'
   mercury:
     image: '${TOOL_NAMESPACE}/mercury:${TOOL_VERSION}'
   admin:
