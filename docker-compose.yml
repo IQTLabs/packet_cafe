@@ -1,21 +1,21 @@
 version: '3.7'
 services:
   networkml:
-    image: '${TOOL_NAMESPACE}/networkml:v0.6.0'
+    image: '${TOOL_NAMESPACE}/networkml:${TOOL_VERSION}'
   pcapplot:
-    image: '${TOOL_NAMESPACE}/pcapplot:v0.1.7'
+    image: '${TOOL_NAMESPACE}/pcapplot:${TOOL_VERSION}'
   pcap-splitter:
-    image: '${TOOL_NAMESPACE}/pcap-to-node-pcap:v0.11.15'
+    image: '${TOOL_NAMESPACE}/pcap-to-node-pcap:${TOOL_VERSION}'
   ncapture:
-    image: '${TOOL_NAMESPACE}/ncapture:v0.11.15'
+    image: '${TOOL_NAMESPACE}/ncapture:${TOOL_VERSION}'
   pcap-dot1q:
-    image: '${TOOL_NAMESPACE}/tcprewrite-dot1q:v0.11.15'
+    image: '${TOOL_NAMESPACE}/tcprewrite-dot1q:${TOOL_VERSION}'
   snort:
-    image: '${TOOL_NAMESPACE}/snort:v0.11.15'
+    image: '${TOOL_NAMESPACE}/snort:${TOOL_VERSION}'
   pcap-stats:
-    image: '${TOOL_NAMESPACE}/pcap-stats:v0.11.15'
+    image: '${TOOL_NAMESPACE}/pcap-stats:${TOOL_VERSION}'
   mercury:
-    image: '${TOOL_NAMESPACE}/mercury:v0.11.15'
+    image: '${TOOL_NAMESPACE}/mercury:${TOOL_VERSION}'
   admin:
     restart: always
     build:
