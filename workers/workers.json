@@ -16,7 +16,7 @@
     },
     {
       "name": "pcap-splitter",
-      "image": "iqtlabs/pcap-to-node-pcap",
+      "image": "iqtlabs/pcap_to_node_pcap",
       "version": "v0.11.15",
       "labels": "",
       "stage": "preprocessing",
@@ -52,7 +52,7 @@
     },
     {
       "name": "pcap-dot1q",
-      "image": "iqtlabs/tcprewrite-dot1q",
+      "image": "iqtlabs/tcprewrite_dot1q",
       "version": "v0.11.15",
       "labels": "",
       "stage": "preprocessing",
@@ -111,7 +111,7 @@
     },
     {
       "name": "pcap-stats",
-      "image": "iqtlabs/pcap-stats",
+      "image": "iqtlabs/pcap_stats",
       "version": "v0.11.15",
       "labels": "",
       "stage": "analysis",
