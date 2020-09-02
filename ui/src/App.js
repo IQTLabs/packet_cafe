@@ -36,7 +36,6 @@ const formatHeatmapData = (files, results) => {
     })
 
     const mercuryResults = mercury.length > 0 && mercury[0].results.length > 0 ? mercury[0].results[0] : []; 
-
     var ipData = {
       type:"ip",
       // data:jsonData[0],

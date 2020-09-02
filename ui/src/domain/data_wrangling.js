@@ -25,40 +25,18 @@ const configureHeatmapData = (payload) => {
    * Count of Source IP Keys by Destination IP Keys
   */
 
-  var dataByFirstKeyBySecondKey = d3.nest()
-    .key((d) => { return d[secondKey]; })
-    .key((d) => { return d[firstKey]; })
-    .rollup((v) => { 
-      return v.length ; 
-    })
-    .object(data);
+  var counts = d3.rollup(data, v => v.length, d => d[secondKey], d => d[firstKey])
 
-  var counts = Object.entries(dataByFirstKeyBySecondKey)
-    .map(([firstKey, secondKeys]) => {
-      return ({ firstKey, ...secondKeys });
-    });
-  //console.log("counts: %o", counts)
+  var combinedData = []
+  for (let [key, value] of counts) {
+    let item = {};
+    item[firstKey] = key;
+    for (let [k, v] of value) {
+      item[k] = v;
+    }
+    combinedData.push(item)
+  }
 
-  var secondKeys = counts.map((dat)=>{
-    return dat.secondKeys
-  });
-
-  //console.log("secondKeys: %o", secondKeys);
-
-  var combinedData = counts.map((item, i) => {
-    return Object.assign({}, item, secondKeys[i])
-  });
-
-  //console.log("combined data pre removal: %o", combinedData);
-  // combinedData.map((dat) =>{
-  //   Object.entries(dat).map(() => {
-  //     delete dat.firstKey
-  //     delete dat.secondKeys
-  //     const gto = removeNumbersLessThan(1,dat) || [];
-  //     return gto;
-  //   })
-  // })
-  //console.log("combined data: %o", combinedData);
   return {
     data: combinedData,
     keys: uniquemappedfirstKey,
