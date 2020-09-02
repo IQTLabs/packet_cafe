@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:current-alpine3.12
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
 RUN apk --no-cache upgrade && \
