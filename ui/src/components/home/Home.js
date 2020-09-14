@@ -14,9 +14,7 @@ import { fetchTools } from 'epics/fetch-tools-epic'
 import { setPacketStatisticsData,  getDataWranglingState, configureHeatmapData } from 'domain/data_wrangling';
 import { setSessionId, getResults, getToolStatuses, getToolResults } from 'domain/data';
 
-import './App.css';
-import Home from 'components/home/Home';
-import DeviceSummary from 'components/devices/DeviceSummary';
+import './Home.css';
 import Upload from 'components/upload/Upload';
 import Navbar from 'components/Navbar';
 import DataMonitor from 'components/data/DataMonitor';
@@ -62,7 +60,7 @@ const formatHeatmapData = (files, results) => {
     return { 'ipResults': ipData, 'portResults': portData }
   }
 
-class App extends React.Component {
+class Home extends React.Component {
   static propTypes = {
     cookies: instanceOf(Cookies).isRequired
   };
@@ -145,16 +143,21 @@ class App extends React.Component {
 
     return (
       <>
-        <BrowserRouter>
-          <div>
-            <Navbar/>
-            <Switch>
-              <Route path="/" component={Home} exact/>
-              <Route path="/devices" component={DeviceSummary}/>
-              <Route component={Error}/>
-            </Switch>
-          </div>
-        </BrowserRouter>
+        <Grid textAlign='center' container style={{ height: '100vh' }}>
+          <Grid.Row columns={1}>
+            <Grid.Column style={{ maxWidth: 240 }}>
+              <Upload sessionId={this.state.sessionId} refreshInterval={refreshInterval}/>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={1}>
+            <Grid.Column>
+              <DataMonitor sessionId={this.state.sessionId} files={this.props.files} statuses={this.props.statuses} refreshInterval={refreshInterval}/>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={1}>
+            <Tab menu={{ secondary: true }} panes={this.getPanes()} />
+          </Grid.Row>
+        </Grid>
       </>
     );
   }
@@ -184,4 +187,4 @@ const mapDispatchToProps = {
     setPacketStatisticsData
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withCookies(App));
+export default connect(mapStateToProps, mapDispatchToProps)(withCookies(Home));

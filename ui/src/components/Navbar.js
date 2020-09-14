@@ -1,21 +1,13 @@
 import React from 'react';
-import { Menu, Dropdown } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
 
 class Navbar extends React.Component{
     render(){
         return(
-            <Menu size="large">
-                <Menu.Item header><img src="favicon.ico" alt="Packet Cafe"></img>&nbsp;Packet Café</Menu.Item>
-                <Menu.Menu position="left">
-                    <Dropdown item simple text='About'>
-                        <Dropdown.Menu>
-                            <Dropdown.Item><a href="https://cyberreboot.gitbook.io/packet-cafe/">Documentation</a></Dropdown.Item>
-                            <Dropdown.Item><a href="https://github.com/IQTLabs/packet_cafe/">Source Code</a></Dropdown.Item>
-                            <Dropdown.Item><a href="https://www.cyberreboot.org/">Cyber Reboot</a></Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Menu.Menu>
-            </Menu>
+            <div>
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/devices">Devices</NavLink>
+            </div>
         )
     }
 }
