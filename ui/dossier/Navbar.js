@@ -34,9 +34,9 @@ const Navbar = () => (
             src="https://res.cloudinary.com/dzu5qhcon/image/upload/v1600102039/logo/PacketCafeLogo.svg"
             style={{ marginRight: "1.5em" }}
           />
-          Packet Dossier
+          Packet Caf&#233;
         </Menu.Item>
-        <Menu.Item as="a">PCAP Summary</Menu.Item>
+        <Menu.Item as="a">PCAP Dossier</Menu.Item>
         <Dropdown item simple text="Devices">
           <Dropdown.Menu>
             <Dropdown.Item>
