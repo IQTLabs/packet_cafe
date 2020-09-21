@@ -9,7 +9,6 @@ const Trafficsummary = () => (
       marginTop: "3em"
     }}
   >
-    {" "}
     <Header as="h2">Traffic Summary</Header>
     <Grid divided="vertically">
       <Grid.Row columns={2}>
