@@ -7,7 +7,6 @@ const Trafficcontext = () => (
       marginTop: "1em"
     }}
   >
-    {" "}
     <Message color="blue">
       <Message.Header>
         How does Packet Caf&#233; determine traffic encryption?

@@ -1,10 +1,11 @@
 {
-  "name": "semantic-ui-example",
+  "name": "packet-cafe-pcapviz-table-react-forked",
   "version": "1.0.0",
-  "description": "An exported example from Semantic UI React, https://react.semantic-ui.com/",
+  "description": "1st fork was broken (how to trigger rebuild?)\n\nSemantic-UI API\nhttps://react.semantic-ui.com ",
   "main": "index.js",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.30",
+    "@fortawesome/free-brands-svg-icons": "5.14.0",
     "@fortawesome/free-solid-svg-icons": "5.14.0",
     "@fortawesome/react-fontawesome": "0.1.11",
     "apexcharts": "3.20.2",
@@ -16,5 +17,6 @@
     "react-scripts": "latest",
     "semantic-ui": "2.4.1",
     "semantic-ui-react": "1.2.1"
-  }
+  },
+  "keywords": []
 }

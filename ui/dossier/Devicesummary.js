@@ -1,33 +1,19 @@
 import * as React from "react";
-import { Grid, Header } from "semantic-ui-react";
-import Devicecount from "./Devicecount";
-import Endpointdevicecards from "./Endpointdevicecards";
-import NetworkMLcontext from "./NetworkMLcontext";
+import { Header } from "semantic-ui-react";
+import Devicetable from "./Devicetable";
 
-const Endpointsummary = () => (
+// import Devicetable2 from "./Devicetable2";
+// import Devicetable3 from "./Devicetable3";
+
+const Devicesummary = () => (
   <div
     style={{
       marginTop: "2em"
     }}
   >
-    <Header as="h2">Endpoint Summary</Header>
-    <Grid>
-      <Grid.Row centered columns={2}>
-        <Grid.Column width={2} style={{ paddingLeft: "3em" }}>
-          <Devicecount></Devicecount>
-        </Grid.Column>
-        <Grid.Column width={14}>
-          <Endpointdevicecards></Endpointdevicecards>
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row columns={2} style={{ marginTop: "-1.5em" }}>
-        <Grid.Column width={2} style={{ paddingLeft: "3em" }}></Grid.Column>
-        <Grid.Column width={14}>
-          <NetworkMLcontext></NetworkMLcontext>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
+    <Header as="h2">Device Summary</Header>
+    <Devicetable></Devicetable>
   </div>
 );
 
-export default Endpointsummary;
+export default Devicesummary;
