@@ -1,5 +1,35 @@
 import React from "react";
 import { Header, Table } from "semantic-ui-react";
+import {
+  faUserLock,
+  faDesktop,
+  faTerminal,
+  faUsersCog,
+  faServer,
+  faMountain,
+  faEnvelopeOpenText,
+  faFolderOpen,
+  faCodeBranch,
+  faLaptopCode,
+  faKey,
+  faQuestionCircle
+} from "@fortawesome/free-solid-svg-icons";
+
+const iconMap = {
+  "Admin. Workstation": faUserLock,
+  "Business Workstation": faDesktop,
+  "Developer Workstation": faTerminal,
+  "AD Controller": faUsersCog,
+  "Admin. Server": faServer,
+  "Confluence Server": faMountain,
+  "Exchange Server": faEnvelopeOpenText,
+  "File Share": faFolderOpen,
+  "Git Server": faCodeBranch,
+  "GPU Laptop": faLaptopCode,
+  "Printer": faPrint,
+  "PKI Server": faKey,
+  "Unknown Device": faQuestionCircle
+};
 
 const tableData = [
   {
@@ -7,36 +37,36 @@ const tableData = [
     OS: "Linux",
     IP: "10.0.2.15",
     MAC: "40:61:86:9a:f1:f5",
-    networkMLlabel1: "75% Admin. Server",
-    networkMLlabel2: "20% Confluence Server",
-    networkMLlabel3: "5% PKI Server"
+    networkMLlabel1: { label: "Admin. Server", confidence: 0.75 },
+    networkMLlabel2: { label: "Confluence Server", confidence: 0.2 },
+    networkMLlabel3: { label: "PKI Server", confidence: 0.05 }
   },
   {
     device: "Super Micro",
     OS: "Windows 7",
     IP: "67.215.65.132",
     MAC: "08:00:27:cc:3f:1b",
-    networkMLlabel1: "75% Admin. Server",
-    networkMLlabel2: "20% PKI Server",
-    networkMLlabel3: "5% Printer"
+    networkMLlabel1: { label: "Admin. Server", confidence: 0.75 },
+    networkMLlabel2: { label: "PKI Server", confidence: 0.2 },
+    networkMLlabel3: { label: "Printer", confidence: 0.05 }
   },
   {
     device: "Super Micro 2",
     OS: "Windows 7",
     IP: "172.16.255.1",
     MAC: "00:1e:68:51:4f:a9",
-    networkMLlabel1: "60% Admin. Server",
-    networkMLlabel2: "20% Exchange Server",
-    networkMLlabel3: "20% Confluence Server"
+    networkMLlabel1: { label: "Admin. Server", confidence: 0.6 },
+    networkMLlabel2: { label: "Exchange Server", confidence: 0.2 },
+    networkMLlabel3: { label: "Confluence Server", confidence: 0.2 }
   },
   {
     device: "Cisco",
     OS: "NX-OS",
     IP: "172.16.255.2",
     MAC: "00:d9:d1:10:21:f9",
-    networkMLlabel1: "60% Admin. Server",
-    networkMLlabel2: "20% AD Controller",
-    networkMLlabel3: "20% Git Server"
+    networkMLlabel1: { label: "Admin. Server", confidence: 0.6 },
+    networkMLlabel2: { label: "AD Controller", confidence: 0.2 },
+    networkMLlabel3: { label: "Git Server", confidence: 0.2 }
   }
 ];
 
