@@ -9,7 +9,7 @@ class Navbar extends React.Component{
                 <Menu.Menu position="left">
                     <Dropdown item simple text='About'>
                         <Dropdown.Menu>
-                            <Dropdown.Item><a href="https://cyberreboot.gitbook.io/packet-cafe/">Documentation</a></Dropdown.Item>
+                            <Dropdown.Item><a href="https://iqtlabs.gitbook.io/packet-cafe/">Documentation</a></Dropdown.Item>
                             <Dropdown.Item><a href="https://github.com/IQTLabs/packet_cafe/">Source Code</a></Dropdown.Item>
                             <Dropdown.Item><a href="https://www.cyberreboot.org/">Cyber Reboot</a></Dropdown.Item>
                         </Dropdown.Menu>
