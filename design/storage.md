@@ -15,7 +15,7 @@ By default, the files and results are stored in 4 directories:
 The default location of those 4 directories can be overridden with an environment variable `VOL_PREFIX`
 {% endhint %}
 
-With all of the default tools enabled, here's an example of what Packet Café will do. First download `smallFlows.pcap` \([https://tcpreplay.appneta.com/wiki/captures.html](https://tcpreplay.appneta.com/wiki/captures.html)\) and then upload it through the home page of the Packet Café service \([http://0.0.0.0/](http://0.0.0.0/)\) and once all of the workers have finished it will result in the following file outputs and storage structure \(see: [Getting Started](https://cyberreboot.gitbook.io/packet-cafe/getting-started)\):
+With all of the default tools enabled, here's an example of what Packet Café will do. First download `smallFlows.pcap` \([https://tcpreplay.appneta.com/wiki/captures.html](https://tcpreplay.appneta.com/wiki/captures.html)\) and then upload it through the home page of the Packet Café service \([http://0.0.0.0/](http://0.0.0.0/)\) and once all of the workers have finished it will result in the following file outputs and storage structure \(see: [Getting Started](https://iqtlabs.gitbook.io/packet-cafe/getting-started)\):
 
 ```text
 ├── definitions
