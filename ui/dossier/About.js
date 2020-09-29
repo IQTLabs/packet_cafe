@@ -40,8 +40,11 @@ const About = () => (
       <li>PCAP exploration</li>
       <li>consideration of alternate hypotheses around device roles</li>
       <li>observation of traffic clusters</li>
-      <li>differentiation of port listening ranges</li>
-      <li>comparison of network traffic</li>
+      <li>exploration of port listening ranges</li>
+      <li>
+        differentiation of encrypted, plaintext, and unknown (i.e.
+        non-UDP/non-TCP) traffic
+      </li>
     </ul>
     <p>
       We invite you to explore your own packet captures with PCAPviz and
