@@ -12,10 +12,12 @@ const Trafficcontext = () => (
         How does Packet Caf&#233; determine traffic encryption?
       </Message.Header>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
+        The process for determining plaintext or encrypted packets involves
+        tokenizing payloads into words and if any English words are found, the
+        packet is marked as plaintext, otherwise it is considered encrypted.
+        When a given packet cannot be parsed or is not UDP/TCP (i.e. when it
+        contains ICMP, DNS, DHCP traffic), the associated traffic category is
+        unknown.
       </p>
     </Message>
   </div>
