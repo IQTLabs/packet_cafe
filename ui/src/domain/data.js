@@ -8,8 +8,40 @@ const defaultState = {
   },
   toolStatus: {},
   toolResults: {},
+  deviceModel: null,
   isLoading: false
 };
+
+//tool model functions
+const networkMlDeviceModel = (state) => {
+  console.log("networkMlDeviceModel called with state: %o", state);
+  const model = {};
+  for(const file in state.toolResults){
+    const nmlData = state.toolResults[file]["networkml"]
+    model[file] = [];
+    console.log("nmlData: %o", nmlData);
+    for(const o of nmlData){
+      if(o[file]){
+        console.log("o: %o", o[file]);
+        const device = {};
+        device["IP"] = o[file]["source_ip"];
+        device["MAC"] = o[file]["source_mac"];
+        device["networkMlLabels"] = o[file].classification.labels.map((l, idx) =>{
+          return { "label": l, "confidence": o[file].classification.confidences[idx] }
+        })
+        //OS: "Windows 7",
+        model[file].push(device);
+      }
+    }
+  }
+  console.log("deviceModel: %o", model);
+  state.deviceModel = model;
+}
+
+//tool callbacks
+const toolCallbacks = {
+  "networkml":[networkMlDeviceModel]
+}
 
 
 
@@ -19,6 +51,11 @@ const setResults = createAction("SET_RESULTS");
 const setToolStatus = createAction("SET_TOOL_STATUS");
 const setToolResults = createAction("SET_TOOL_RESULTS");
 const setTools = createAction("SET_TOOLS");
+
+const generateViewModels = async (state, toolName) => {
+  if(toolCallbacks[toolName])
+    toolCallbacks[toolName].forEach((func) => func(state));
+}
 
 // REDUCERS
 const reducer = handleActions(
@@ -34,6 +71,7 @@ const reducer = handleActions(
     },
     [setTools]: (state, { payload }) => {
       state.tools = payload;
+      console.log("tools: %o", payload);
       return { ...state};
     },
     [setToolStatus]: (state, { payload }) => {
@@ -48,6 +86,9 @@ const reducer = handleActions(
         const tool = tools[toolName];
         if(existing == null || tool.timestamp > existing.timestamp){
            state.toolStatus[file][toolName] = tool;
+        }
+        if(tool.status === "Complete"){
+          generateViewModels(state, toolName);
         }
       }
       return { ...state};
