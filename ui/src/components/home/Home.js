@@ -8,7 +8,7 @@ import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
 import { fetchTools } from 'epics/fetch-tools-epic'
 import { setPacketStatisticsData,  getDataWranglingState, configureHeatmapData } from 'domain/data_wrangling';
-import { setSessionId, getResults, getToolStatuses, getToolResults } from 'domain/data';
+import { setSessionId, setFileId, getResults, getToolStatuses, getToolResults } from 'domain/data';
 
 import './Home.css';
 import Upload from 'components/upload/Upload';
@@ -89,14 +89,20 @@ class Home extends React.Component {
 
   getPanes = () => {
     return this.props.files.map((file) =>{
+      console.log("file: %o", file);
       return {
-        menuItem: file.filename,
+        menuItem: {"id":file.id, "name":file.filename},
         render: () =>
           <Tab.Pane attached={true}>
             <VisualizationPane sessionId={this.state.sessionId} fileId={file.id} files={this.props.files} results={this.props.results} clearResults={this.clearResults}/>
           </Tab.Pane>
       }
     })
+  }
+
+  handlePaneChange = (e, data) => {
+    const fileId = data.panes[data.activeIndex].menuItem.id;
+    this.props.setFileId(fileId);
   }
 
   componentWillUnmount() {
@@ -116,7 +122,7 @@ class Home extends React.Component {
 
     return (
       <>
-        <Grid textAlign='center' container style={{ height: '100vh' }}>
+        <Grid textAlign='center' container style={{ height: '85vh' }}>
           <Grid.Row columns={1}>
             <Grid.Column style={{ maxWidth: 240 }}>
               <Upload sessionId={this.props.sessionId} refreshInterval={refreshInterval}/>
@@ -128,7 +134,7 @@ class Home extends React.Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
-            <Tab menu={{ secondary: true }} panes={this.getPanes()} />
+            <Tab menu={{ secondary: true }} panes={this.getPanes()} onTabChange={this.handlePaneChange} />
           </Grid.Row>
         </Grid>
       </>
@@ -152,6 +158,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
     setSessionId,
+    setFileId,
     fetchResults,
     fetchToolStatus,
     fetchTools,

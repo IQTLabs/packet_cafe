@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 
 const defaultState = {
   sessionId: null,
+  fileId: null,
   results: {
     rows:[],
     columns:['id']
@@ -17,12 +18,11 @@ const networkMlDeviceModel = (state) => {
   console.log("networkMlDeviceModel called with state: %o", state);
   const model = {};
   for(const file in state.toolResults){
-    const nmlData = state.toolResults[file]["networkml"]
+    const nmlData = state.toolResults[file]["networkml"];
+    const pofData = state.toolResults[file]["p0f"].filter((o)=> Object.keys(o).length > 1);
     model[file] = [];
-    console.log("nmlData: %o", nmlData);
     for(const o of nmlData){
       if(o[file]){
-        console.log("o: %o", o[file]);
         const device = {};
         device["IP"] = o[file]["source_ip"];
         device["MAC"] = o[file]["source_mac"];
@@ -34,7 +34,6 @@ const networkMlDeviceModel = (state) => {
       }
     }
   }
-  console.log("deviceModel: %o", model);
   state.deviceModel = model;
 }
 
@@ -47,6 +46,7 @@ const toolCallbacks = {
 
 // ACTIONS
 const setSessionId = createAction("SET_SESSION_ID");
+const setFileId = createAction("SET_FILE_ID");
 const setResults = createAction("SET_RESULTS");
 const setToolStatus = createAction("SET_TOOL_STATUS");
 const setToolResults = createAction("SET_TOOL_RESULTS");
@@ -64,14 +64,21 @@ const reducer = handleActions(
       state.sessionId = payload;
       return { ...state};
     },
+    [setFileId]: (state, { payload }) => {
+      state.fileId = payload;
+      return { ...state};
+    },
     [setResults]: (state, { payload }) => {
       const resultRows = payload;
       state.results.rows = resultRows
+      if(!state.fileId && resultRows.length > 0 && resultRows[0].id){
+        state.fileId = resultRows[0].id;
+      }
       return { ...state};
     },
     [setTools]: (state, { payload }) => {
       state.tools = payload;
-      console.log("tools: %o", payload);
+      
       return { ...state};
     },
     [setToolStatus]: (state, { payload }) => {
@@ -152,8 +159,17 @@ const getToolResults = (state, toolId) => {
 const getTools = (state) => {
   return _getTools(state.data.tools || [])
 }
+const getDeviceModel = (state, filename) =>{
+  return state.data.deviceModel[filename] || {};
+}
+const getSessionId = (state) =>{
+  return state.data.sessionId;
+}
+const getFileId = (state) =>{
+  return state.data.fileId;
+}
 
 export default reducer;
 
-export { setSessionId, setResults, setTools, getResults, setToolStatus, getToolStatus, getToolStatuses, getTools, 
-        setToolResults, getAllToolResults, getToolResults }
+export { setSessionId, setFileId, setResults, setTools, getResults, setToolStatus, getToolStatus, getToolStatuses, getTools, 
+        setToolResults, getAllToolResults, getToolResults, getSessionId, getFileId, getDeviceModel }

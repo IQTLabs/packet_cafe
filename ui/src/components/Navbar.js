@@ -27,6 +27,7 @@ import {
 const deviceMap =[
     {"group": null,
      "items":[
+        {"name": "All Devices", "icon": faQuestionCircle, "route":"/devices"}, 
         {"name": "Unknown Devices", "icon": faQuestionCircle, "route":"/"}, 
      ]
     },
