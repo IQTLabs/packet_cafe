@@ -2,7 +2,8 @@ import React from "react";
 import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect'
 
-import { Header, Table } from "semantic-ui-react";
+import { Statistic, Label, Header, Table } from "semantic-ui-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserLock,
   faDesktop,
@@ -20,59 +21,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const iconMap = {
-  "Admin. Workstation": faUserLock,
-  "Business Workstation": faDesktop,
-  "Developer Workstation": faTerminal,
-  "AD Controller": faUsersCog,
-  "Admin. Server": faServer,
-  "Confluence Server": faMountain,
-  "Exchange Server": faEnvelopeOpenText,
-  "File Share": faFolderOpen,
-  "Git Server": faCodeBranch,
-  "GPU Laptop": faLaptopCode,
-  "Printer": faPrint,
-  "PKI Server": faKey,
-  "Unknown Device": faQuestionCircle
+  "administrator workstation": faUserLock,
+  "business workstation": faDesktop,
+  "developer workstation": faTerminal,
+  "ad controller": faUsersCog,
+  "admin. server": faServer,
+  "confluence server": faMountain,
+  "exchange server": faEnvelopeOpenText,
+  "file share": faFolderOpen,
+  "git server": faCodeBranch,
+  "gpu laptop": faLaptopCode,
+  "printer": faPrint,
+  "pki server": faKey,
+  "unknown device": faQuestionCircle
 };
-
-const tableData = [
-  {
-    device: "Inventec",
-    OS: "Linux",
-    IP: "10.0.2.15",
-    MAC: "40:61:86:9a:f1:f5",
-    networkMLlabel1: { label: "Admin. Server", confidence: 0.75 },
-    networkMLlabel2: { label: "Confluence Server", confidence: 0.2 },
-    networkMLlabel3: { label: "PKI Server", confidence: 0.05 }
-  },
-  {
-    device: "Super Micro",
-    OS: "Windows 7",
-    IP: "67.215.65.132",
-    MAC: "08:00:27:cc:3f:1b",
-    networkMLlabel1: { label: "Admin. Server", confidence: 0.75 },
-    networkMLlabel2: { label: "PKI Server", confidence: 0.2 },
-    networkMLlabel3: { label: "Printer", confidence: 0.05 }
-  },
-  {
-    device: "Super Micro 2",
-    OS: "Windows 7",
-    IP: "172.16.255.1",
-    MAC: "00:1e:68:51:4f:a9",
-    networkMLlabel1: { label: "Admin. Server", confidence: 0.6 },
-    networkMLlabel2: { label: "Exchange Server", confidence: 0.2 },
-    networkMLlabel3: { label: "Confluence Server", confidence: 0.2 }
-  },
-  {
-    device: "Cisco",
-    OS: "NX-OS",
-    IP: "172.16.255.2",
-    MAC: "00:d9:d1:10:21:f9",
-    networkMLlabel1: { label: "Admin. Server", confidence: 0.6 },
-    networkMLlabel2: { label: "AD Controller", confidence: 0.2 },
-    networkMLlabel3: { label: "Git Server", confidence: 0.2 }
-  }
-];
 
 const deviceModelForFile = createSelector(
   state => state.data.deviceModel,
@@ -125,9 +87,7 @@ export const Devicetable = (props) => {
             IP,
             device,
             MAC,
-            networkMLlabel1,
-            networkMLlabel2,
-            networkMLlabel3
+            networkMlLabels,
           }) => (
             <Table.Row key={device}>
               <Table.Cell>
@@ -136,9 +96,44 @@ export const Devicetable = (props) => {
               <Table.Cell>{OS}</Table.Cell>
               <Table.Cell>{IP}</Table.Cell>
               <Table.Cell>{MAC}</Table.Cell>
-              <Table.Cell>{networkMLlabel1}</Table.Cell>
-              <Table.Cell>{networkMLlabel2}</Table.Cell>
-              <Table.Cell>{networkMLlabel3}</Table.Cell>
+              <Table.Cell>
+                <FontAwesomeIcon icon={iconMap[networkMlLabels[0].label.toLowerCase()]} size="4x" color="#00b2ac" />
+                <Label color="teal" pointing="left">
+                    <Statistic size="mini" inverted>
+                      <Statistic.Value>{(networkMlLabels[0].confidence * 100).toFixed(2)} %</Statistic.Value>
+                    </Statistic>
+                    <br />
+                    confidence
+                    <br />
+                    this device is an
+                    <br /> {networkMlLabels[0].label}
+              </Label>
+              </Table.Cell>
+              <Table.Cell>
+                <FontAwesomeIcon icon={iconMap[networkMlLabels[1].label.toLowerCase()]} size="4x" />
+                <Label pointing="left">
+                    <Statistic size="mini">
+                      <Statistic.Value>{(networkMlLabels[1].confidence * 100).toFixed(2)} %</Statistic.Value>
+                    </Statistic>
+                    <br />
+                    confidence
+                    <br />
+                    this device is an
+                    <br /> {networkMlLabels[1].label}
+              </Label>
+              </Table.Cell>
+              <Table.Cell><FontAwesomeIcon icon={iconMap[networkMlLabels[2].label.toLowerCase()]} size="4x" />
+                <Label pointing="left">
+                    <Statistic size="mini">
+                      <Statistic.Value>{(networkMlLabels[2].confidence * 100).toFixed(2)} %</Statistic.Value>
+                    </Statistic>
+                    <br />
+                    confidence
+                    <br />
+                    this device is an
+                    <br /> {networkMlLabels[2].label}
+              </Label>
+              </Table.Cell>
             </Table.Row>
           )
         )}

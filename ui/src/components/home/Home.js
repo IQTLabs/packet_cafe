@@ -89,7 +89,6 @@ class Home extends React.Component {
 
   getPanes = () => {
     return this.props.files.map((file) =>{
-      console.log("file: %o", file);
       return {
         menuItem: {"id":file.id, "name":file.filename},
         render: () =>

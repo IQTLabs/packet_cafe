@@ -13,9 +13,17 @@ const defaultState = {
   isLoading: false
 };
 
+const getOsFromPof = (pofData, ip) => {
+  for(const item of pofData){
+    if(item[ip] && item[ip]["short_os"]){
+      return item[ip]["short_os"];
+    }
+  }
+  return "";
+}
+
 //tool model functions
 const networkMlDeviceModel = (state) => {
-  console.log("networkMlDeviceModel called with state: %o", state);
   const model = {};
   for(const file in state.toolResults){
     const nmlData = state.toolResults[file]["networkml"];
@@ -24,6 +32,7 @@ const networkMlDeviceModel = (state) => {
     for(const o of nmlData){
       if(o[file]){
         const device = {};
+        device["OS"] = getOsFromPof(pofData, o[file]["source_ip"]);
         device["IP"] = o[file]["source_ip"];
         device["MAC"] = o[file]["source_mac"];
         device["networkMlLabels"] = o[file].classification.labels.map((l, idx) =>{
