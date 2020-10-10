@@ -11,6 +11,7 @@ import { setSessionId, getFileId } from 'domain/data';
 import './App.css';
 import Navbar from 'components/Navbar';
 import Home from 'components/home/Home';
+import Dossier from 'components/dossier/Dossier';
 import DeviceSummary from 'components/devices/DeviceSummary';
 import DeviceTable from 'components/devices/DeviceTable';
 
@@ -55,6 +56,9 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/">
                 <Home sessionId={this.state.sessionId} clearResults={this.clearResults} setFileId={this.setFileId}/>
+              </Route>
+              <Route exact path="/dossier">
+                <Dossier sessionId={this.state.sessionId} fileId={this.props.fileId}/>
               </Route>
               <Route path="/devices">
                 <DeviceTable sessionId={this.state.sessionId} fileId={this.props.fileId}/>

@@ -36,15 +36,15 @@ const iconMap = {
   "unknown device": faQuestionCircle
 };
 
-const deviceModelForFile = createSelector(
-  state => state.data.deviceModel,
+const deviceTableModelForFile = createSelector(
+  state => state.data.deviceTableModel,
   (_, fileId) => fileId,
-  (deviceModel, fileId) => deviceModel[fileId] || {}
+  (deviceTableModel, fileId) => deviceTableModel[fileId] || {}
 )
 
 export const Devicetable = (props) => {
 
-  const data = useSelector(state => deviceModelForFile(state, props.fileId))
+  const data = useSelector(state => deviceTableModelForFile(state, props.fileId))
 
   return (
     <Table sortable celled striped>

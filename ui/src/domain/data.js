@@ -9,7 +9,8 @@ const defaultState = {
   },
   toolStatus: {},
   toolResults: {},
-  deviceModel: null,
+  deviceTableModel: null,
+  statsModel: {},
   isLoading: false
 };
 
@@ -23,32 +24,113 @@ const getOsFromPof = (pofData, ip) => {
 }
 
 //tool model functions
-const networkMlDeviceModel = (state) => {
-  const model = {};
-  for(const file in state.toolResults){
-    const nmlData = state.toolResults[file]["networkml"];
-    const pofData = state.toolResults[file]["p0f"].filter((o)=> Object.keys(o).length > 1);
-    model[file] = [];
-    for(const o of nmlData){
-      if(o[file]){
-        const device = {};
-        device["OS"] = getOsFromPof(pofData, o[file]["source_ip"]);
-        device["IP"] = o[file]["source_ip"];
-        device["MAC"] = o[file]["source_mac"];
-        device["networkMlLabels"] = o[file].classification.labels.map((l, idx) =>{
-          return { "label": l, "confidence": o[file].classification.confidences[idx] }
-        })
-        //OS: "Windows 7",
-        model[file].push(device);
+const networkMldeviceTableModel = async (state) => {
+  const model = {};;
+  if(state.toolResults){
+    for(const file in state.toolResults){
+      const nmlData = state.toolResults[file]["networkml"];
+      const pofData = state.toolResults[file]["p0f"]?state.toolResults[file]["p0f"].filter((o)=> Object.keys(o).length > 1):[];
+      model[file] = [];
+      if(nmlData){
+        for(const o of nmlData){
+          if(o[file]){
+            const device = {};
+            device["OS"] = getOsFromPof(pofData, o[file]["source_ip"]);
+            device["IP"] = o[file]["source_ip"];
+            device["MAC"] = o[file]["source_mac"];
+            device["networkMlLabels"] = o[file].classification.labels.map((l, idx) =>{
+              return { "label": l, "confidence": o[file].classification.confidences[idx] }
+            })
+            //OS: "Windows 7",
+            model[file].push(device);
+          }
+        }
       }
     }
   }
-  state.deviceModel = model;
+  state.deviceTableModel = model;
+}
+
+const generateFileSummary = (data) =>{
+  let fs ={}
+  if(data && data[2] && data[2]["capinfos"]){
+    const capinfos = data[2]["capinfos"];
+    console.log("capinfos: %o", capinfos);
+    const avgSize = capinfos["Average packet size"];
+    const duration = capinfos["Capture duration"];
+    const fileSize = capinfos["File size"];
+    const fileName = capinfos["File name"].split('/').pop();
+    const dataSize = capinfos["Data size"];
+    const totalPackets = Object.keys(capinfos["interfaces"]).reduce((total, key) => {
+      return total + parseInt(capinfos["interfaces"][key]["Number of packets"], 10)
+    },0);
+
+    fs = {
+      "fileName": fileName,
+      "fileSize": fileSize,
+      "dataSize": dataSize,
+      "avgSize": avgSize,
+      "duration": duration,
+      "totalPackets": totalPackets
+    }
+  }
+
+  return fs;
+}
+
+const generateTrafficSummary = (data) =>{
+  const convcontents = data[0]["convcontents"]
+  const packets = {
+    "plaintext": convcontents["Plaintext Packets"] || 0,
+    "encrypted": convcontents["Encrypted Packets"] || 0,
+    "unknown": convcontents["Unknown Packets"] || 0,
+    "total": (convcontents["Plaintext Packets"]  || 0) + (convcontents["Encrypted Packets"] || 0) + (convcontents["Unknown Packets"] || 0),
+  };
+  const bytes = {
+    "plaintext": convcontents["Plaintext Bytes"] || 0,
+    "encrypted": convcontents["Encrypted Bytes"] || 0,
+    "unknown": convcontents["Unknown Bytes"] || 0,
+    "total": (convcontents["Plaintext Bytes"] || 0) + (convcontents["Encrypted Bytes"] || 0) + (convcontents["Unknown Bytes"]  || 0),
+  };
+  const pConvos = convcontents["Plaintext Conversations"] && Array.isArray(convcontents["Plaintext Conversations"]) ? 
+                  convcontents["Plaintext Conversations"].length : 0;
+  const eConvos = convcontents["Encrypted Conversations"] && Array.isArray(convcontents["Encrypted Conversations"]) ? 
+                  convcontents["Encrypted Conversations"].length : 0;
+  const uConvos = convcontents["Unknown Conversations"] && Array.isArray(convcontents["Unknown Conversations"]) ? 
+                  convcontents["Unknown Conversations"].length : 0;
+  const convos = {
+    "plaintext": pConvos,
+    "encrypted": eConvos,
+    "unknown": uConvos,
+    "total": pConvos + eConvos + uConvos,
+  };
+  const traffic = {
+    "packets":packets,
+    "bytes": bytes,
+    "conversations": convos,
+  };
+  return traffic;
+}
+
+const generateDeviceSummary = (data) =>{
+  
+}
+
+const pcapStatsModel = async (state) => {
+  for(const file in state.toolResults){
+    const statsData = state.toolResults[file]["pcap-stats"];
+    if(! state.statsModel[file])
+      state.statsModel[file] = {};
+    state.statsModel[file]["fileSummary"] = generateFileSummary(statsData);
+    state.statsModel[file]["trafficSummary"] = generateTrafficSummary(statsData);
+  }
 }
 
 //tool callbacks
 const toolCallbacks = {
-  "networkml":[networkMlDeviceModel]
+  "networkml":[networkMldeviceTableModel],
+  "p0f":[networkMldeviceTableModel],
+  "pcap-stats":[pcapStatsModel],
 }
 
 
@@ -168,8 +250,8 @@ const getToolResults = (state, toolId) => {
 const getTools = (state) => {
   return _getTools(state.data.tools || [])
 }
-const getDeviceModel = (state, filename) =>{
-  return state.data.deviceModel[filename] || {};
+const getdeviceTableModel = (state, filename) =>{
+  return state.data.deviceTableModel[filename] || {};
 }
 const getSessionId = (state) =>{
   return state.data.sessionId;
@@ -181,4 +263,4 @@ const getFileId = (state) =>{
 export default reducer;
 
 export { setSessionId, setFileId, setResults, setTools, getResults, setToolStatus, getToolStatus, getToolStatuses, getTools, 
-        setToolResults, getAllToolResults, getToolResults, getSessionId, getFileId, getDeviceModel }
+        setToolResults, getAllToolResults, getToolResults, getSessionId, getFileId, getdeviceTableModel }

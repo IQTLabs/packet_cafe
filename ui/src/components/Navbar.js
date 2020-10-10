@@ -94,7 +94,9 @@ const Navbar = () => {
                 Packet Caf&#233;
             </Link>
         </Menu.Item>
-        <Menu.Item >PCAP Dossier</Menu.Item>
+        <Menu.Item >
+          <Link to="/dossier">PCAP Dossier</Link>
+        </Menu.Item>
         <Dropdown item simple text="Devices">
             <Dropdown.Menu>
             {    
