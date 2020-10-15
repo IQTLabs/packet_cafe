@@ -10,9 +10,27 @@ const defaultState = {
   toolStatus: {},
   toolResults: {},
   deviceTableModel: null,
+  deviceGroupModel: {},
   statsModel: {},
   isLoading: false
 };
+
+const emptyGroups = {
+        "unknown": {"totalConfidence": 0, "count": 0},
+        "administrator workstation": {"totalConfidence": 0, "count": 0},
+        "business workstation": {"totalConfidence": 0, "count": 0},
+        "developer workstation": {"totalConfidence": 0, "count": 0},
+        "active directory controller": {"totalConfidence": 0, "count": 0},
+        "administrative server": {"totalConfidence": 0, "count": 0},
+        "confluence server": {"totalConfidence": 0, "count": 0},
+        "exchange server": {"totalConfidence": 0, "count": 0},
+        "file share": {"totalConfidence": 0, "count": 0},
+        "git server": {"totalConfidence": 0, "count": 0},
+        "gpu laptop": {"totalConfidence": 0, "count": 0}, 
+        "pki server": {"totalConfidence": 0, "count": 0},
+        "printer": {"totalConfidence": 0, "count": 0},
+};
+     
 
 const getOsFromPof = (pofData, ip) => {
   for(const item of pofData){
@@ -51,11 +69,35 @@ const networkMldeviceTableModel = async (state) => {
   state.deviceTableModel = model;
 }
 
+const networkMldeviceGroupModel = async (state) => {
+  if(state.toolResults){
+    for(const file in state.toolResults){
+      const nmlData = state.toolResults[file]["networkml"];
+      let fileGroupModel = emptyGroups;
+      if(nmlData){
+        for(const o of nmlData){      
+          console.log("o[file]: %o", o[file]); 
+          if(o[file] && o[file].classification &&
+             o[file].classification.labels.length > 0 &&
+             o[file].classification.confidences.length > 0 &&
+             o[file].classification.labels[0]
+             )
+          {
+              fileGroupModel[o[file].classification.labels[0].toLowerCase()]["totalConfidence"] += o[file].classification.confidences[0];
+              fileGroupModel[o[file].classification.labels[0].toLowerCase()]["count"]++;
+          }
+        }
+      }
+      console.log("fileGroupModel: %o", fileGroupModel)
+      state["deviceGroupModel"][file] = fileGroupModel;
+    }
+  }
+}
+
 const generateFileSummary = (data) =>{
   let fs ={}
   if(data && data[2] && data[2]["capinfos"]){
     const capinfos = data[2]["capinfos"];
-    console.log("capinfos: %o", capinfos);
     const avgSize = capinfos["Average packet size"];
     const duration = capinfos["Capture duration"];
     const fileSize = capinfos["File size"];
@@ -79,36 +121,39 @@ const generateFileSummary = (data) =>{
 }
 
 const generateTrafficSummary = (data) =>{
-  const convcontents = data[0]["convcontents"]
-  const packets = {
-    "plaintext": convcontents["Plaintext Packets"] || 0,
-    "encrypted": convcontents["Encrypted Packets"] || 0,
-    "unknown": convcontents["Unknown Packets"] || 0,
-    "total": (convcontents["Plaintext Packets"]  || 0) + (convcontents["Encrypted Packets"] || 0) + (convcontents["Unknown Packets"] || 0),
-  };
-  const bytes = {
-    "plaintext": convcontents["Plaintext Bytes"] || 0,
-    "encrypted": convcontents["Encrypted Bytes"] || 0,
-    "unknown": convcontents["Unknown Bytes"] || 0,
-    "total": (convcontents["Plaintext Bytes"] || 0) + (convcontents["Encrypted Bytes"] || 0) + (convcontents["Unknown Bytes"]  || 0),
-  };
-  const pConvos = convcontents["Plaintext Conversations"] && Array.isArray(convcontents["Plaintext Conversations"]) ? 
-                  convcontents["Plaintext Conversations"].length : 0;
-  const eConvos = convcontents["Encrypted Conversations"] && Array.isArray(convcontents["Encrypted Conversations"]) ? 
-                  convcontents["Encrypted Conversations"].length : 0;
-  const uConvos = convcontents["Unknown Conversations"] && Array.isArray(convcontents["Unknown Conversations"]) ? 
-                  convcontents["Unknown Conversations"].length : 0;
-  const convos = {
-    "plaintext": pConvos,
-    "encrypted": eConvos,
-    "unknown": uConvos,
-    "total": pConvos + eConvos + uConvos,
-  };
-  const traffic = {
-    "packets":packets,
-    "bytes": bytes,
-    "conversations": convos,
-  };
+  let traffic ={ };
+  if(data && Array.isArray(data) && data.length >= 1 && data[0]["convcontents"]){
+    const convcontents = data[0]["convcontents"]
+    const packets = {
+      "plaintext": convcontents["Plaintext Packets"] || 0,
+      "encrypted": convcontents["Encrypted Packets"] || 0,
+      "unknown": convcontents["Unknown Packets"] || 0,
+      "total": (convcontents["Plaintext Packets"]  || 0) + (convcontents["Encrypted Packets"] || 0) + (convcontents["Unknown Packets"] || 0),
+    };
+    const bytes = {
+      "plaintext": convcontents["Plaintext Bytes"] || 0,
+      "encrypted": convcontents["Encrypted Bytes"] || 0,
+      "unknown": convcontents["Unknown Bytes"] || 0,
+      "total": (convcontents["Plaintext Bytes"] || 0) + (convcontents["Encrypted Bytes"] || 0) + (convcontents["Unknown Bytes"]  || 0),
+    };
+    const pConvos = convcontents["Plaintext Conversations"] && Array.isArray(convcontents["Plaintext Conversations"]) ? 
+                    convcontents["Plaintext Conversations"].length : 0;
+    const eConvos = convcontents["Encrypted Conversations"] && Array.isArray(convcontents["Encrypted Conversations"]) ? 
+                    convcontents["Encrypted Conversations"].length : 0;
+    const uConvos = convcontents["Unknown Conversations"] && Array.isArray(convcontents["Unknown Conversations"]) ? 
+                    convcontents["Unknown Conversations"].length : 0;
+    const convos = {
+      "plaintext": pConvos,
+      "encrypted": eConvos,
+      "unknown": uConvos,
+      "total": pConvos + eConvos + uConvos,
+    };
+    traffic = {
+      "packets":packets,
+      "bytes": bytes,
+      "conversations": convos,
+    };
+  }
   return traffic;
 }
 
@@ -128,7 +173,7 @@ const pcapStatsModel = async (state) => {
 
 //tool callbacks
 const toolCallbacks = {
-  "networkml":[networkMldeviceTableModel],
+  "networkml":[networkMldeviceTableModel, networkMldeviceGroupModel],
   "p0f":[networkMldeviceTableModel],
   "pcap-stats":[pcapStatsModel],
 }

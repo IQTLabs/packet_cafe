@@ -60,7 +60,7 @@ class App extends React.Component {
               <Route exact path="/dossier">
                 <Dossier sessionId={this.state.sessionId} fileId={this.props.fileId}/>
               </Route>
-              <Route path="/devices">
+              <Route path="/devices/:typeFilter">
                 <DeviceTable sessionId={this.state.sessionId} fileId={this.props.fileId}/>
               </Route>
               <Route component={Error}/>

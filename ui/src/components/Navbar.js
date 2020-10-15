@@ -27,28 +27,28 @@ import {
 const deviceMap =[
     {"group": null,
      "items":[
-        {"name": "All Devices", "icon": faQuestionCircle, "route":"/devices"}, 
-        {"name": "Unknown Devices", "icon": faQuestionCircle, "route":"/"}, 
+        {"name": "All Devices", "icon": faQuestionCircle, "route":"/devices/all"}, 
+        {"name": "Unknown", "icon": faQuestionCircle, "route":"/devices/unknown"}, 
      ]
     },
     {"group": "Workstations",
      "items":[
-        {"name": "Administrative Workstations", "icon": faUserLock, "route":"/"},
-        {"name": "Business Workstations", "icon": faDesktop, "route":"/"},
-        {"name": "Developer Workstations", "icon": faTerminal, "route":"/"},
+        {"name": "Administrative Workstations", "icon": faUserLock, "route":"/devices/administrativeworkstation"},
+        {"name": "Business Workstations", "icon": faDesktop, "route":"/devices/businessworkstation"},
+        {"name": "Developer Workstations", "icon": faTerminal, "route":"/devices/developerworkstation"},
      ]
     },
     {"group": "Specialized Devices",
      "items":[
-        {"name": "Active Directory Controllers", "icon": faUsersCog, "route":"/"}, 
-        {"name": "Administrative Servers", "icon": faServer, "route":"/"}, 
-        {"name": "Confluence Servers", "icon": faMountain, "route":"/"}, 
-        {"name": "Exchange Servers", "icon": faEnvelopeOpenText, "route":"/"}, 
-        {"name": "File Shares", "icon": faFolderOpen, "route":"/"}, 
-        {"name": "Git Servers", "icon": faCodeBranch, "route":"/"}, 
-        {"name": "GPU Laptops", "icon": faLaptopCode, "route":"/"}, 
-        {"name": "PKI Servers", "icon": faKey, "route":"/"}, 
-        {"name": "Printers", "icon": faPrint, "route":"/"}
+        {"name": "Active Directory Controllers", "icon": faUsersCog, "route":"/devices/activedirectorycontroller"}, 
+        {"name": "Administrative Servers", "icon": faServer, "route":"/devices/administrativeserver"}, 
+        {"name": "Confluence Servers", "icon": faMountain, "route":"/devices/confluenceserver"}, 
+        {"name": "Exchange Servers", "icon": faEnvelopeOpenText, "route":"/devices/exchangeserver"}, 
+        {"name": "File Shares", "icon": faFolderOpen, "route":"/devices/fileshare"}, 
+        {"name": "Git Servers", "icon": faCodeBranch, "route":"/devices/gitserver"}, 
+        {"name": "GPU Laptops", "icon": faLaptopCode, "route":"/devices/gpulaptop"}, 
+        {"name": "PKI Servers", "icon": faKey, "route":"/devices/pkiserver"}, 
+        {"name": "Printers", "icon": faPrint, "route":"/devices/printer"}
      ]
     },
      
