@@ -12,14 +12,10 @@ const deviceGroupModelForFile = createSelector(
 
 const DeviceCount = (props) => {
     const dgm = useSelector(state => deviceGroupModelForFile(state, props.fileId));
-    console.log("dgm: %o", dgm);
     const deviceCount = Object.keys(dgm).reduce((total, key) => {
-        console.log("dgm[key]: %o", dgm[key]);
         return total += dgm[key]["count"]
     }, 0);
     const groupCount = Object.keys(dgm).filter((key) => dgm[key]["count"] > 0).length;
-    console.log("deviceCount: %o", deviceCount);
-    console.log("groupCount: %o", groupCount);
     return(
       <div>
         <Statistic.Group>

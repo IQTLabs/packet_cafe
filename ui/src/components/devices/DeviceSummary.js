@@ -23,7 +23,7 @@ const DeviceSummary = (props) => {
             <DeviceCount fileId={props.fileId}></DeviceCount>
           </Grid.Column>
           <Grid.Column width={14}>
-            <DeviceCards></DeviceCards>
+            <DeviceCards fileId={props.fileId}></DeviceCards>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2} style={{ marginTop: "-1.5em" }}>

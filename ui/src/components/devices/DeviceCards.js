@@ -44,9 +44,8 @@ const deviceGroupModelForFile = createSelector(
 const DeviceCards = (props) => {
     const dgm = useSelector(state => deviceGroupModelForFile(state, props.fileId));
     const withDevices = Object.keys(dgm)
-                        .filter((key) => dgm[key]["count"] > 0)
-                        .map((k) => { return {"key": k, "confidence": dgm[k]["totalConfidence"], "count": dgm[k]["count"]} });
-    console.log("withDevices: %o", withDevices);
+          .filter((key) => dgm[key]["count"] > 0)
+          .map((k) => { return {"key": k, "confidence": dgm[k]["totalConfidence"], "count": dgm[k]["count"]} });
     return (
       <div
         style={{

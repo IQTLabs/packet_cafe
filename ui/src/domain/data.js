@@ -76,7 +76,6 @@ const networkMldeviceGroupModel = async (state) => {
       let fileGroupModel = emptyGroups;
       if(nmlData){
         for(const o of nmlData){      
-          console.log("o[file]: %o", o[file]); 
           if(o[file] && o[file].classification &&
              o[file].classification.labels.length > 0 &&
              o[file].classification.confidences.length > 0 &&
