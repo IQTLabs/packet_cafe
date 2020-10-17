@@ -16,7 +16,7 @@ docker-compose pull
 docker-compose up -d --build && docker-compose rm -f
 ```
 
-Once it has finished, check the for the `healthy` status of the containers:
+Once it has finished, check  for the `healthy` status of the containers:
 
 ```bash
 $ docker ps
