@@ -137,7 +137,7 @@ class Upload extends React.Component{
             <Form size='large'>
                 <div >
                     <div >
-                        <Header as='h2' color='teal' textAlign='center'>
+                        <Header as='h2' color='purple' textAlign='center'>
                             Upload PCAP files:
                         </Header>
                         <Segment stacked textAlign="center">
