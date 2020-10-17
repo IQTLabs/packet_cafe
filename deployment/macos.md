@@ -9,7 +9,7 @@ git clone https://github.com/IQTLabs/packet_cafe
 cd packet_cafe
 ```
 
-Pick a path store Packet Café data and export it as an environment variable:
+Pick a path to store Packet Café data and export it as an environment variable:
 
 ```text
 export VOL_PREFIX=~/packet_cafe_data
@@ -19,14 +19,14 @@ export VOL_PREFIX=~/packet_cafe_data
  Only some paths are allowed to be mounted with Docker on macOS, make sure to use one that is allowed, for example a path in your home directory: `~/packet_cafe_data`
 {% endhint %}
 
-Once a path has been picked for the data to live build and start Packet Café \(from the repository directory\):
+Once a path has been picked for the data to live, build and start Packet Café \(from the repository directory\):
 
 ```text
 docker-compose pull
 docker-compose up -d --build && docker-compose rm -f
 ```
 
-Once it has finished, check the for the `healthy` status of the containers:
+Once it has finished, check for the `healthy` status of the containers:
 
 ```text
 $ docker ps
