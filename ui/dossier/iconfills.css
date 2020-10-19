@@ -1,0 +1,17 @@
+.icon {
+  position: relative;
+  display: inline-block;
+  font-size: 100px;
+}
+
+.icon-overlay {
+  color: #00b5ad;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.icon-base {
+  color: #ddd;
+}
