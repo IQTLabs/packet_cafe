@@ -5,7 +5,7 @@
 }
 
 .icon-overlay {
-  color: #00b5ad;
+  color: #ddd;  
   overflow: hidden;
   position: absolute;
   top: 0;
@@ -13,5 +13,5 @@
 }
 
 .icon-base {
-  color: #ddd;
+  color: #00b5ad;
 }
