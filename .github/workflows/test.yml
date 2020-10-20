@@ -32,7 +32,7 @@ jobs:
         echo USE_CODECOV=${USE_CODECOV}
         echo ::set-output name=USE_CODECOV::${USE_CODECOV}
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1.0.6
+      uses: codecov/codecov-action@v1.0.14
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
       if: steps.codecov.outputs.USE_CODECOV
