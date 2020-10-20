@@ -72,7 +72,8 @@ class App extends React.Component {
     if(!cookieSessionId){
       const options = {
         'path':'/',
-        'maxAge': 86400
+        'maxAge': 86400,
+        'sameSite': 'strict',
       };
       cookies.set(COOKIE_NAME, sessionId, options);
     }
