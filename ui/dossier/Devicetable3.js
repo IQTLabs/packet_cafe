@@ -26,8 +26,6 @@ const Devicetable = () => (
       <Table.Row>
         <Table.HeaderCell>Device Category</Table.HeaderCell>
         <Table.HeaderCell>Glyph Name</Table.HeaderCell>
-        <Table.HeaderCell>Unicode Value</Table.HeaderCell>
-        <Table.HeaderCell>1%</Table.HeaderCell>
         <Table.HeaderCell>5%</Table.HeaderCell>
         <Table.HeaderCell>20%</Table.HeaderCell>
         <Table.HeaderCell>66%</Table.HeaderCell>
@@ -40,612 +38,703 @@ const Devicetable = () => (
       <Table.Row>
         <Table.Cell>Unknown</Table.Cell>
         <Table.Cell>faQuestionCircle </Table.Cell>
-        <Table.Cell>f059</Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faQuestionCircle} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faQuestionCircle} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faQuestionCircle}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faQuestionCircle} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faQuestionCircle} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faQuestionCircle}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faQuestionCircle} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faQuestionCircle} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faQuestionCircle}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faQuestionCircle} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faQuestionCircle} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faQuestionCircle}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faQuestionCircle} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faQuestionCircle} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faQuestionCircle} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faQuestionCircle}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
       </Table.Row>
       <Table.Row>
         <Table.Cell>Administrative Workstations</Table.Cell>
         <Table.Cell>faUserLock</Table.Cell>
-        <Table.Cell>f502</Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faUserLock} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faUserLock} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faUserLock}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faUserLock} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faUserLock} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faUserLock}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faUserLock} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faUserLock} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faUserLock}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faUserLock} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faUserLock} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faUserLock}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faUserLock} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faUserLock} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faUserLock} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faUserLock}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
       </Table.Row>
       <Table.Row>
         <Table.Cell>Business Workstations</Table.Cell>
         <Table.Cell>faDesktop</Table.Cell>
-        <Table.Cell>f108</Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faDesktop} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faDesktop} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faDesktop}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faDesktop} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faDesktop} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faDesktop}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faDesktop} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faDesktop} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faDesktop}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faDesktop} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faDesktop} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faDesktop}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faDesktop} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faDesktop} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faDesktop} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faDesktop}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
       </Table.Row>
       <Table.Row>
-        <Table.Cell>Developer Workstations</Table.Cell>
+        <Table.Cell>Business Workstations</Table.Cell>
         <Table.Cell>faTerminal</Table.Cell>
-        <Table.Cell>f120</Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faTerminal} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faTerminal} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faTerminal}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faTerminal} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faTerminal} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faTerminal}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faTerminal} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faTerminal} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faTerminal}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faTerminal} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faTerminal} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faTerminal}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faTerminal} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faTerminal} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faTerminal} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faTerminal}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
       </Table.Row>
       <Table.Row>
         <Table.Cell>Active Directory Controllers</Table.Cell>
         <Table.Cell>faUsersCog</Table.Cell>
-        <Table.Cell>f509</Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faUsersCog} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faUsersCog} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faUsersCog}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faUsersCog} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faUsersCog} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faUsersCog}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faUsersCog} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faUsersCog} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faUsersCog}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faUsersCog} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faUsersCog} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faUsersCog}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faUsersCog} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faUsersCog} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faUsersCog} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faUsersCog}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
       </Table.Row>
       <Table.Row>
         <Table.Cell>Administrative Servers</Table.Cell>
         <Table.Cell>faServer</Table.Cell>
-        <Table.Cell>f233</Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faServer} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faServer} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faServer}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faServer} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faServer} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faServer}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faServer} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faServer} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faServer}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faServer} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faServer} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faServer}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faServer} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faServer} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faServer} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faServer}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
       </Table.Row>
       <Table.Row>
         <Table.Cell>Confluence Servers</Table.Cell>
         <Table.Cell>faMountain</Table.Cell>
-        <Table.Cell>f233</Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faMountain} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faMountain} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faMountain}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faMountain} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faMountain} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faMountain}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faMountain} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faMountain} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faMountain}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faMountain} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faMountain} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faMountain}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faMountain} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faMountain} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faMountain} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faMountain}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
       </Table.Row>
       <Table.Row>
         <Table.Cell>Exchange Servers</Table.Cell>
-        <Table.Cell>faEnvelopeOpenText</Table.Cell>
-        <Table.Cell>f658</Table.Cell>
+        <Table.Cell>faEnvelopeOpenText </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faEnvelopeOpenText} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faEnvelopeOpenText} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faEnvelopeOpenText}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faEnvelopeOpenText} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faEnvelopeOpenText} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faEnvelopeOpenText}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faEnvelopeOpenText} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faEnvelopeOpenText} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faEnvelopeOpenText}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faEnvelopeOpenText} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faEnvelopeOpenText} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faEnvelopeOpenText}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faEnvelopeOpenText} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faEnvelopeOpenText} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faEnvelopeOpenText} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faEnvelopeOpenText}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
       </Table.Row>
       <Table.Row>
         <Table.Cell>File Shares</Table.Cell>
-        <Table.Cell>faFolderOpen</Table.Cell>
-        <Table.Cell>f07c</Table.Cell>
+        <Table.Cell>faFolderOpen </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faFolderOpen} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faFolderOpen} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faFolderOpen}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faFolderOpen} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faFolderOpen} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faFolderOpen}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faFolderOpen} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faFolderOpen} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faFolderOpen}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faFolderOpen} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faFolderOpen} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faFolderOpen}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faFolderOpen} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faFolderOpen} />
-            </i>
-          </i>
-        </Table.Cell>
-      </Table.Row>
-      <Table.Row>
-        <Table.Cell>Git Servers</Table.Cell>
-        <Table.Cell>faCodeBranch</Table.Cell>
-        <Table.Cell>f126</Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faCodeBranch} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faCodeBranch} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faCodeBranch} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faCodeBranch} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faCodeBranch} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faCodeBranch} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faFolderOpen} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faFolderOpen}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
       </Table.Row>
       <Table.Row>
-        <Table.Cell>GPU Laptops</Table.Cell>
-        <Table.Cell>faLaptopCode</Table.Cell>
-        <Table.Cell>f5fc</Table.Cell>
+        <Table.Cell>Git Servers </Table.Cell>
+        <Table.Cell>faCodeBranch </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faLaptopCode} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faCodeBranch} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faCodeBranch}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faLaptopCode} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faCodeBranch} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faCodeBranch}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faLaptopCode} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faCodeBranch} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faCodeBranch}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faLaptopCode} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faCodeBranch} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faCodeBranch}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faLaptopCode} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faLaptopCode} />
-            </i>
-          </i>
-        </Table.Cell>
-      </Table.Row>
-      <Table.Row>
-        <Table.Cell>PKI Servers</Table.Cell>
-        <Table.Cell>faKey</Table.Cell>
-        <Table.Cell>f084</Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faKey} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faKey} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faKey} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faKey} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faKey} />
-            </i>
-          </i>
-        </Table.Cell>
-        <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faKey} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faCodeBranch} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faCodeBranch}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
       </Table.Row>
       <Table.Row>
-        <Table.Cell>Printers</Table.Cell>
-        <Table.Cell>faPrint</Table.Cell>
-        <Table.Cell>f02f</Table.Cell>
+        <Table.Cell>GPU Laptops </Table.Cell>
+        <Table.Cell>faLaptopCode </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "1%" }}>
-              <FontAwesomeIcon icon={faPrint} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faLaptopCode} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faLaptopCode}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "5%" }}>
-              <FontAwesomeIcon icon={faPrint} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faLaptopCode} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faLaptopCode}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "20%" }}>
-              <FontAwesomeIcon icon={faPrint} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faLaptopCode} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faLaptopCode}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "66%" }}>
-              <FontAwesomeIcon icon={faPrint} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faLaptopCode} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faLaptopCode}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "87%" }}>
-              <FontAwesomeIcon icon={faPrint} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faLaptopCode} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faLaptopCode}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
+        </Table.Cell>
+      </Table.Row>
+      <Table.Row>
+        <Table.Cell>PKI Servers </Table.Cell>
+        <Table.Cell>faKey </Table.Cell>
+        <Table.Cell>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faKey} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faKey}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
         <Table.Cell>
-          <i className="icon icon-base">
-            <i className="icon icon-overlay" style={{ height: "100%" }}>
-              <FontAwesomeIcon icon={faPrint} />
-            </i>
-          </i>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faKey} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faKey}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
+        </Table.Cell>
+        <Table.Cell>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faKey} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faKey}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
+        </Table.Cell>
+        <Table.Cell>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faKey} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faKey}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
+        </Table.Cell>
+        <Table.Cell>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faKey} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faKey}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
+        </Table.Cell>
+      </Table.Row>
+      <Table.Row>
+        <Table.Cell> Printers </Table.Cell>
+        <Table.Cell>faPrint </Table.Cell>
+        <Table.Cell>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faPrint} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faPrint}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(95% 0 0 0)" }}
+            />
+          </span>
+        </Table.Cell>
+        <Table.Cell>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faPrint} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faPrint}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(80% 0 0 0)" }}
+            />
+          </span>
+        </Table.Cell>
+        <Table.Cell>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faPrint} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faPrint}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(33% 0 0 0)" }}
+            />
+          </span>
+        </Table.Cell>
+        <Table.Cell>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faPrint} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faPrint}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(13% 0 0 0)" }}
+            />
+          </span>
+        </Table.Cell>
+        <Table.Cell>
+          <span className="fa-layers fa-fw fa-4x">
+            <FontAwesomeIcon icon={faPrint} color={"#ddd"} />
+            <FontAwesomeIcon
+              icon={faPrint}
+              color={"#00b5ad"}
+              style={{ clipPath: "inset(0 0 0 0)" }}
+            />
+          </span>
         </Table.Cell>
       </Table.Row>
     </Table.Body>
