@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faNetworkWired,
   faServer,
   faEnvelopeOpenText,
   faLaptopCode,
@@ -27,13 +28,13 @@ import {
 const deviceMap =[
     {"group": null,
      "items":[
-        {"name": "All Devices", "icon": faQuestionCircle, "route":"/devices/all"}, 
+        {"name": "All Devices", "icon": faNetworkWired, "route":"/devices/all"}, 
         {"name": "Unknown", "icon": faQuestionCircle, "route":"/devices/unknown"}, 
      ]
     },
     {"group": "Workstations",
      "items":[
-        {"name": "Administrative Workstations", "icon": faUserLock, "route":"/devices/administrativeworkstation"},
+        {"name": "Administrative Workstations", "icon": faUserLock, "route":"/devices/administratorworkstation"},
         {"name": "Business Workstations", "icon": faDesktop, "route":"/devices/businessworkstation"},
         {"name": "Developer Workstations", "icon": faTerminal, "route":"/devices/developerworkstation"},
      ]
@@ -82,7 +83,7 @@ const Navbar = () => {
 
     return (
   <div>
-    <Menu borderless stackable size="massive" fixed="top">
+    <Menu borderless stackable size="huge" fixed="top">
       <Container>
         <Menu.Item header>
             <Link to="/">

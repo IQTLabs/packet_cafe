@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 
 import { Statistic, Label, Header, Table, Segment } from "semantic-ui-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library, dom } from "@fortawesome/fontawesome-svg-core";
+
 import {
   faServer,
   faEnvelopeOpenText,
@@ -22,39 +22,20 @@ import {
   faCodeBranch
 } from "@fortawesome/free-solid-svg-icons";
 
-import './DeviceTable.css';
-
-library.add(
-  faServer,
-  faEnvelopeOpenText,
-  faLaptopCode,
-  faFolderOpen,
-  faKey,
-  faDesktop,
-  faUserLock,
-  faMountain,
-  faPrint,
-  faTerminal,
-  faUsersCog,
-  faQuestionCircle,
-  faCodeBranch
-);
-
-
 const iconMap = {
-  "administrator workstation": "fas fa-user-lock fa-4x",
-  "business workstation": "fas fa-desktop fa-4x",
-  "developer workstation": "fas fa-terminal fa-4x",
-  "active directory controller": "fas fa-users-cog fa-4x",
-  "administrator server": "fas fa-server fa-4x",
-  "confluence server": "fas fa-mounatin fa-4x",
-  "exchange server": "fas fa-envelope-open-text fa-4x",
-  "distributed file share": "fas fa-folder-open fa-4x",
-  "git server": "fas fa-code-branch fa-4x",
-  "gpu laptop": "fas fa-laptop-code fa-4x",
-  "printer": "fas fa-print fa-4x",
-  "pki server": "fas fa-key fa-4x",
-  "unknown device": "fas fa-question-circle fa-4x"
+  "administrator workstation": faUserLock,
+  "business workstation": faDesktop,
+  "developer workstation": faTerminal,
+  "active directory controller": faUsersCog,
+  "administrator server": faServer,
+  "confluence server": faMountain,
+  "exchange server": faEnvelopeOpenText,
+  "distributed file share": faFolderOpen,
+  "git server": faCodeBranch,
+  "gpu laptop": faLaptopCode,
+  "printer": faPrint,
+  "pki server": faKey,
+  "unknown device": faQuestionCircle
 };
 
 const deviceTableModelForFile = createSelector(
@@ -62,11 +43,6 @@ const deviceTableModelForFile = createSelector(
   (_, fileId) => fileId,
   (deviceTableModel, fileId,) => deviceTableModel[fileId]|| []
 )
-
-// Replace any existing <i> tags with <svg> and set up a MutationObserver to
-// continue doing this as the DOM changes.
-dom.watch();
-
 
 export const Devicetable = (props) => {
   const { typeFilter } = useParams();
@@ -84,7 +60,6 @@ export const Devicetable = (props) => {
           marginTop: "5em"
         }}
       >
-        <i data-fa-symbol="favorite" class="fas fa-star"></i>
         <Table sortable celled striped>
           <Table.Header>
             <Table.Row>
@@ -132,11 +107,7 @@ export const Devicetable = (props) => {
                                   ((1-networkMlLabels[1].confidence) * 100).toFixed(2).toString() + "%",
                                   ((1-networkMlLabels[2].confidence) * 100).toFixed(2).toString() + "%"
                                 ]
-                const classNames = [
-                                  iconMap[networkMlLabels[0].label.toLowerCase()],
-                                  iconMap[networkMlLabels[1].label.toLowerCase()],
-                                  iconMap[networkMlLabels[2].label.toLowerCase()],
-                                ]
+                const vowels = ["a", "e", "i", "o", "u"]
                 return(
                 <Table.Row key={device}>
                   <Table.Cell>
@@ -146,15 +117,13 @@ export const Devicetable = (props) => {
                   <Table.Cell>{IP}</Table.Cell>
                   <Table.Cell>{MAC}</Table.Cell>
                   <Table.Cell className="primary-type">
-                    <span className="fa-layers fa-fw icon-set">
-                      <i
-                        className={classNames[0]}
-                        style={{ color: "#ddd" }}
-                      ></i>
-                      <i
-                        className={classNames[0]}
-                        style={{ color: "#00b5ad", clipPath: "inset(" + clp_pcts[0] + " 0 0 0)" }}
-                      ></i>
+                    <span className="fa-layers fa-fw fa-4x">
+                      <FontAwesomeIcon icon={iconMap[networkMlLabels[0].label.toLowerCase()]} color={"#ddd"} />
+                      <FontAwesomeIcon
+                        icon={iconMap[networkMlLabels[0].label.toLowerCase()]}
+                        color={"#00b5ad"}
+                        style={{ clipPath: "inset(" + clp_pcts[0] + " 0 0 0)" }}
+                      />
                     </span>
                     <Label color="teal" pointing="left">
                         <Statistic size="mini" inverted>
@@ -163,20 +132,18 @@ export const Devicetable = (props) => {
                         <br />
                         confidence
                         <br />
-                        this device is an
+                        this device is a
                         <br /> {networkMlLabels[0].label}
                     </Label>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="fa-layers fa-fw icon-set">
-                      <i
-                        className={classNames[1]}
-                        style={{ color: "#ddd" }}
-                      ></i>
-                      <i
-                        className={classNames[1]}
-                        style={{ color: "black",clipPath: "inset(" + clp_pcts[1] + " 0 0 0)" }}
-                      ></i>
+                    <span className="fa-layers fa-fw fa-4x">
+                      <FontAwesomeIcon icon={iconMap[networkMlLabels[1].label.toLowerCase()]} color={"#ddd"} />
+                      <FontAwesomeIcon
+                        icon={iconMap[networkMlLabels[1].label.toLowerCase()]}
+                        color={"black"}
+                        style={{ clipPath: "inset(" + clp_pcts[1] + " 0 0 0)" }}
+                      />
                     </span>
                     <Label pointing="left">
                       <Statistic size="mini">
@@ -190,15 +157,13 @@ export const Devicetable = (props) => {
                     </Label>
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="fa-layers fa-fw icon-set">
-                      <i
-                        className={classNames[2]}
-                        style={{ color: "#ddd" }}
-                      ></i>
-                      <i
-                        className={classNames[2]}
-                        style={{ color: "black", clipPath: "inset(" + clp_pcts[2] + " 0 0 0)" }}
-                      ></i>
+                    <span className="fa-layers fa-fw fa-4x">
+                      <FontAwesomeIcon icon={iconMap[networkMlLabels[2].label.toLowerCase()]} color={"#ddd"} />
+                      <FontAwesomeIcon
+                        icon={iconMap[networkMlLabels[2].label.toLowerCase()]}
+                        color={"black"}
+                        style={{ clipPath: "inset(" + clp_pcts[2] + " 0 0 0)" }}
+                      />
                     </span>
                     <Label pointing="left">
                       <Statistic size="mini">
