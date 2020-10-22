@@ -99,7 +99,7 @@ const Navbar = () => {
           <Link to="/dossier">PCAP Dossier</Link>
         </Menu.Item>
         <Dropdown item simple text="Devices">
-            <Dropdown.Menu>
+            <Dropdown.Menu size="large">
             {    
                 deviceMap.map((dm)=>{
                     return (
@@ -108,7 +108,7 @@ const Navbar = () => {
                                 {
                                     dm.items.map((i) =>{
                                         return (
-                                            <Dropdown.Item key={dm.group + "-" + i.name}>
+                                            <Dropdown.Item key={dm.group + "-" + i.name} size="large">
                                                 <Link to={i.route}>
                                                     <FontAwesomeIcon icon={i.icon} /> {i.name}
                                                 </Link>
@@ -124,11 +124,11 @@ const Navbar = () => {
             </Dropdown.Menu>
         </Dropdown>
         <Dropdown item simple text="Traffic">
-          <Dropdown.Menu>
+          <Dropdown.Menu  size="large">
             {
                 trafficMap.map((tm)=>{
                     return (
-                        <Dropdown.Item key={tm.name}>
+                        <Dropdown.Item key={tm.name} size="large">
                             <Link to={tm.route}>
                                 <FontAwesomeIcon icon={tm.icon} /> {tm.name}
                             </Link>
@@ -139,7 +139,7 @@ const Navbar = () => {
           </Dropdown.Menu>
         </Dropdown>
         <Dropdown item simple text="Ports">
-          <Dropdown.Menu>
+          <Dropdown.Menu  size="large">
             {
                 portMap.map((pm)=>{
                     return (
@@ -148,7 +148,7 @@ const Navbar = () => {
                         {
                             pm.items.map((i) =>{
                                 return(
-                                    <Dropdown.Item key={pm.group + "-" + i.name}>
+                                    <Dropdown.Item key={pm.group + "-" + i.name} size="large">
                                         <Link to={i.route}>
                                             <FontAwesomeIcon icon={i.icon} /> {i.name}
                                         </Link>

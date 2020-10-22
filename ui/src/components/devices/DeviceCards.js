@@ -60,27 +60,33 @@ const DeviceCards = (props) => {
               paddingRight: "1em"
             }}
           >
-            <Card.Group itemsPerRow={7}>
+            <Card.Group>
                 {withDevices.map((wd) => {
                     return (
                       <Card>
-                        <Label circular color="teal" size="massive" attached="top left">
-                          {wd.count}
-                        </Label>
-                        <br />
-                        <Card.Meta>
+                        <Card.Content>
+                          <Card.Header>
+                            <Label color="teal" size="huge" attached="top"
+                              style={{paddingBottom:"1.5em;"}}>
+                              {wd.count}
+                            </Label>
+                          </Card.Header>
+                          <br/>
+                          <br/>
                           <FontAwesomeIcon
                             icon={iconMap[wd["key"]]["icon"]}
                             size="4x"
                             color="#505050"
                           />
-                        </Card.Meta>
-                        <Card.Description>
-                          <strong>{ wd["count"] !=0 ? (wd["confidence"]/wd["count"] * 100).toFixed(2) : 0 }%</strong>
-                        </Card.Description>
-                        <Button attached="bottom">
-                          {iconMap[wd["key"]]["displayName"]}
-                        </Button>
+                          <br/>
+                            Average Confidence: <br/>
+                            <strong>{ wd["count"] !=0 ? (wd["confidence"]/wd["count"] * 100).toFixed(2) : 0 }%</strong>
+                        </Card.Content>
+                        <Card.Content extra>
+                          <Label size="large" attached="bottom">
+                            {iconMap[wd["key"]]["displayName"]}
+                          </Label>
+                        </Card.Content>
                       </Card>
                     )
                 })}
