@@ -65,19 +65,15 @@ export const Devicetable = (props) => {
             <Table.Row>
               <Table.HeaderCell
               >
-                Device
-              </Table.HeaderCell>
-              <Table.HeaderCell
-              >
-                OS
-              </Table.HeaderCell>
-              <Table.HeaderCell
-              >
                 IP
               </Table.HeaderCell>
               <Table.HeaderCell
               >
                 MAC
+              </Table.HeaderCell>
+              <Table.HeaderCell
+              >
+                OS
               </Table.HeaderCell>
               <Table.HeaderCell
               >
@@ -110,12 +106,9 @@ export const Devicetable = (props) => {
                 const vowels = ["a", "e", "i", "o", "u"]
                 return(
                 <Table.Row key={device}>
-                  <Table.Cell>
-                    <Header>{device}</Header>
-                  </Table.Cell>
-                  <Table.Cell>{OS}</Table.Cell>
                   <Table.Cell>{IP}</Table.Cell>
                   <Table.Cell>{MAC}</Table.Cell>
+                  <Table.Cell>{OS}</Table.Cell>
                   <Table.Cell className="primary-type">
                     <span className="fa-layers fa-fw fa-4x">
                       <FontAwesomeIcon icon={iconMap[networkMlLabels[0].label.toLowerCase()]} color={"#ddd"} />
@@ -141,7 +134,7 @@ export const Devicetable = (props) => {
                       <FontAwesomeIcon icon={iconMap[networkMlLabels[1].label.toLowerCase()]} color={"#ddd"} />
                       <FontAwesomeIcon
                         icon={iconMap[networkMlLabels[1].label.toLowerCase()]}
-                        color={"black"}
+                        color={"#BEBEBE"}
                         style={{ clipPath: "inset(" + clp_pcts[1] + " 0 0 0)" }}
                       />
                     </span>
@@ -161,7 +154,7 @@ export const Devicetable = (props) => {
                       <FontAwesomeIcon icon={iconMap[networkMlLabels[2].label.toLowerCase()]} color={"#ddd"} />
                       <FontAwesomeIcon
                         icon={iconMap[networkMlLabels[2].label.toLowerCase()]}
-                        color={"black"}
+                        color={"#BEBEBE"}
                         style={{ clipPath: "inset(" + clp_pcts[2] + " 0 0 0)" }}
                       />
                     </span>
