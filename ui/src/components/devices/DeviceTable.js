@@ -5,36 +5,56 @@ import { useParams } from "react-router";
 
 import { Statistic, Label, Header, Table, Segment } from "semantic-ui-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import {
-  faUserLock,
+  faServer,
+  faEnvelopeOpenText,
+  faLaptopCode,
+  faFolderOpen,
+  faKey,
   faDesktop,
+  faUserLock,
+  faMountain,
+  faPrint,
   faTerminal,
   faUsersCog,
-  faServer,
-  faMountain,
-  faEnvelopeOpenText,
-  faFolderOpen,
-  faCodeBranch,
-  faLaptopCode,
-  faKey,
   faQuestionCircle,
-  faPrint,
+  faCodeBranch
 } from "@fortawesome/free-solid-svg-icons";
 
+import './DeviceTable.css';
+
+library.add(
+  faServer,
+  faEnvelopeOpenText,
+  faLaptopCode,
+  faFolderOpen,
+  faKey,
+  faDesktop,
+  faUserLock,
+  faMountain,
+  faPrint,
+  faTerminal,
+  faUsersCog,
+  faQuestionCircle,
+  faCodeBranch
+);
+
+
 const iconMap = {
-  "administrator workstation": faUserLock,
-  "business workstation": faDesktop,
-  "developer workstation": faTerminal,
-  "active directory controller": faUsersCog,
-  "administrator server": faServer,
-  "confluence server": faMountain,
-  "exchange server": faEnvelopeOpenText,
-  "distributed file share": faFolderOpen,
-  "git server": faCodeBranch,
-  "gpu laptop": faLaptopCode,
-  "printer": faPrint,
-  "pki server": faKey,
-  "unknown device": faQuestionCircle
+  "administrator workstation": "fas fa-user-lock fa-4x",
+  "business workstation": "fas fa-desktop fa-4x",
+  "developer workstation": "fas fa-terminal fa-4x",
+  "active directory controller": "fas fa-users-cog fa-4x",
+  "administrator server": "fas fa-server fa-4x",
+  "confluence server": "fas fa-mounatin fa-4x",
+  "exchange server": "fas fa-envelope-open-text fa-4x",
+  "distributed file share": "fas fa-folder-open fa-4x",
+  "git server": "fas fa-code-branch fa-4x",
+  "gpu laptop": "fas fa-laptop-code fa-4x",
+  "printer": "fas fa-print fa-4x",
+  "pki server": "fas fa-key fa-4x",
+  "unknown device": "fas fa-question-circle fa-4x"
 };
 
 const deviceTableModelForFile = createSelector(
@@ -42,6 +62,11 @@ const deviceTableModelForFile = createSelector(
   (_, fileId) => fileId,
   (deviceTableModel, fileId,) => deviceTableModel[fileId]|| []
 )
+
+// Replace any existing <i> tags with <svg> and set up a MutationObserver to
+// continue doing this as the DOM changes.
+dom.watch();
+
 
 export const Devicetable = (props) => {
   const { typeFilter } = useParams();
@@ -59,6 +84,7 @@ export const Devicetable = (props) => {
           marginTop: "5em"
         }}
       >
+        <i data-fa-symbol="favorite" class="fas fa-star"></i>
         <Table sortable celled striped>
           <Table.Header>
             <Table.Row>
@@ -100,7 +126,18 @@ export const Devicetable = (props) => {
                 device,
                 MAC,
                 networkMlLabels,
-              }) => (
+              }) => {
+                const clp_pcts = [
+                                  ((1-networkMlLabels[0].confidence) * 100).toFixed(2).toString() + "%",
+                                  ((1-networkMlLabels[1].confidence) * 100).toFixed(2).toString() + "%",
+                                  ((1-networkMlLabels[2].confidence) * 100).toFixed(2).toString() + "%"
+                                ]
+                const classNames = [
+                                  iconMap[networkMlLabels[0].label.toLowerCase()],
+                                  iconMap[networkMlLabels[1].label.toLowerCase()],
+                                  iconMap[networkMlLabels[2].label.toLowerCase()],
+                                ]
+                return(
                 <Table.Row key={device}>
                   <Table.Cell>
                     <Header>{device}</Header>
@@ -108,8 +145,17 @@ export const Devicetable = (props) => {
                   <Table.Cell>{OS}</Table.Cell>
                   <Table.Cell>{IP}</Table.Cell>
                   <Table.Cell>{MAC}</Table.Cell>
-                  <Table.Cell>
-                    <FontAwesomeIcon icon={iconMap[networkMlLabels[0].label.toLowerCase()]} size="4x" color="#00b2ac" />
+                  <Table.Cell className="primary-type">
+                    <span className="fa-layers fa-fw icon-set">
+                      <i
+                        className={classNames[0]}
+                        style={{ color: "#ddd" }}
+                      ></i>
+                      <i
+                        className={classNames[0]}
+                        style={{ color: "#00b5ad", clipPath: "inset(" + clp_pcts[0] + " 0 0 0)" }}
+                      ></i>
+                    </span>
                     <Label color="teal" pointing="left">
                         <Statistic size="mini" inverted>
                           <Statistic.Value>{(networkMlLabels[0].confidence * 100).toFixed(2)} %</Statistic.Value>
@@ -119,35 +165,54 @@ export const Devicetable = (props) => {
                         <br />
                         this device is an
                         <br /> {networkMlLabels[0].label}
-                  </Label>
+                    </Label>
                   </Table.Cell>
                   <Table.Cell>
-                    <FontAwesomeIcon icon={iconMap[networkMlLabels[1].label.toLowerCase()]} size="4x" />
+                    <span className="fa-layers fa-fw icon-set">
+                      <i
+                        className={classNames[1]}
+                        style={{ color: "#ddd" }}
+                      ></i>
+                      <i
+                        className={classNames[1]}
+                        style={{ color: "black",clipPath: "inset(" + clp_pcts[1] + " 0 0 0)" }}
+                      ></i>
+                    </span>
                     <Label pointing="left">
-                        <Statistic size="mini">
-                          <Statistic.Value>{(networkMlLabels[1].confidence * 100).toFixed(2)} %</Statistic.Value>
-                        </Statistic>
-                        <br />
-                        confidence
-                        <br />
-                        this device is an
-                        <br /> {networkMlLabels[1].label}
-                  </Label>
+                      <Statistic size="mini">
+                        <Statistic.Value>{(networkMlLabels[1].confidence * 100).toFixed(2)} %</Statistic.Value>
+                      </Statistic>
+                      <br />
+                      confidence
+                      <br />
+                      this device is an
+                      <br /> {networkMlLabels[1].label}
+                    </Label>
                   </Table.Cell>
-                  <Table.Cell><FontAwesomeIcon icon={iconMap[networkMlLabels[2].label.toLowerCase()]} size="4x" />
+                  <Table.Cell>
+                    <span className="fa-layers fa-fw icon-set">
+                      <i
+                        className={classNames[2]}
+                        style={{ color: "#ddd" }}
+                      ></i>
+                      <i
+                        className={classNames[2]}
+                        style={{ color: "black", clipPath: "inset(" + clp_pcts[2] + " 0 0 0)" }}
+                      ></i>
+                    </span>
                     <Label pointing="left">
-                        <Statistic size="mini">
-                          <Statistic.Value>{(networkMlLabels[2].confidence * 100).toFixed(2)} %</Statistic.Value>
-                        </Statistic>
-                        <br />
-                        confidence
-                        <br />
-                        this device is an
-                        <br /> {networkMlLabels[2].label}
+                      <Statistic size="mini">
+                        <Statistic.Value>{(networkMlLabels[2].confidence * 100).toFixed(2)} %</Statistic.Value>
+                      </Statistic>
+                      <br />
+                      confidence
+                      <br />
+                      this device is an
+                      <br /> {networkMlLabels[2].label}
                   </Label>
                   </Table.Cell>
                 </Table.Row>
-              )
+              )}
             )}
           </Table.Body>
         </Table>
