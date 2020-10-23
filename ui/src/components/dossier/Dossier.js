@@ -4,6 +4,7 @@ import PcapSummary from "components/pcap/PcapSummary";
 //import Endpointsummary from "./Endpointsummary";
 import DeviceSummary from "components/devices/DeviceSummary";
 import TrafficBarChart from "components/pcap/TrafficBarChart";
+import TrafficContext from "components/pcap/TrafficContext";
 
 const Dossier = (props) => (
   <div
@@ -21,6 +22,7 @@ const Dossier = (props) => (
       <PcapSummary sessionId={props.sessionId} fileId={props.fileId} ></PcapSummary>
       <DeviceSummary fileId={props.fileId} ></DeviceSummary>
       <TrafficBarChart sessionId={props.sessionId} fileId={props.fileId} ></TrafficBarChart>
+      <TrafficContext />
     </Segment>
   </div>
 );
