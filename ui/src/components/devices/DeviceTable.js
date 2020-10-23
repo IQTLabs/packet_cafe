@@ -125,7 +125,7 @@ export const Devicetable = (props) => {
                         <br />
                         confidence
                         <br />
-                        this device is a
+                        this device is a{vowels.includes(networkMlLabels[0].label.charAt(0).toLowerCase()) && "n"}
                         <br /> {networkMlLabels[0].label}
                     </Label>
                   </Table.Cell>
@@ -145,7 +145,7 @@ export const Devicetable = (props) => {
                       <br />
                       confidence
                       <br />
-                      this device is an
+                      this device is a{vowels.includes(networkMlLabels[0].label.charAt(0).toLowerCase()) && "n"}
                       <br /> {networkMlLabels[1].label}
                     </Label>
                   </Table.Cell>
@@ -165,7 +165,7 @@ export const Devicetable = (props) => {
                       <br />
                       confidence
                       <br />
-                      this device is an
+                      this device is a{vowels.includes(networkMlLabels[0].label.charAt(0).toLowerCase()) && "n"}
                       <br /> {networkMlLabels[2].label}
                   </Label>
                   </Table.Cell>
