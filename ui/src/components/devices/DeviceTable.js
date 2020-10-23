@@ -108,7 +108,7 @@ export const Devicetable = (props) => {
                 <Table.Row key={device}>
                   <Table.Cell>{IP}</Table.Cell>
                   <Table.Cell>{MAC}</Table.Cell>
-                  <Table.Cell>{OS}</Table.Cell>
+                  <Table.Cell>{OS || "No OS reported by p0f"}</Table.Cell>
                   <Table.Cell className="primary-type">
                     <span className="fa-layers fa-fw fa-4x">
                       <FontAwesomeIcon icon={iconMap[networkMlLabels[0].label.toLowerCase()]} color={"#ddd"} />
