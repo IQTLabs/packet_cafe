@@ -10,5 +10,4 @@ WORKDIR /app
 
 RUN npm i npm@latest -g
 RUN npm ci --no-optional
-
-CMD npm test
+CMD CI=true npm test
