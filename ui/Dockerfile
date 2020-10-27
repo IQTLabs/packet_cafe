@@ -12,7 +12,7 @@ COPY . /app
 WORKDIR /app
 
 RUN npm cache verify
-RUN npm i npm@next -g
+RUN npm install -g npm@latest --no-cache
 RUN npm ci --no-optional
 RUN npm run build
 
