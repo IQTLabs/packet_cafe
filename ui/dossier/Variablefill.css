@@ -1,0 +1,19 @@
+.five {
+  background: -webkit-linear-gradient(90deg, #00b2ac 5%, #d3d3d3 5%);
+  -webkit-text-fill-color: transparent;
+}
+
+.twenty {
+  background: -webkit-linear-gradient(90deg, #00b2ac 20%, #d3d3d3 20%);
+  -webkit-text-fill-color: transparent;
+}
+
+.sixty {
+  background: -webkit-linear-gradient(90deg, #00b2ac 60%, #d3d3d3 60%);
+  -webkit-text-fill-color: transparent;
+}
+
+.seventyfive {
+  background: -webkit-linear-gradient(90deg, #00b2ac 75%, #d3d3d3 75%);
+  -webkit-text-fill-color: transparent;
+}

@@ -1,0 +1,6 @@
+Dockerfile*
+/node_modules
+.eslint*
+README.md
+.mocharc.json
+/dossier

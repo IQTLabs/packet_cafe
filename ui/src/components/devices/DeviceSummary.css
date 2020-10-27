@@ -1,0 +1,68 @@
+body {
+    background-color: #f5f5f5;
+}
+
+div.description {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+h1.ui.header.prime {
+    color: white;
+}
+
+.full {
+    color: #00b2ac;
+}
+.seventyfive {
+}
+.fa-server.seventyfive:before {
+    background: -webkit-linear-gradient(90deg, #00b2ac 0%, #00b2ac 75%, lightgray 25%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sixty {
+}
+.fa-server.sixty:before {
+    background: -webkit-linear-gradient(90deg, #00b2ac 0%, #00b2ac 60%, lightgray 35%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.twenty {
+}
+.fa-confluence.twenty:before {
+    background: -webkit-linear-gradient(270deg, Gainsboro 0%, Gainsboro 70%, #80d9d6 20%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.fa-envelope-open-text.twenty:before {
+    background: -webkit-linear-gradient(270deg, Gainsboro 0%, Gainsboro 70%, #80d9d6 20%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.fa-key-skeleton.twenty:before {
+    background: -webkit-linear-gradient(270deg, Gainsboro 0%, Gainsboro 70%, #80d9d6 20%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.five {
+}
+.fa-key-skeleton.five:before {
+    background: -webkit-linear-gradient(270deg, #e8e8e8 0%, #e8e8e8 80%, #c0eceb 10%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.fa-print.five:before {
+    background: -webkit-linear-gradient(270deg, #e8e8e8 0%, #e8e8e8 85%, #c0eceb 5%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#chart {
+    max-width: 100%;
+    margin: 25px auto;
+}

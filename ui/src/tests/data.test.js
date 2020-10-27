@@ -64,3 +64,179 @@ describe("Data Reducer", () => {
     });
   });
 });
+
+/*
+[
+  {
+    "name": "pcapplot",
+    "image": "iqtlabs/pcapplot",
+    "version": "v0.1.7",
+    "labels": "",
+    "stage": "analysis",
+    "viewableOutput": true,
+    "outputs": [
+      "file"
+    ],
+    "inputs": [
+      "pcap-splitter"
+    ]
+  },
+  {
+    "name": "pcap-splitter",
+    "image": "iqtlabs/pcap_to_node_pcap",
+    "version": "v0.11.16",
+    "labels": "",
+    "stage": "preprocessing",
+    "viewableOutput": false,
+    "environment": {
+      "rabbit": "true"
+    },
+    "outputs": [
+      "pcap"
+    ],
+    "inputs": [
+      "pcap-dot1q"
+    ]
+  },
+  {
+    "name": "ncapture",
+    "image": "iqtlabs/ncapture",
+    "version": "v0.11.16",
+    "labels": "",
+    "stage": "preprocessing",
+    "viewableOutput": false,
+    "command": [
+      "/tmp/run.sh",
+      "pcapfile:",
+      "60",
+      "id",
+      "1",
+      "ip"
+    ],
+    "environment": {
+      "rabbit": "true"
+    },
+    "outputs": [
+      "pcap"
+    ],
+    "inputs": [
+      "pcap",
+      "pcapng"
+    ]
+  },
+  {
+    "name": "pcap-dot1q",
+    "image": "iqtlabs/tcprewrite_dot1q",
+    "version": "v0.11.16",
+    "labels": "",
+    "stage": "preprocessing",
+    "viewableOutput": false,
+    "environment": {
+      "rabbit": "true"
+    },
+    "outputs": [
+      "pcap"
+    ],
+    "inputs": [
+      "ncapture"
+    ]
+  },
+  {
+    "name": "networkml",
+    "image": "iqtlabs/networkml",
+    "version": "v0.6.1",
+    "labels": "",
+    "stage": "analysis",
+    "viewableOutput": true,
+    "command": [
+      "-r"
+    ],
+    "environment": {
+      "RABBIT_HOST": "messenger",
+      "RABBIT_EXCHANGE": "",
+      "RABBIT_ROUTING_KEY": "task_queue",
+      "RABBIT_QUEUE": "True",
+      "RABBIT_QUEUE_NAME": "task_queue"
+    },
+    "contentType": "application/json",
+    "outputs": [
+      "rabbitmq"
+    ],
+    "inputs": [
+      "pcap-splitter"
+    ]
+  },
+  {
+    "name": "snort",
+    "image": "iqtlabs/snort",
+    "version": "v0.11.16",
+    "labels": "",
+    "stage": "analysis",
+    "viewableOutput": true,
+    "environment": {
+      "rabbit": "true"
+    },
+    "contentType": "application/json",
+    "outputs": [
+      "rabbitmq"
+    ],
+    "inputs": [
+      "pcap",
+      "pcapng"
+    ]
+  },
+  {
+    "name": "pcap-stats",
+    "image": "iqtlabs/pcap_stats",
+    "version": "v0.11.16",
+    "labels": "",
+    "stage": "analysis",
+    "viewableOutput": true,
+    "environment": {
+      "rabbit": "true"
+    },
+    "contentType": "application/json",
+    "outputs": [
+      "rabbitmq"
+    ],
+    "inputs": [
+      "pcap",
+      "pcapng"
+    ]
+  },
+  {
+    "name": "mercury",
+    "image": "iqtlabs/mercury",
+    "version": "v0.11.16",
+    "labels": "",
+    "stage": "analysis",
+    "viewableOutput": true,
+    "environment": {
+      "rabbit": "true"
+    },
+    "contentType": "application/json",
+    "outputs": [
+      "rabbitmq"
+    ],
+    "inputs": [
+      "pcap",
+      "pcapng"
+    ]
+  },
+  {
+    "name": "p0f",
+    "image": "iqtlabs/p0f",
+    "version": "v0.11.16",
+    "labels": "",
+    "stage": "analysis",
+    "viewableOutput": true,
+    "contentType": "application/json",
+    "outputs": [
+      "rabbitmq"
+    ],
+    "inputs": [
+      "pcap-splitter"
+    ]
+  }
+]
+*/
