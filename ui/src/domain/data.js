@@ -73,7 +73,7 @@ const networkMldeviceGroupModel = async (state) => {
   if(state.toolResults){
     for(const file in state.toolResults){
       const nmlData = state.toolResults[file]["networkml"];
-      let fileGroupModel = emptyGroups;
+      let fileGroupModel = JSON.parse(JSON.stringify(emptyGroups));
       if(nmlData){
         for(const o of nmlData){      
           if(o[file] && o[file].classification &&
