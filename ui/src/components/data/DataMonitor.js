@@ -7,7 +7,8 @@ import { fetchToolResults } from 'epics/fetch-tool-results-epic'
 
 const DataMonitor = (props) => {
     const dispatch = useDispatch();
-    const toolResults = useSelector(state => state.data.toolResults) || {};
+    const toolResults = useSelector(state => state.data.toolResults || {});
+
     var loading = false;
 
     const getCompleted = (statuses, fileResults) => {

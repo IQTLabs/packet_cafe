@@ -12,7 +12,6 @@ import './App.css';
 import Navbar from 'components/Navbar';
 import Home from 'components/home/Home';
 import Dossier from 'components/dossier/Dossier';
-import DeviceSummary from 'components/devices/DeviceSummary';
 import DeviceTable from 'components/devices/DeviceTable';
 
 const COOKIE_NAME = 'sessionID'
