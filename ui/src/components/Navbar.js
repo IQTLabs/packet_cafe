@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
 import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -82,9 +83,12 @@ const portMap = [
     },
 ]
 
-const Navbar = () => {
+const Navbar = (props) => {
 
-    return (
+  const files = useSelector(state => state.data.results.rows || []);
+  console.log("files: %o", files);
+    
+  return (
   <div>
     <Menu borderless stackable size="huge" fixed="top">
       <Container>
@@ -170,6 +174,19 @@ const Navbar = () => {
         </Menu.Item>
         <Menu.Item as="a">About</Menu.Item>
         <Menu.Item as="a" header></Menu.Item>
+        <Dropdown item simple text="Files">
+            <Dropdown.Menu  size="large">
+            {
+                files.map((f)=>{
+                    return (
+                        <Dropdown.Item key={f.id} size="large">
+                            {f.original_filename}
+                        </Dropdown.Item>
+                    )
+                })
+            }
+          </Dropdown.Menu>
+        </Dropdown>
       </Container>
     </Menu>
   </div>)

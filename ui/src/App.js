@@ -49,11 +49,12 @@ class App extends React.Component {
   }
   
   render() {
+    
     return (
       <>
         <BrowserRouter>
           <div>
-            <Navbar/>
+            <Navbar selectedfileId={this.props.fileId}/>
             <Switch>
               <Route exact path="/">
                 <Home sessionId={this.state.sessionId} clearResults={this.clearResults} setFileId={this.setFileId}/>
