@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from "react-redux";
 import { Header, Grid } from "semantic-ui-react";
 
 import DeviceCount from "components/devices/DeviceCount";

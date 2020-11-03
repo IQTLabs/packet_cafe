@@ -1,9 +1,9 @@
-import React, { useReducer } from "react";
+import React from "react";
 import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect'
 import { useParams } from "react-router";
 
-import { Statistic, Label, Header, Table, Segment } from "semantic-ui-react";
+import { Statistic, Label, Table, Segment } from "semantic-ui-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
@@ -74,7 +74,7 @@ export const Devicetable = (props) => {
   const { column, index, direction } = state
   const { typeFilter } = useParams();
   const data = useSelector(state => deviceTableModelForFile(state, props.fileId))
-              .filter((d) => typeFilter==="all" || d.networkMlLabels[0].label.replace(/\s/g, "").toLowerCase() == typeFilter)
+              .filter((d) => typeFilter==="all" || d.networkMlLabels[0].label.replace(/\s/g, "").toLowerCase() === typeFilter)
               .sort((a, b) => {
                 if(!column){
                   return 0;

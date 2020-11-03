@@ -25,6 +25,9 @@ import {
   faMountain
 } from "@fortawesome/free-solid-svg-icons";
 
+import { setFileId } from 'domain/data';
+
+
 const deviceMap =[
     {"group": null,
      "items":[

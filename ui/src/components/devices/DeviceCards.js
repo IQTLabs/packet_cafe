@@ -17,7 +17,7 @@ import {
   faQuestionCircle,
   faCodeBranch
 } from "@fortawesome/free-solid-svg-icons";
-import { Button, Card, Grid, Label } from "semantic-ui-react";
+import { Card, Grid, Label } from "semantic-ui-react";
 
 const iconMap = {
   "administrator workstation": { "icon": faUserLock, "displayName": "Administrator Workstation" },
@@ -80,7 +80,7 @@ const DeviceCards = (props) => {
                           />
                           <br/>
                             Average Confidence: <br/>
-                            <strong>{ wd["count"] !=0 ? (wd["confidence"]/wd["count"] * 100).toFixed(2) : 0 }%</strong>
+                            <strong>{ wd["count"] !== 0 ? (wd["confidence"]/wd["count"] * 100).toFixed(2) : 0 }%</strong>
                         </Card.Content>
                         <Card.Content extra>
                           <Label size="large" attached="bottom">
