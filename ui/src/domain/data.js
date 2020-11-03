@@ -156,10 +156,6 @@ const generateTrafficSummary = (data) =>{
   return traffic;
 }
 
-const generateDeviceSummary = (data) =>{
-  
-}
-
 const pcapStatsModel = async (state) => {
   for(const file in state.toolResults){
     const statsData = state.toolResults[file]["pcap-stats"];
