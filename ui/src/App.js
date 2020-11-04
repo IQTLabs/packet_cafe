@@ -56,7 +56,7 @@ class App extends React.Component {
             <Navbar selectedFileId={this.props.fileId} setFileId={this.props.setFileId}/>
             <Switch>
               <Route exact path="/">
-                <Home sessionId={this.state.sessionId} clearResults={this.clearResults} setFileId={this.setFileId}/>
+                <Home sessionId={this.state.sessionId} clearResults={this.clearResults} fileId={this.props.fileId} setFileId={this.setFileId}/>
               </Route>
               <Route exact path="/dossier">
                 <Dossier sessionId={this.state.sessionId} fileId={this.props.fileId}/>
@@ -74,6 +74,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log("fileId: %o", getFileId(state));
   return {
     "fileId": getFileId(state),
   }
