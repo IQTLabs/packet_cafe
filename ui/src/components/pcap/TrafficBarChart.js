@@ -2,7 +2,6 @@ import * as React from "react";
 import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect'
 
-import { Component } from "react";
 import Chart from "react-apexcharts";
 
 const pcapStatsModelForFile = createSelector(

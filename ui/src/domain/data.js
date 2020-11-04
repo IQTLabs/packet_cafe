@@ -45,7 +45,6 @@ const getOsFromPof = (pofData, ip) => {
 const networkMldeviceTableModel = async (state) => {
   const model = {};;
   if(state.toolResults){
-    console.log("state.toolResults: %o", state.toolResults);
     for(const file in state.toolResults){
       const nmlData = state.toolResults[file]["networkml"];
       const pofData = state.toolResults[file]["p0f"]?state.toolResults[file]["p0f"].filter((o)=> Object.keys(o).length > 1):[];
@@ -87,7 +86,6 @@ const networkMldeviceGroupModel = async (state) => {
           }
         }
       }
-      console.log("fileGroupModel: %o", fileGroupModel)
       state["deviceGroupModel"][file] = fileGroupModel;
     }
   }
@@ -154,10 +152,6 @@ const generateTrafficSummary = (data) =>{
     };
   }
   return traffic;
-}
-
-const generateDeviceSummary = (data) =>{
-  
 }
 
 const pcapStatsModel = async (state) => {
