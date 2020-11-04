@@ -23,7 +23,9 @@ import {
   faLockOpen,
   faLock,
   faExclamationTriangle,
-  faMountain
+  faMountain,
+  faFile,
+  faCheck
 } from "@fortawesome/free-solid-svg-icons";
 
 import { setFileId } from 'domain/data';
@@ -86,7 +88,10 @@ const portMap = [
 const Navbar = (props) => {
 
   const files = useSelector(state => state.data.results.rows || []);
-  console.log("files: %o", files);
+
+  const fileSelected = (id) =>{
+    props.setFileId(id);
+  }
     
   return (
   <div>
@@ -174,13 +179,20 @@ const Navbar = (props) => {
         </Menu.Item>
         <Menu.Item as="a">About</Menu.Item>
         <Menu.Item as="a" header></Menu.Item>
-        <Dropdown item simple text="Files">
-            <Dropdown.Menu  size="large">
+        <Dropdown item simple text="My Files">
+            <Dropdown.Menu  size="medium" >
             {
                 files.map((f)=>{
+
                     return (
-                        <Dropdown.Item key={f.id} size="large">
-                            {f.original_filename}
+                        <Dropdown.Item key={f.id} size="medium" onClick={(e)=>fileSelected(f.id)}>
+                          <span className="fa-layers fa-fw">
+                            <FontAwesomeIcon size="2x" icon={faFile} color={"#ddd"} />
+                            {f.id === props.selectedFileId &&
+                              <FontAwesomeIcon size="1x" icon={faCheck} color={"#00b5ad"} />
+                            }
+                          </span>
+                          &nbsp;&nbsp;{f.original_filename}
                         </Dropdown.Item>
                     )
                 })
