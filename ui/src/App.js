@@ -74,7 +74,6 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("fileId: %o", getFileId(state));
   return {
     "fileId": getFileId(state),
   }
