@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import { setSessionId, getFileId } from 'domain/data';
+import { setSessionId, getFileId, setFileId } from 'domain/data';
 
 import './App.css';
 import Navbar from 'components/Navbar';
@@ -48,14 +48,15 @@ class App extends React.Component {
   }
   
   render() {
+    
     return (
       <>
         <BrowserRouter>
           <div>
-            <Navbar/>
+            <Navbar selectedFileId={this.props.fileId} setFileId={this.props.setFileId}/>
             <Switch>
               <Route exact path="/">
-                <Home sessionId={this.state.sessionId} clearResults={this.clearResults} setFileId={this.setFileId}/>
+                <Home sessionId={this.state.sessionId} clearResults={this.clearResults} fileId={this.props.fileId} setFileId={this.setFileId}/>
               </Route>
               <Route exact path="/dossier">
                 <Dossier sessionId={this.state.sessionId} fileId={this.props.fileId}/>
@@ -80,6 +81,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     setSessionId,
+    setFileId,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withCookies(App));

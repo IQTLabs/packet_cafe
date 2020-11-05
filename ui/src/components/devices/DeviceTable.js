@@ -81,7 +81,6 @@ export const Devicetable = (props) => {
                 }
                 const dir = direction  === 'ascending' ? 1 : -1;
 
-                console.log("index: %o", index);
                 if(column === "networkMlLabels" && index >= 0){
                   return dir * a["networkMlLabels"][index].label.localeCompare(b["networkMlLabels"][index].label);
                 }
