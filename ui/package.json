@@ -8,7 +8,7 @@
     "@fortawesome/free-solid-svg-icons": "5.15.1",
     "@fortawesome/react-fontawesome": "0.1.12",
     "@nivo/heatmap": "0.62.0",
-    "apexcharts": "3.22.1",
+    "apexcharts": "3.22.2",
     "body-parser": "1.19.0",
     "cors": "2.8.5",
     "d3": "6.2.0",
