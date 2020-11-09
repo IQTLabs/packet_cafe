@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
 import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,8 +27,6 @@ import {
   faFile,
   faCheck
 } from "@fortawesome/free-solid-svg-icons";
-
-import { setFileId } from 'domain/data';
 
 
 const deviceMap =[

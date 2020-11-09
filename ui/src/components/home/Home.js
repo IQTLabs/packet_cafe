@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Tab, Grid } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 
 import { startFetchResults, stopFetchResults } from "epics/auto-fetch-results-epic"
 import { fetchResults } from 'epics/fetch-results-epic'
 import { fetchToolStatus } from 'epics/fetch-status-epic'
 import { fetchTools } from 'epics/fetch-tools-epic'
-import { setPacketStatisticsData,  getDataWranglingState, configureHeatmapData } from 'domain/data_wrangling';
+import { setPacketStatisticsData,  getDataWranglingState } from 'domain/data_wrangling';
 import { setSessionId, setFileId, getResults, getToolStatuses, getToolResults } from 'domain/data';
 
 import './Home.css';
