@@ -68,7 +68,7 @@ const trafficMap =[
 const portMap = [
     {"group": "1-1023",
      "items":[
-        {"name": "Privileged", "icon": faThLarge, "route":"/"}, 
+        {"name": "Privileged", "icon": faThLarge, "route":"/ports"}, 
      ]
     },
     {"group": "1024-49151",

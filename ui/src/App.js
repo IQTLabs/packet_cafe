@@ -13,6 +13,7 @@ import Navbar from 'components/Navbar';
 import Home from 'components/home/Home';
 import Dossier from 'components/dossier/Dossier';
 import DeviceTable from 'components/devices/DeviceTable';
+import PortView from 'components/port/PortView';
 
 const COOKIE_NAME = 'sessionID'
 
@@ -63,6 +64,9 @@ class App extends React.Component {
               </Route>
               <Route path="/devices/:typeFilter">
                 <DeviceTable sessionId={this.state.sessionId} fileId={this.props.fileId}/>
+              </Route>
+              <Route path="/ports/">
+                <PortView sessionId={this.state.sessionId} fileId={this.props.fileId}/>
               </Route>
               <Route component={Error}/>
             </Switch>
