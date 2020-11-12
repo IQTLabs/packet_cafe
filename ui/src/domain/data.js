@@ -12,6 +12,7 @@ const defaultState = {
   deviceTableModel: null,
   deviceGroupModel: {},
   statsModel: {},
+  portModel: [],
   isLoading: false
 };
 
@@ -154,6 +155,45 @@ const generateTrafficSummary = (data) =>{
   return traffic;
 }
 
+const portModel = async (state) => {
+  for(const file in state.toolResults){
+    if(state.toolResults[file]["pcap-stats"]){
+      const statsData = state.toolResults[file]["pcap-stats"];
+      if(statsData[1]["tshark"]){
+        state.portModel[file] = [];
+        for(const t of statsData[1]["tshark"]["TCP Conversations"]){
+          const ip = t["Source"].split(":")[0];
+          var item = state.portModel[file].find(i=>  i.name === ip);
+          if(!item){
+            item = {
+              'name': ip,
+              'data': []
+            }
+            state.portModel[file].push(item);
+          }
+          const src = t["Source"].split(":")[1];
+          const dst = t["Destination"].split(":")[1];
+          const bytes = parseInt(t["Total Bytes"], 10);
+          item['data'].push([src, bytes, dst]);
+        //   if(state.portModel[file][src]){
+        //     if(state.portModel[file][src][dst]){
+        //       state.portModel[file][src][dst] += bytes;
+        //     }
+        //     else{
+        //       state.portModel[file][src][dst] = bytes;
+        //     }
+        //   }
+        //   else{
+        //     state.portModel[file][src] ={};
+        //     state.portModel[file][src][dst] = bytes;
+        //   }
+        }
+      }
+    }
+  }
+  console.log("portModel: %o", state.portModel);
+}
+
 const pcapStatsModel = async (state) => {
   for(const file in state.toolResults){
     const statsData = state.toolResults[file]["pcap-stats"];
@@ -168,7 +208,7 @@ const pcapStatsModel = async (state) => {
 const toolCallbacks = {
   "networkml":[networkMldeviceTableModel, networkMldeviceGroupModel],
   "p0f":[networkMldeviceTableModel],
-  "pcap-stats":[pcapStatsModel],
+  "pcap-stats":[pcapStatsModel, portModel],
 }
 
 
@@ -182,6 +222,7 @@ const setToolResults = createAction("SET_TOOL_RESULTS");
 const setTools = createAction("SET_TOOLS");
 
 const generateViewModels = async (state, toolName) => {
+  console.log("state.toolResults: %o", state.toolResults);
   if(toolCallbacks[toolName])
     toolCallbacks[toolName].forEach((func) => func(state));
 }
