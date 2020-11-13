@@ -12,7 +12,7 @@ const defaultState = {
   deviceTableModel: null,
   deviceGroupModel: {},
   statsModel: {},
-  portModel: [],
+  portModel: {},
   isLoading: false
 };
 
@@ -159,14 +159,18 @@ const portModel = async (state) => {
   for(const file in state.toolResults){
     if(state.toolResults[file]["pcap-stats"]){
       const statsData = state.toolResults[file]["pcap-stats"];
-      if(statsData[1]["tshark"]){
+      const nmlData = state.toolResults[file]["networkml"];
+      if(statsData[1]["tshark"] && nmlData){
         state.portModel[file] = [];
         for(const t of statsData[1]["tshark"]["TCP Conversations"]){
-          const ip = t["Source"].split(":")[0];
-          var item = state.portModel[file].find(i=>  i.name === ip);
+          const src_ip = t["Source"].split(":")[0];
+          const dst_ip = t["Destination"].split(":")[0];
+          const nmlItem = nmlData.find(element => element[file] && (element[file]["source_ip"] === src_ip || element[file]["source_ip"] === dst_ip));
+          
+          var item = state.portModel[file].find(i=>  i.name === src_ip);
           if(!item){
             item = {
-              'name': ip,
+              'name': src_ip,
               'data': []
             }
             state.portModel[file].push(item);
@@ -174,19 +178,9 @@ const portModel = async (state) => {
           const src = t["Source"].split(":")[1];
           const dst = t["Destination"].split(":")[1];
           const bytes = parseInt(t["Total Bytes"], 10);
-          item['data'].push([src, bytes, dst]);
-        //   if(state.portModel[file][src]){
-        //     if(state.portModel[file][src][dst]){
-        //       state.portModel[file][src][dst] += bytes;
-        //     }
-        //     else{
-        //       state.portModel[file][src][dst] = bytes;
-        //     }
-        //   }
-        //   else{
-        //     state.portModel[file][src] ={};
-        //     state.portModel[file][src][dst] = bytes;
-        //   }
+          const conf = nmlItem ? (nmlItem[file]["classification"]["confidences"][0]* 100).toFixed(2) : 0;
+          console.log("conf: %o", conf);
+          item['data'].push([dst, conf, bytes]);
         }
       }
     }
@@ -222,7 +216,7 @@ const setToolResults = createAction("SET_TOOL_RESULTS");
 const setTools = createAction("SET_TOOLS");
 
 const generateViewModels = async (state, toolName) => {
-  console.log("state.toolResults: %o", state.toolResults);
+  //console.log("state.toolResults: %o", state.toolResults);
   if(toolCallbacks[toolName])
     toolCallbacks[toolName].forEach((func) => func(state));
 }

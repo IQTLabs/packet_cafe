@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from 'react-redux'
+import { createSelector } from 'reselect'
 import { Segment } from "semantic-ui-react";
 import Chart from "react-apexcharts";
 
@@ -120,7 +122,8 @@ const options = {
   yaxis: {
     // set shown to hide if you want to hide device confidence
     show: true,
-    max: 100,
+    min: -10,
+    max: 110,
     labels: {
       formatter: (value) => value.toFixed(0) + "%"
     },
@@ -166,7 +169,14 @@ const series = [
   }
 ];
 
+const portModelForFile = createSelector(
+  state => state.data.portModel,
+  (_, fileId) => fileId,
+  (portModel, fileId) => portModel[fileId] || []
+)
+
 const PortView = (props) => {
+  const portData = useSelector(state => portModelForFile(state, props.fileId));
   return (
     <Segment
       piled
@@ -177,7 +187,7 @@ const PortView = (props) => {
       <div id="chart">
         <Chart
           options={options}
-          series={series}
+          series={portData}
           type="bubble"
           height="450"
         />
