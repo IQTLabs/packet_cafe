@@ -50,14 +50,13 @@ const options = {
           offsetX: 10,
           show: true,
           borderColor: "transparent",
-          position: "bottom",
+          position: "top",
           textAnchor: "start",
           orientation: "horizontal",
           text: "Privileged Ports (0-1023) ▶",
           style: {
-            background: "#F5F5F5",
-            fontSize: 16,
-            fontWeight: 800
+            fontSize: 12,
+            fontWeight: 300
           }
         }
       },
@@ -69,14 +68,13 @@ const options = {
           offsetX: 10,
           show: true,
           borderColor: "transparent",
-          position: "bottom",
+          position: "top",
           textAnchor: "start",
           orientation: "horizontal",
           text: "Registered Ports (1024-49151) ▶",
           style: {
-            background: "#F5F5F5",
-            fontSize: 16,
-            fontWeight: 800
+            fontSize: 12,
+            fontWeight: 300
           }
         }
       },
@@ -88,14 +86,13 @@ const options = {
           offsetX: 10,
           show: true,
           borderColor: "transparent",
-          position: "bottom",
+          position: "top",
           textAnchor: "start",
           orientation: "horizontal",
           text: "Private Ports (49152-65535) ▶",
           style: {
-            background: "#F5F5F5",
-            fontSize: 16,
-            fontWeight: 800
+            fontSize: 12,
+            fontWeight: 300
           }
         }
       }
@@ -134,7 +131,7 @@ const options = {
   },
   legend: {
     show: true,
-    position: "top",
+    position: "bottom",
     horizontalAlign: "center"
   }
 };
