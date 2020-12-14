@@ -3,7 +3,7 @@ services:
   networkml:
     image: 'iqtlabs/networkml:v0.6.6'
   pcapplot:
-    image: 'iqtlabs/pcapplot:v0.1.8'
+    image: 'iqtlabs/pcapplot:v0.1.9'
   pcap-splitter:
     image: '${TOOL_NAMESPACE}/pcap_to_node_pcap:${TOOL_VERSION}'
   ncapture:
