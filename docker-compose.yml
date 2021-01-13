@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   networkml:
-    image: 'iqtlabs/networkml:v0.6.6'
+    image: 'iqtlabs/networkml:v0.6.7'
   pcapplot:
     image: 'iqtlabs/pcapplot:v0.1.9'
   pcap-splitter:
