@@ -6,6 +6,7 @@ COPY requirements.txt requirements.txt
 RUN apk add --update \
     curl \
     gcc \
+    g++ \
     libmagic \
     linux-headers \
     musl-dev \
@@ -16,6 +17,7 @@ RUN apk add --update \
     && pip3 install --no-cache-dir -r requirements.txt \
     && apk del \
     gcc \
+    g++ \
     linux-headers \
     musl-dev \
     python3-dev \
