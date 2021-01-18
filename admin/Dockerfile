@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.13
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
 COPY requirements.txt requirements.txt
