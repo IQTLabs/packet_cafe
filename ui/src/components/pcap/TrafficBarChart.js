@@ -2,7 +2,6 @@ import * as React from "react";
 import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect'
 
-import { Component } from "react";
 import Chart from "react-apexcharts";
 
 const pcapStatsModelForFile = createSelector(
@@ -14,9 +13,14 @@ const pcapStatsModelForFile = createSelector(
 const TrafficBarChart = (props) =>{
 
     const data = useSelector(state => pcapStatsModelForFile(state, props.fileId))["trafficSummary"]
-    const encrypted = [data["packets"]["encrypted"],data["conversations"]["encrypted"], data["bytes"]["encrypted"]]
-    const pt = [data["packets"]["plaintext"],data["conversations"]["plaintext"], data["bytes"]["plaintext"]]
-    const unk = [data["packets"]["unknown"],data["conversations"]["unknown"], data["bytes"]["unknown"]]
+    let encrypted = [];
+    let pt = [];
+    let unk =[];
+    if(data && data["packets"] && data["conversations"] && data["bytes"]){
+      encrypted = [data["packets"]["encrypted"],data["conversations"]["encrypted"], data["bytes"]["encrypted"]];
+      pt = [data["packets"]["plaintext"],data["conversations"]["plaintext"], data["bytes"]["plaintext"]];
+      unk = [data["packets"]["unknown"],data["conversations"]["unknown"], data["bytes"]["unknown"]];
+    }
     const chartInfo = {
       seriesBar: [
         {
