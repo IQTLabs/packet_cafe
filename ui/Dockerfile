@@ -12,7 +12,7 @@ COPY . /app
 WORKDIR /app
 
 RUN npm cache verify
-RUN npm install -g npm@latest --prefer-online
+#RUN npm install -g npm@latest --prefer-online
 RUN npm ci --no-optional
 RUN npm run build
 
