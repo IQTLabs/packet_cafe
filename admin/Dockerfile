@@ -6,6 +6,7 @@ COPY requirements.txt requirements.txt
 RUN apk add --update \
     curl \
     gcc \
+    g++ \
     linux-headers \
     musl-dev \
     py3-pip \
@@ -14,6 +15,7 @@ RUN apk add --update \
     && pip3 install --no-cache-dir -r requirements.txt \
     && apk del \
     gcc \
+    g++ \
     linux-headers \
     musl-dev \
     python3-dev \
@@ -30,4 +32,4 @@ USER nobody
 
 EXPOSE 5001
 
-CMD gunicorn -b 0.0.0.0:5001 -k gevent -w 1 --access-logfile /tmp/access.log --keep-alive 10 --reload app.app --timeout 60
+CMD gunicorn -b 0.0.0.0:5001 -k eventlet -w 1 --access-logfile /tmp/access.log --keep-alive 10 --reload app.app --timeout 60
