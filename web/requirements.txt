@@ -5,5 +5,5 @@ falcon-multipart==0.2.0
 gunicorn==20.0.4
 jinja2==2.11.3
 pika==1.2.0
-python-magic==0.4.18
+python-magic==0.4.22
 redis==3.5.3
