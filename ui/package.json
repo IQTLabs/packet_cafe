@@ -101,7 +101,7 @@
     "@babel/preset-env": "7.13.9",
     "@babel/preset-react": "7.12.13",
     "@babel/register": "7.13.8",
-    "chai": "4.3.0",
+    "chai": "4.3.1",
     "concurrently": "6.0.0",
     "enzyme": "3.11.0",
     "mocha": "8.3.0",
