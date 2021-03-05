@@ -69,7 +69,7 @@ class Home extends React.Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={1}>
-            <VisualizationPane sessionId={this.state.sessionId} fileId={this.props.fileId} files={this.props.files} results={this.props.results} clearResults={this.clearResults}/>
+            <VisualizationPane sessionId={this.props.sessionId} fileId={this.props.fileId} files={this.props.files} results={this.props.results} clearResults={this.clearResults}/>
           </Grid.Row>
         </Grid>
       </>
