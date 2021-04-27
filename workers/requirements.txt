@@ -1,4 +1,4 @@
-arrow==1.0.3
+arrow==1.1.0
 docker==5.0.0
 pika==1.2.0
 redis==3.5.3
