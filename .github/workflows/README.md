@@ -39,10 +39,10 @@ to perform a multi-architecture build process for a number of images. This is
 very time and resource-intensive, so it is only triggered under certain
 circumstances when you want to make a public release on Docker Hub.
 
-* The `buildx` workflow only runs on `push` events to the `master` branch
+* The `buildx` workflow only runs on `push` events to the `main` branch
   or when tags on the `develop` branch are pushed.
 
-  + Any `push` event to the `master` branch will build and push Docker
+  + Any `push` event to the `main` branch will build and push Docker
     images to Docker Hub with the tag `latest`.
 
   + Pushing an annotated tag with a version number on the `develop`
