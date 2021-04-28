@@ -3,7 +3,7 @@ name: buildx
 on:
   push:
     branches:
-      - master
+      - main
       - develop
     tags: 'v*'
 
@@ -34,7 +34,7 @@ jobs:
         echo ::set-output name=TAG_VERSION::${TAG_VERSION}
 
         if [[ ${VERSION} == ${TAG_VERSION} ]] ||
-           [[ "${GITHUB_REF##*/}" == "master" ]]; then
+           [[ "${GITHUB_REF##*/}" == "main" ]]; then
           IS_RELEASE="true"
         else
           IS_RELEASE="false"
@@ -60,12 +60,12 @@ jobs:
         fi
         echo ::set-output name=PUSH_TO_DOCKER::${PUSH_TO_DOCKER}
         echo PUSH_TO_DOCKER=${PUSH_TO_DOCKER}
-    - name: Change tag for release on master branch
+    - name: Change tag for release on main branch
       id: publish_tag
       run: |
         echo GITHUB_REF=${GITHUB_REF}
         echo 'GITHUB_REF##*/'=${GITHUB_REF##*/}
-        if [[ "${GITHUB_REF##*/}" == "master" ]]; then
+        if [[ "${GITHUB_REF##*/}" == "main" ]]; then
           echo ::set-output name=TAG::latest;
           echo TAG=latest
         else
