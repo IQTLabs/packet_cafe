@@ -12,6 +12,7 @@
 
 # production
 /build
+volumes
 
 # misc
 .DS_Store
