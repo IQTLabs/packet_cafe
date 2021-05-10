@@ -146,7 +146,7 @@ class Endpoints(object):
         for path in paths():
             endpoints.append(version()+path)
 
-        resp.body = json.dumps(endpoints, indent=4)
+        resp.text = json.dumps(endpoints, indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -154,9 +154,9 @@ class Endpoints(object):
 class Id(object):
 
     def on_get(self, req, resp, session_id, req_id, tool, pcap, counter, filename):
-        resp.body = 'file not found'
+        resp.text = 'file not found'
         with open('/id/{0}/{1}/{2}/{3}/{4}/{5}'.format(session_id, req_id, tool, pcap, counter, filename), 'rb') as f:
-            resp.body = base64.decodestring(f.read())
+            resp.text = base64.decodestring(f.read())
         resp.content_type = falcon.MEDIA_PNG
         resp.status = falcon.HTTP_200
 
@@ -181,14 +181,14 @@ class Ids(object):
                 obj.append(id_dict)
         except Exception as e:
             print("session doesn't exist yet: {0}".format(str(e)))
-        resp.body = json.dumps(obj)
+        resp.text = json.dumps(obj)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
 class Info(object):
 
     def on_get(self, req, resp):
-        resp.body = json.dumps(
+        resp.text = json.dumps(
             {
                 'version': 'v0.1.0',
                 'hostname': socket.gethostname(),
@@ -213,7 +213,7 @@ class Raw(object):
                 body = json.dumps(json.load(f), indent=4)
         except Exception as e:  # pragma: no cover
             print('failed: {0}'.format(str(e)))
-        resp.body = body
+        resp.text = body
 
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
@@ -342,7 +342,7 @@ class Results(object):
         resp.content_type = falcon.MEDIA_HTML
         if tool == 'pcapplot':
             body = self.pcapplot(session_id, req_id)
-            resp.body = body
+            resp.text = body
         else:
             body = '{}'
             try:
@@ -351,7 +351,7 @@ class Results(object):
             except Exception as e:  # pragma: no cover
                 print('failed: {0}'.format(str(e)))
             template = load_template('json_viewer.j2')
-            resp.body = template.render(results=body)
+            resp.text = template.render(results=body)
 
         resp.status = falcon.HTTP_200
 
@@ -411,7 +411,7 @@ class Status(object):
         statuses = self.r.hgetall(req_id+'_status')
         for status in statuses:
             statuses[status] = json.loads(statuses[status])
-        resp.body = json.dumps(statuses)
+        resp.text = json.dumps(statuses)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -420,7 +420,7 @@ class Stop(object):
 
     def on_get(self, req, resp, req_id):
         # TODO
-        resp.body = 'stopped' + req_id
+        resp.text = 'stopped' + req_id
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -429,7 +429,7 @@ class Tools(object):
 
     def on_get(self, req, resp):
         tools = load_tools()
-        resp.body = json.dumps(tools, indent=4)
+        resp.text = json.dumps(tools, indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
