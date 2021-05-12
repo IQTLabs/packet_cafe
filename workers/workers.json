@@ -68,16 +68,13 @@
       ]
     },
     {
-      "command": [
-        "--no-srcmacid",
-        "-o/tmp"
-      ],
       "name": "networkml",
       "image": "iqtlabs/networkml",
-      "version": "v0.6.10",
+      "version": "v0.6.1",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
+      "command": ["-r"],
       "environment": {
         "RABBIT_HOST": "messenger",
         "RABBIT_EXCHANGE": "",
@@ -91,7 +88,7 @@
         "rabbitmq"
       ],
       "inputs": [
-        "ncapture"
+        "pcap-splitter"
       ]
     },
     {
@@ -154,7 +151,7 @@
     {
       "name": "p0f",
       "image": "iqtlabs/p0f",
-      "version": "v0.11.21",
+      "version": "v0.11.16",
       "labels": "",
       "stage": "analysis",
       "viewableOutput": true,
