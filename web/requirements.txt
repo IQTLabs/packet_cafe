@@ -3,7 +3,7 @@ falcon==3.0.1
 falcon-cors==1.1.7
 falcon-multipart==0.2.0
 gunicorn==20.1.0
-jinja2==3.0.0
+jinja2==3.0.1
 pika==1.2.0
 python-magic==0.4.22
 redis==3.5.3
