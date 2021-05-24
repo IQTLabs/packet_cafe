@@ -43,12 +43,12 @@ class App extends React.Component {
   clearResults = () =>{
     const { cookies } = this.props;
     cookies.remove(COOKIE_NAME)
-    localStorage.clear(); 
+    localStorage.clear();
     window.location.reload(false);
   }
-  
+
   render() {
-    
+
     return (
       <>
         <BrowserRouter>

@@ -32,8 +32,8 @@ import {
 const deviceMap =[
     {"group": null,
      "items":[
-        {"name": "All Devices", "icon": faNetworkWired, "route":"/devices/all"}, 
-        {"name": "Unknown", "icon": faQuestionCircle, "route":"/devices/unknown"}, 
+        {"name": "All Devices", "icon": faNetworkWired, "route":"/devices/all"},
+        {"name": "Unknown", "icon": faQuestionCircle, "route":"/devices/unknown"},
      ]
     },
     {"group": "Workstations",
@@ -45,22 +45,21 @@ const deviceMap =[
     },
     {"group": "Specialized Devices",
      "items":[
-        {"name": "Active Directory Controllers", "icon": faUsersCog, "route":"/devices/activedirectorycontroller"}, 
-        {"name": "Administrative Servers", "icon": faServer, "route":"/devices/administrativeserver"}, 
-        {"name": "Confluence Servers", "icon": faMountain, "route":"/devices/confluenceserver"}, 
-        {"name": "Exchange Servers", "icon": faEnvelopeOpenText, "route":"/devices/exchangeserver"}, 
-        {"name": "File Shares", "icon": faFolderOpen, "route":"/devices/fileshare"}, 
-        {"name": "Git Servers", "icon": faCodeBranch, "route":"/devices/gitserver"}, 
-        {"name": "GPU Laptops", "icon": faLaptopCode, "route":"/devices/gpulaptop"}, 
-        {"name": "PKI Servers", "icon": faKey, "route":"/devices/pkiserver"}, 
+        {"name": "Active Directory Controllers", "icon": faUsersCog, "route":"/devices/activedirectorycontroller"},
+        {"name": "Administrative Servers", "icon": faServer, "route":"/devices/administrativeserver"},
+        {"name": "Confluence Servers", "icon": faMountain, "route":"/devices/confluenceserver"},
+        {"name": "Exchange Servers", "icon": faEnvelopeOpenText, "route":"/devices/exchangeserver"},
+        {"name": "File Shares", "icon": faFolderOpen, "route":"/devices/fileshare"},
+        {"name": "Git Servers", "icon": faCodeBranch, "route":"/devices/gitserver"},
+        {"name": "GPU Laptops", "icon": faLaptopCode, "route":"/devices/gpulaptop"},
+        {"name": "PKI Servers", "icon": faKey, "route":"/devices/pkiserver"},
         {"name": "Printers", "icon": faPrint, "route":"/devices/printer"}
      ]
     },
-     
 ]
 
 const trafficMap =[
-    {"name": "Unknown", "icon": faExclamationTriangle, "route":"/"}, 
+    {"name": "Unknown", "icon": faExclamationTriangle, "route":"/"},
     {"name": "Plaintext", "icon": faLockOpen, "route":"/"},
     {"name": "Encrypted", "icon": faLock, "route":"/"},
 ]
@@ -68,17 +67,17 @@ const trafficMap =[
 const portMap = [
     {"group": "1-1023",
      "items":[
-        {"name": "Privileged", "icon": faThLarge, "route":"/"}, 
+        {"name": "Privileged", "icon": faThLarge, "route":"/"},
      ]
     },
     {"group": "1024-49151",
      "items":[
-        {"name": "Registered", "icon": faThList, "route":"/"}, 
+        {"name": "Registered", "icon": faThList, "route":"/"},
      ]
     },
     {"group": "49152-65535",
      "items":[
-        {"name": "Private", "icon": faTh, "route":"/"}, 
+        {"name": "Private", "icon": faTh, "route":"/"},
      ]
     },
 ]
@@ -90,7 +89,7 @@ const Navbar = (props) => {
   const fileSelected = (id) =>{
     props.setFileId(id);
   }
-    
+
   return (
   <div>
     <Menu borderless stackable size="huge" fixed="top">
@@ -110,7 +109,7 @@ const Navbar = (props) => {
         </Menu.Item>
         <Dropdown item simple text="Devices">
             <Dropdown.Menu size="large">
-            {    
+            {
                 deviceMap.map((dm)=>{
                     return (
                             <>
@@ -129,7 +128,7 @@ const Navbar = (props) => {
                             </>
                     )
                  })
-     
+
             }
             </Dropdown.Menu>
         </Dropdown>
