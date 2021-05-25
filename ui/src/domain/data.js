@@ -30,12 +30,12 @@ const emptyGroups = {
         "pki server": {"totalConfidence": 0, "count": 0},
         "printer": {"totalConfidence": 0, "count": 0},
 };
-     
+
 
 const getOsFromPof = (pofData, ip) => {
   for(const item of pofData){
-    if(item[ip] && item[ip]["short_os"]){
-      return item[ip]["short_os"];
+    if(item["ipv4_addresses"][ip] && item["ipv4_addresses"][ip]["short_os"]){
+      return item["ipv4_addresses"][ip]["short_os"];
     }
   }
   return "";
@@ -51,15 +51,15 @@ const networkMldeviceTableModel = async (state) => {
       model[file] = [];
       if(nmlData){
         for(const o of nmlData){
-          if(o[file]){
+          for(const mac in o["mac_addresses"]){
             const device = {};
-            device["OS"] = getOsFromPof(pofData, o[file]["source_ip"]);
-            device["IP"] = o[file]["source_ip"];
-            device["MAC"] = o[file]["source_mac"];
-            device["networkMlLabels"] = o[file].classification.labels.map((l, idx) =>{
-              return { "label": l, "confidence": o[file].classification.confidences[idx] }
+            device["OS"] = getOsFromPof(pofData, o["mac_addresses"][mac]["source_ip"]);
+            device["IP"] = o["mac_addresses"][mac]["source_ip"];
+            device["MAC"] = mac;
+            device["networkMlLabels"] = o["mac_addresses"][mac].classification.labels.map((l, idx) =>{
+              return { "label": l, "confidence": o["mac_addresses"][mac].classification.confidences[idx] }
             })
-            model[file].push(device);
+            model[o["mac_addresses"][mac]["uid"]].push(device);
           }
         }
       }
@@ -74,15 +74,17 @@ const networkMldeviceGroupModel = async (state) => {
       const nmlData = state.toolResults[file]["networkml"];
       let fileGroupModel = JSON.parse(JSON.stringify(emptyGroups));
       if(nmlData){
-        for(const o of nmlData){      
-          if(o[file] && o[file].classification &&
-             o[file].classification.labels.length > 0 &&
-             o[file].classification.confidences.length > 0 &&
-             o[file].classification.labels[0]
-             )
-          {
-              fileGroupModel[o[file].classification.labels[0].toLowerCase()]["totalConfidence"] += o[file].classification.confidences[0];
-              fileGroupModel[o[file].classification.labels[0].toLowerCase()]["count"]++;
+        for(const o of nmlData){
+          for(const mac in o["mac_addresses"]){
+            if(o["mac_addresses"][mac].classification &&
+               o["mac_addresses"][mac].classification.labels.length > 0 &&
+               o["mac_addresses"][mac].classification.confidences.length > 0 &&
+               o["mac_addresses"][mac].classification.labels[0]
+               )
+            {
+                fileGroupModel[o["mac_addresses"][mac].classification.labels[0].toLowerCase()]["totalConfidence"] += o["mac_addresses"][mac].classification.confidences[0];
+                fileGroupModel[o["mac_addresses"][mac].classification.labels[0].toLowerCase()]["count"]++;
+            }
           }
         }
       }
@@ -207,7 +209,7 @@ const reducer = handleActions(
     },
     [setTools]: (state, { payload }) => {
       state.tools = payload;
-      
+
       return { ...state};
     },
     [setToolStatus]: (state, { payload }) => {
