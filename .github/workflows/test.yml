@@ -19,9 +19,7 @@ jobs:
         docker run -e CI=true packet_cafe/ui-test npm test -- --exit && \
         docker build -t packet_cafe/web -f ./web/Dockerfile ./web && \
         docker build -t packet_cafe/web-test -f ./web/Dockerfile.test ./web && \
-        docker run packet_cafe/web-test && \
-        export PATH=/home/runner/.local/bin:$PATH && \
-        coverage report && coverage xml
+        docker run packet_cafe/web-test > coverage.xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1.5.2
       if: github.repository == 'iqtlabs/packet_cafe'
