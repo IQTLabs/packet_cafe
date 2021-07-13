@@ -34,7 +34,7 @@ account name). If you are using an organizational account and have
 permission to push to the organizational account namespace, set
 `DOCKER_NAMESPACE` to the organizational account namespace.
 
-The `buildx` workflow uses the [`buildx`](https://github.com/crazy-max/ghaction-docker-buildx) Action
+The `buildx` workflow uses the [`buildx`](https://github.com/docker/setup-buildx-action) Action
 to perform a multi-architecture build process for a number of images. This is
 very time and resource-intensive, so it is only triggered under certain
 circumstances when you want to make a public release on Docker Hub.
@@ -54,12 +54,3 @@ circumstances when you want to make a public release on Docker Hub.
     Docker images.
 
 * The `test` workflow runs on any `push` or `pull_request` event.
-
-# Publishing Codecov results
-
-If you want to push test code coverage results to Codecov, create the following secret:
-
-| Variable | Purpose |
-|---------|----------|
-| `CODECOV_TOKEN` | API token for accessing Codecov from GitHub |
-

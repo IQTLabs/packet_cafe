@@ -1,5 +1,5 @@
 arrow==1.1.1
 docker==5.0.0
+httpx==0.18.2
 pika==1.2.0
 redis==3.5.3
-requests==2.26.0
