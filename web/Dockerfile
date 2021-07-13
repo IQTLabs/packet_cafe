@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.14
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
 COPY requirements.txt requirements.txt
@@ -27,7 +27,7 @@ HEALTHCHECK --interval=15s --timeout=15s \
   CMD curl --silent --fail http://localhost:8001/api/v1 || exit 1
 
 COPY . /app
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx/default.conf /etc/nginx/nginx.conf
 COPY nginx/proxy_params /etc/nginx/proxy_params
 RUN mkdir -p /run/nginx
 RUN touch /run/nginx/nginx.pid
