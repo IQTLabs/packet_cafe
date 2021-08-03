@@ -1,16 +1,16 @@
 def routes():
-    from .data import Endpoints, Id, Ids, Info, Raw, Results, Status, Stop, Tools, Upload
-    endpoints = Endpoints()
+    import data
+    endpoints = data.Endpoints()
     p = paths()
-    id_files = Id()
-    ids = Ids()
-    info = Info()
-    raw = Raw()
-    results = Results()
-    status = Status()
-    stop = Stop()
-    upload = Upload()
-    tools = Tools()
+    id_files = data.Id()
+    ids = data.Ids()
+    info = data.Info()
+    raw = data.Raw()
+    results = data.Results()
+    status = data.Status()
+    stop = data.Stop()
+    upload = data.Upload()
+    tools = data.Tools()
     funcs = [endpoints, id_files, ids, info, raw, results, status, stop, tools, upload]
     return dict(zip(p, funcs))
 

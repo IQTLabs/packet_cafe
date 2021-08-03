@@ -7,6 +7,7 @@ RUN apk add --update \
     curl \
     gcc \
     g++ \
+    libev-dev \
     libmagic \
     linux-headers \
     musl-dev \
@@ -31,9 +32,9 @@ COPY nginx/default.conf /etc/nginx/nginx.conf
 COPY nginx/proxy_params /etc/nginx/proxy_params
 RUN mkdir -p /run/nginx
 RUN touch /run/nginx/nginx.pid
-WORKDIR /app
+WORKDIR /app/app
 ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8000
 
-CMD (nginx) & (gunicorn -b localhost:8001 -k eventlet -w 4 --access-logfile /var/log/access.log --keep-alive 10 --reload app.app --timeout 600)
+CMD (nginx) & (python3 app.py)

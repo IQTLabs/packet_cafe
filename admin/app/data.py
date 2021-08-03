@@ -5,8 +5,7 @@ import socket
 
 import falcon
 
-from .routes import paths
-from .routes import version
+import routes
 
 
 # NOTE: The following variables are replicated in web/app/data.py.
@@ -88,8 +87,8 @@ class Endpoints(object):
 
     def on_get(self, req, resp):
         endpoints = []
-        for path in paths():
-            endpoints.append(version()+path)
+        for path in routes.paths():
+            endpoints.append(routes.version()+path)
 
         resp.body = json.dumps(endpoints)
         resp.content_type = falcon.MEDIA_TEXT
