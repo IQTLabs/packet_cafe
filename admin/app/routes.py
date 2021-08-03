@@ -1,13 +1,13 @@
 def routes():
-    from .data import Endpoints, IDDelete, IDFiles, IDResults, IDs, Info, Logs
+    import data
     p = paths()
-    endpoints = Endpoints()
-    id_delete = IDDelete()
-    id_files = IDFiles()
-    id_results = IDResults()
-    ids = IDs()
-    info = Info()
-    logs = Logs()
+    endpoints = data.Endpoints()
+    id_delete = data.IDDelete()
+    id_files = data.IDFiles()
+    id_results = data.IDResults()
+    ids = data.IDs()
+    info = data.Info()
+    logs = data.Logs()
     funcs = [endpoints, id_delete, id_files, id_results, ids, info, logs]
     return dict(zip(p, funcs))
 
