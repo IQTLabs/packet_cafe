@@ -32,9 +32,9 @@ COPY nginx/default.conf /etc/nginx/nginx.conf
 COPY nginx/proxy_params /etc/nginx/proxy_params
 RUN mkdir -p /run/nginx
 RUN touch /run/nginx/nginx.pid
-WORKDIR /app/app
+WORKDIR /app
 ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8000
 
-CMD (nginx) & (python3 app.py)
+CMD (nginx) & (python3 app/app.py)

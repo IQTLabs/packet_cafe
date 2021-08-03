@@ -90,7 +90,7 @@ class Endpoints(object):
         for path in routes.paths():
             endpoints.append(routes.version()+path)
 
-        resp.body = json.dumps(endpoints)
+        resp.text = json.dumps(endpoints)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -145,7 +145,7 @@ class IDFiles(object):
         for r, d, f in os.walk(path):
             for file in f:
                 files.append(os.path.join(r, file))
-        resp.body = json.dumps(files, indent=4)
+        resp.text = json.dumps(files, indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -158,7 +158,7 @@ class IDResults(object):
         for r, d, f in os.walk(path):
             for file in f:
                 files.append(os.path.join(r, file))
-        resp.body = json.dumps(files, indent=4)
+        resp.text = json.dumps(files, indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -174,7 +174,7 @@ class IDs(object):
                 if r == path:
                     ids.append(directory)
         ids  = list(set(ids))
-        resp.body = json.dumps(ids, indent=4)
+        resp.text = json.dumps(ids, indent=4)
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -182,7 +182,7 @@ class IDs(object):
 class Info(object):
 
     def on_get(self, req, resp):
-        resp.body = json.dumps({'version': 'v0.1.0', 'hostname': socket.gethostname()})
+        resp.text = json.dumps({'version': 'v0.1.0', 'hostname': socket.gethostname()})
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200
 
@@ -191,6 +191,6 @@ class Logs(object):
 
     def on_get(self, req, resp, req_id):
         # TODO
-        resp.body = 'TODO'
+        resp.text = 'TODO'
         resp.content_type = falcon.MEDIA_TEXT
         resp.status = falcon.HTTP_200

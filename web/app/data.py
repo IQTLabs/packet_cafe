@@ -96,7 +96,7 @@ def set_last_request_id(req_id=None):
     return True
 
 def load_template(name):
-    path = os.path.join('templates', name)
+    path = os.path.join('app/templates', name)
     with open(os.path.abspath(path), 'r') as fp:
         return jinja2.Template(fp.read())
 
