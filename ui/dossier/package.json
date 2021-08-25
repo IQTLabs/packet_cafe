@@ -8,7 +8,7 @@
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "5.15.4",
     "@fortawesome/react-fontawesome": "0.1.15",
-    "apexcharts": "3.27.3",
+    "apexcharts": "3.28.1",
     "create-react-class": "15.7.0",
     "react": "^16.8.0",
     "react-apexcharts": "1.3.9",
