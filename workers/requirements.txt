@@ -1,4 +1,4 @@
-arrow==1.1.1
+arrow==1.2.0
 docker==5.0.2
 httpx==0.19.0
 pika==1.2.0
