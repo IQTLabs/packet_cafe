@@ -24,7 +24,7 @@ const autoFetchResultsEpic = (action$, store, ajax = rxAjax) => {
               fetchResults({'sessionId': sessionId})
             )
           })
-        ,takeUntil(action$.ofType(stopFetchResults.toString()))
+        ,takeUntil(action$.pipe(ofType(stopFetchResults.toString())))
         )
     })
   );
