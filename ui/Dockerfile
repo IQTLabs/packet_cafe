@@ -1,4 +1,4 @@
-FROM node:current-alpine3.12
+FROM node:lts-alpine3.14
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
 RUN apk --no-cache upgrade && \
@@ -12,7 +12,7 @@ COPY . /app
 WORKDIR /app
 
 RUN npm cache verify
-#RUN npm install -g npm@latest --prefer-online
+RUN npm install -g npm@latest --prefer-online
 RUN npm ci --no-optional
 RUN npm run build
 
