@@ -6,8 +6,8 @@ import time
 import uuid
 
 import docker
+import httpx
 import pika
-import requests
 from redis import StrictRedis
 
 
@@ -78,7 +78,7 @@ def callback(ch, method, properties, body):
                                         method.routing_key,
                                         pipeline['id'],
                                         pipeline['results']))
-        r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], pipeline['results']['counter'], session_id, pipeline['id']), data=json.dumps(pipeline))
+        r = httpx.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], pipeline['results']['counter'], session_id, pipeline['id']), json=pipeline)
         status[pipeline['results']['tool']] = json.dumps({'state': 'In progress', 'timestamp': str(arrow.utcnow())})
     elif 'id' in pipeline and 'results' in pipeline and pipeline['type'] == 'metadata':
         if 'data' in pipeline and pipeline['data'] != '':
@@ -86,7 +86,7 @@ def callback(ch, method, properties, body):
                                             method.routing_key,
                                             pipeline['id'],
                                             pipeline['results']))
-            r = requests.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], 0, session_id, pipeline['id']), data=json.dumps(pipeline))
+            r = httpx.post('http://lb/api/v1/results/{0}/{1}/{2}/{3}'.format(pipeline['results']['tool'], 0, session_id, pipeline['id']), json=pipeline)
             status[pipeline['results']['tool']] = json.dumps({'state': 'In progress', 'timestamp': str(arrow.utcnow())})
         else:
             print(" [Finished] %s UTC %r:%r" % (str(arrow.utcnow()),

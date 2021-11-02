@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.14
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
 COPY requirements.txt requirements.txt
@@ -7,6 +7,7 @@ RUN apk add --update \
     curl \
     gcc \
     g++ \
+    libev-dev \
     libmagic \
     linux-headers \
     musl-dev \
@@ -27,7 +28,7 @@ HEALTHCHECK --interval=15s --timeout=15s \
   CMD curl --silent --fail http://localhost:8001/api/v1 || exit 1
 
 COPY . /app
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx/default.conf /etc/nginx/nginx.conf
 COPY nginx/proxy_params /etc/nginx/proxy_params
 RUN mkdir -p /run/nginx
 RUN touch /run/nginx/nginx.pid
@@ -36,4 +37,4 @@ ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8000
 
-CMD (nginx) & (gunicorn -b localhost:8001 -k eventlet -w 4 --access-logfile /var/log/access.log --keep-alive 10 --reload app.app --timeout 600)
+CMD (nginx) & (python3 app/app.py)

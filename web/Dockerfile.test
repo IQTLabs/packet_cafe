@@ -19,4 +19,5 @@ RUN pip3 install --no-cache-dir -r requirements-test.txt
 
 WORKDIR /app
 
-CMD py.test -v -vv --cov-report term-missing --cov=. -c .coveragerc
+RUN py.test -v -vv --cov-report term-missing --cov=. -c .coveragerc && coverage report && coverage xml
+CMD cat coverage.xml

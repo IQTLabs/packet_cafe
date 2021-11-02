@@ -20,7 +20,7 @@ const fetchToolResultsEpic = (action$, store, ajax = rxAjax) => {
       const fileId = action.payload.fileId;
       const url = "/raw/"  + sessionId + "/" + fileId + "/" + tool;
       return ajax({ 'url': url, 'crossDomain': true, 'responseType': 'json' }).pipe(
-        map((result) => { 
+        map((result) => {
           return {'tool': tool, 'file': fileId, 'results': result.response };
         })
         ,map(setToolResults)

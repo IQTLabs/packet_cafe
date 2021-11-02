@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.14
 LABEL maintainer="Charlie Lewis <clewis@iqt.org>"
 
 COPY requirements.txt requirements.txt
@@ -7,6 +7,7 @@ RUN apk add --update \
     curl \
     gcc \
     g++ \
+    libev-dev \
     linux-headers \
     musl-dev \
     py3-pip \
@@ -25,11 +26,11 @@ HEALTHCHECK --interval=15s --timeout=15s \
   CMD curl --silent --fail http://localhost:5001/v1 || exit 1
 
 COPY . /app
-WORKDIR /app
+WORKDIR /app/app
 ENV PYTHONUNBUFFERED 1
 
 USER nobody
 
 EXPOSE 5001
 
-CMD gunicorn -b 0.0.0.0:5001 -k eventlet -w 1 --access-logfile /tmp/access.log --keep-alive 10 --reload app.app --timeout 60
+CMD python3 app.py

@@ -12,6 +12,7 @@
 
 # production
 /build
+volumes
 
 # misc
 .DS_Store
@@ -30,3 +31,6 @@ ui/uploads
 ui/coverage
 *.swp
 sample.pcap
+
+#scan stuff
+reports/
