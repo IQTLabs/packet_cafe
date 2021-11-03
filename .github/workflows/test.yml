@@ -11,9 +11,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: test
       run: |
-        pip3 install -U pip && \
-        pip3 install -U setuptools && \
-        pip3 install codecov && \
+        python3 -m pip install -U pip && \
+        python3 -m pip install -U setuptools && \
+        python3 -m pip install codecov && \
         docker build -t packet_cafe/ui -f ./ui/Dockerfile ./ui && \
         docker build -t packet_cafe/ui-test -f ./ui/Dockerfile.test ./ui && \
         docker run -e CI=true packet_cafe/ui-test npm test -- --exit && \
