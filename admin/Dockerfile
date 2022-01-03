@@ -10,10 +10,10 @@ RUN apk add --update \
     libev-dev \
     linux-headers \
     musl-dev \
-    py3-pip \
     python3 \
+    py3-pip \
     python3-dev \
-    && pip3 install --no-cache-dir -r requirements.txt \
+    && python3 -m pip install --no-cache-dir -r requirements.txt \
     && apk del \
     gcc \
     g++ \

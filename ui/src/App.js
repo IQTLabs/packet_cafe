@@ -4,7 +4,7 @@ import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { setSessionId, getFileId, setFileId } from 'domain/data';
 
@@ -13,6 +13,8 @@ import Navbar from 'components/Navbar';
 import Home from 'components/home/Home';
 import Dossier from 'components/dossier/Dossier';
 import DeviceTable from 'components/devices/DeviceTable';
+import Error from 'components/error/Error';
+
 
 const COOKIE_NAME = 'sessionID'
 
@@ -54,18 +56,12 @@ class App extends React.Component {
         <BrowserRouter>
           <div>
             <Navbar selectedFileId={this.props.fileId} setFileId={this.props.setFileId}/>
-            <Switch>
-              <Route exact path="/">
-                <Home sessionId={this.state.sessionId} clearResults={this.clearResults} fileId={this.props.fileId} setFileId={this.setFileId}/>
-              </Route>
-              <Route exact path="/dossier">
-                <Dossier sessionId={this.state.sessionId} fileId={this.props.fileId}/>
-              </Route>
-              <Route path="/devices/:typeFilter">
-                <DeviceTable sessionId={this.state.sessionId} fileId={this.props.fileId}/>
-              </Route>
-              <Route component={Error}/>
-            </Switch>
+            <Routes>
+              <Route exact path="/" element={<Home sessionId={this.state.sessionId} clearResults={this.clearResults} fileId={this.props.fileId} setFileId={this.setFileId}/>} />
+              <Route path="/dossier" element={<Dossier sessionId={this.state.sessionId} fileId={this.props.fileId}/>} />
+              <Route path="/devices/:typeFilter" element={<DeviceTable sessionId={this.state.sessionId} fileId={this.props.fileId}/>} />
+              <Route path="*" element={<Error/>}/>
+            </Routes>
           </div>
         </BrowserRouter>
       </>
