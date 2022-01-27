@@ -16,7 +16,7 @@
     "react-router-dom": "6.2.1",
     "react-scripts": "latest",
     "semantic-ui": "2.4.2",
-    "semantic-ui-react": "2.0.4"
+    "semantic-ui-react": "2.1.1"
   },
   "keywords": []
 }
