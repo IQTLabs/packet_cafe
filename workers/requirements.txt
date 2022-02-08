@@ -2,4 +2,4 @@ arrow==1.2.2
 docker==5.0.3
 httpx==0.22.0
 pika==1.2.0
-redis==4.1.2
+redis==4.1.3
