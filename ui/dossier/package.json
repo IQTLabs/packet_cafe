@@ -5,8 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.36",
-    "@fortawesome/free-brands-svg-icons": "5.15.4",
-    "@fortawesome/free-solid-svg-icons": "5.15.4",
+    "@fortawesome/free-brands-svg-icons": "6.0.0",
+    "@fortawesome/free-solid-svg-icons": "6.0.0",
     "@fortawesome/react-fontawesome": "0.1.17",
     "apexcharts": "3.33.1",
     "create-react-class": "15.7.0",
