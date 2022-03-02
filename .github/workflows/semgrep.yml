@@ -1,4 +1,4 @@
-name: secrets
+name: semgrep
 
 on: [push, pull_request]
 
