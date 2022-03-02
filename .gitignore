@@ -34,3 +34,4 @@ sample.pcap
 
 #scan stuff
 reports/
+semgrep.out
