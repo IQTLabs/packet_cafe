@@ -49,11 +49,12 @@ jobs:
     - name: Fail if found
       # if: steps.scan.outputs.python-found-count != 0
       uses: actions/github-script@v3
-      with:
-        script: |
-            echo {{steps.scan.outputs.python-found-count}} ERRORS FOUND! && \
-            echo {{steps.scan.outputs.python-found-count}} && \
-            core.setFailed('Semgrep found errors in Python files. Please check the uploaded report')
+      # with:
+      #   script: |
+      run: |
+        echo {{steps.scan.outputs.python-found-count}} ERRORS FOUND! && \
+        echo {{steps.scan.outputs.python-found-count}} && \
+        core.setFailed('Semgrep found errors in Python files. Please check the uploaded report')
     - name: Upload scan reports
       uses: actions/upload-artifact@v2.3.1
       if: failure()
