@@ -52,7 +52,7 @@ jobs:
       with:
         script: |
             echo "*********************************************************" && \
-            echo "{{steps.scan.outputs.python-found-count}} ERRORS FOUND!"" && \
+            echo "{{steps.scan.outputs.python-found-count}} ERRORS FOUND!" && \
             echo "*********************************************************" && \
             echo {{steps.scan.outputs.python-found-count}} && \
             core.setFailed('Semgrep found errors in Python files. Please check the uploaded report')
