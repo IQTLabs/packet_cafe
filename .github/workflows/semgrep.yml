@@ -53,7 +53,6 @@ jobs:
       uses: actions/github-script@v3
       with:
         script: |
-        echo {{steps.py_scan.outputs.python-found-count}} ERRORS FOUND! && \
         echo {{steps.py_scan.outputs.python-found-count}} && \
         core.setFailed('Semgrep found errors in Python files. Please check the uploaded report')
     - name: Upload scan reports
