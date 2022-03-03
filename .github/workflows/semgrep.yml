@@ -50,12 +50,11 @@ jobs:
         echo "::set-output name=python-found-count::$(wc -l /home/runner/reports/semgrep.out | cut -d' ' -f1)"
     - name: Fail if found
       if: steps.py_scan.outputs.python-found-count > 0
-      # uses: actions/github-script@v3
-      # with:
-      #   script: |
-      run: |
-        echo {{steps.py_scan.outputs.python-found-count}} && \
-        core.setFailed('Semgrep found errors in Python files. Please check the uploaded report')
+      uses: actions/github-script@v3
+      with:
+        script: |
+          console.log('{{steps.py_scan.outputs.python-found-count}} errors found');
+          core.setFailed('Semgrep found errors in Python files. Please check the uploaded report');
     - name: Upload scan reports
       uses: actions/upload-artifact@v2.3.1
       if: failure()
