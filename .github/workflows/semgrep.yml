@@ -45,13 +45,15 @@ jobs:
         mkdir -p /home/runner/reports/ && \
         semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-python.yml  --vim -o /home/runner/reports/semgrep.out \
         --severity ERROR ${GITHUB_WORKSPACE} && \
-        cat /home/runner/reports/semgrep.out && \
         echo "::set-output name=python-found-count::$(wc -l /home/runner/reports/semgrep.out | cut -d' ' -f1)"
     - name: Fail if found
-      if: steps.scan.outputs.python-found-count != 0
+      # if: steps.scan.outputs.python-found-count != 0
       uses: actions/github-script@v3
       with:
         script: |
+            echo "*********************************************************" && \
+            echo "{{steps.scan.outputs.python-found-count}} ERRORS FOUND!"" && \
+            echo "*********************************************************" && \
             echo {{steps.scan.outputs.python-found-count}} && \
             core.setFailed('Semgrep found errors in Python files. Please check the uploaded report')
     - name: Upload scan reports
