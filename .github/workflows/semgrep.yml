@@ -49,7 +49,6 @@ jobs:
         mkdir -p /home/runner/reports/ && \
         semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-python.yml  --json -o /home/runner/reports/semgrep.out \
         --severity ERROR ${GITHUB_WORKSPACE} && \
-        cat /home/runner/reports/semgrep.out | jq && \
         echo "::set-output name=python-found-count::$(cat /home/runner/reports/semgrep.out | jq '.results | length')"
     - name: Fail if found
       if: steps.py_scan.outputs.python-found-count > 0
