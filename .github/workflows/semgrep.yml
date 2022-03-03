@@ -8,6 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: scan
+      id: d_scan
       run: |
         export DEBIAN_FRONTEND=noninteractive && \
         echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections && \
@@ -19,11 +20,11 @@ jobs:
         --severity ERROR ${GITHUB_WORKSPACE} &&\
         echo "::set-output name=found-count::$(wc -l /home/runner/reports/semgrep.out | cut -d' ' -f1)"
     - name: Fail if found
-      if: steps.scan.outputs.found-count != 0
+      if: steps.d_scan.outputs.found-count != 0
       uses: actions/github-script@v3
       with:
         script: |
-            echo {{steps.scan.outputs.found-count}} && \
+            echo {{steps.d_scan.outputs.found-count}} && \
             core.setFailed('Semgrep found errors in Dockerfiles or docker-compose files. Please check the uploaded report')
     - name: Upload scan reports
       uses: actions/upload-artifact@v2.3.1
@@ -36,6 +37,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: scan
+      id: py_scan
       run: |
         export DEBIAN_FRONTEND=noninteractive && \
         echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections && \
@@ -47,13 +49,12 @@ jobs:
         --severity ERROR ${GITHUB_WORKSPACE} && \
         echo "::set-output name=python-found-count::$(wc -l /home/runner/reports/semgrep.out | cut -d' ' -f1)"
     - name: Fail if found
-      # if: steps.scan.outputs.python-found-count != 0
+      # if: steps.py_scan.outputs.python-found-count != 0
       uses: actions/github-script@v3
-      # with:
-      #   script: |
-      run: |
-        echo {{steps.scan.outputs.python-found-count}} ERRORS FOUND! && \
-        echo {{steps.scan.outputs.python-found-count}} && \
+      with:
+        script: |
+        echo {{steps.py_scan.outputs.python-found-count}} ERRORS FOUND! && \
+        echo {{steps.py_scan.outputs.python-found-count}} && \
         core.setFailed('Semgrep found errors in Python files. Please check the uploaded report')
     - name: Upload scan reports
       uses: actions/upload-artifact@v2.3.1
