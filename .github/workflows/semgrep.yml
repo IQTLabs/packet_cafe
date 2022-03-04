@@ -57,7 +57,7 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           console.log('${{steps.py_scan.outputs.python-found-count}} errors found in python files');
-          github.issues.createComment({
+          github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
