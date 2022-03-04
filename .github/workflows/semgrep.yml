@@ -54,7 +54,6 @@ jobs:
       if: steps.py_scan.outputs.python-found-count > 0
       uses: actions/github-script@v3
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           console.log('${{steps.py_scan.outputs.python-found-count}} errors found in python files');
           github.rest.issues.createComment({
