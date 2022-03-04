@@ -52,7 +52,7 @@ jobs:
         echo "::set-output name=python-found-count::$(cat /home/runner/reports/semgrep.out | jq '.results | length')"
     - name: Fail if found
       if: steps.py_scan.outputs.python-found-count > 0
-      uses: actions/github-script@v3
+      uses: actions/github-script@v6
       with:
         script: |
           console.log('${{steps.py_scan.outputs.python-found-count}} errors found in python files');
