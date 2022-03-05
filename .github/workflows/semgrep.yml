@@ -1,11 +1,6 @@
 name: semgrep
 
-on:
-  pull_request_target:
-    types:
-      - opened
-      - synchronize
-      - reopened
+on: [push, pull_request]
 permissions:
   pull-requests: write
 jobs:
