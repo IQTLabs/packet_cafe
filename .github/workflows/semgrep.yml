@@ -1,7 +1,13 @@
 name: semgrep
 
-on: [push, pull_request_target]
-
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+permissions:
+  pull-requests: write
 jobs:
   docker_scan:
     runs-on: ubuntu-latest
