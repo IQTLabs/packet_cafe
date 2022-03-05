@@ -1,6 +1,6 @@
 name: semgrep
 
-on: [push, pull_request]
+on: [push, pull_request_target]
 
 jobs:
   docker_scan:
@@ -52,8 +52,9 @@ jobs:
         echo "::set-output name=python-found-count::$(cat /home/runner/reports/semgrep.out | jq '.results | length')"
     - name: Fail if found
       if: steps.py_scan.outputs.python-found-count > 0
-      uses: actions/github-script@v5
+      uses: actions/github-script@v6
       with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           console.log('${{steps.py_scan.outputs.python-found-count}} errors found in python files');
           github.rest.issues.createComment({
