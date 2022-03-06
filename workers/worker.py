@@ -139,6 +139,7 @@ def main(queue_name, host):
     waiting for messages
     """
     counter = 0
+    sleep_time=1
     while True:
         counter += 1
         try:
@@ -153,7 +154,7 @@ def main(queue_name, host):
         except Exception as e:  # pragma: no cover
             print(str(e))
             print('Waiting for connection to rabbit...attempt: {0}'.format(counter))
-        time.sleep(1)
+        time.sleep(sleep_time)
 
     return
 
