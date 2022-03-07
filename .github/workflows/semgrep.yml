@@ -24,15 +24,26 @@ jobs:
         mkdir /home/runner/reports/ && \
         semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-docker.yml  --json -o /home/runner/reports/semgrep.out \
         --severity ERROR ${GITHUB_WORKSPACE} &&\
-        
+        cat /home/runner/reports/semgrep.out | jq -r '.results[] | "## Validation Issues Found (Docker) \n**File:** \(.path) \n**Line Number:** \(.start.line) \n**Statement(s):** \(.extra.lines) \n**Rule:** \(.extra.message)\n\n"' >> /home/runner/reports/docker-msg && \
         echo "::set-output name=found-count::$(cat /home/runner/reports/semgrep.out | jq '.results | length')"
     - name: Fail if found
       if: steps.d_scan.outputs.found-count != 0
       uses: actions/github-script@v3
       with:
         script: |
-            console.log('${{steps.d_scan.outputs.found-count}} errors found in docker/docker-compose files');
-            core.setFailed('Semgrep found errors in Dockerfiles or docker-compose files. Please check the uploaded report');
+          const fs = require('fs')
+
+          var msg = fs.readFileSync('/home/runner/reports/docker-msg', 'utf8');
+          console.log('${{steps.d_scan.outputs.found-count}} errors found in docker/docker-compose files');
+          console.log('msg');
+          github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: msg
+            });
+
+          core.setFailed('Semgrep found errors in Dockerfiles or docker-compose files. Please check the uploaded report');
     - name: Upload scan reports
       uses: actions/upload-artifact@v2.3.1
       if: failure()
@@ -55,7 +66,7 @@ jobs:
         mkdir -p /home/runner/reports/ && \
         semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-python.yml  --json -o /home/runner/reports/semgrep.out \
         --severity ERROR ${GITHUB_WORKSPACE} && \
-        cat /home/runner/reports/semgrep.out | jq -r '.results[] | "## Validation Issues Found \n**File:** \(.path) \n**Line Number:** \(.start.line) \n**Statement(s):** \(.extra.lines) \n**Rule:** \(.extra.message)\n\n"' >> /home/runner/reports/python-msg && \
+        cat /home/runner/reports/semgrep.out | jq -r '.results[] | "## Validation Issues Found (Python) \n**File:** \(.path) \n**Line Number:** \(.start.line) \n**Statement(s):** \(.extra.lines) \n**Rule:** \(.extra.message)\n\n"' >> /home/runner/reports/python-msg && \
         echo "::set-output name=python-found-count::$(cat /home/runner/reports/semgrep.out | jq '.results | length')"
     - name: Fail if found
       if: steps.py_scan.outputs.python-found-count > 0
@@ -67,13 +78,14 @@ jobs:
 
           var msg = fs.readFileSync('/home/runner/reports/python-msg', 'utf8');
           console.log('${{steps.py_scan.outputs.python-found-count}} errors found in python files');
-          console.log('${{steps.py_scan.outputs.python-err-msg}}');
+          console.log('msg');
           github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: msg
             });
+
           core.setFailed('Semgrep found errors in Python files. Please check the uploaded report');
     - name: Upload scan reports
       uses: actions/upload-artifact@v2.3.1
