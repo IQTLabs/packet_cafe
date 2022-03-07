@@ -54,7 +54,8 @@ jobs:
         mkdir -p /home/runner/reports/ && \
         semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-python.yml  --json -o /home/runner/reports/semgrep.out \
         --severity ERROR ${GITHUB_WORKSPACE} && \
-        echo "::set-output name=python-found-count::$(cat /home/runner/reports/semgrep.out | jq '.results | length')"
+        echo "::set-output name=python-found-count::$(cat /home/runner/reports/semgrep.out | jq '.results | length')" && \
+        echo "::set-output name=python-err-msg::$(cat /home/runner/reports/semgrep.out | '.results[] | "*File:* \(.path) \n*Line Number:* \(.start.line) \n*Statement(s):* \(.extra.lines) \n*Rule:* \(.extra.message)\n\n"')"
     - name: Fail if found
       if: steps.py_scan.outputs.python-found-count > 0
       uses: actions/github-script@v6
@@ -62,11 +63,12 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           console.log('${{steps.py_scan.outputs.python-found-count}} errors found in python files');
+          console.log('${{steps.py_scan.outputs.python-err-msg}}');
           github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'this is a comment posted by an action'
+              body: '${{steps.py_scan.outputs.python-err-msg}}'
             });
           core.setFailed('Semgrep found errors in Python files. Please check the uploaded report');
     - name: Upload scan reports
