@@ -17,6 +17,7 @@
   </style>
 </head>
 <body>
+<div id="jsonresult" style="display:none">{{ results }}</div>
 <div id="jsoneditor"></div>
 
 <script>
@@ -25,7 +26,7 @@
     modes: ['view', 'preview'],
     mode: 'view',
   }
-  const json = {{ results }}
+  const json = JSON.parse(document.getElementById('jsonresult').innerHTML);
   const editor = new JSONEditor(container, options, json)
 </script>
 </body>
