@@ -66,8 +66,8 @@ jobs:
         mkdir -p /home/runner/reports/ && \
         semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-python.yml  --json -o /home/runner/reports/semgrep.out \
         --severity ERROR ${GITHUB_WORKSPACE} && \
-        env && \
-        cat /home/runner/reports/semgrep.out | jq -r '.results[] | "## Validation Issues Found (Python) :snake: \n**File:** [\(.path | sub("${GITHUB_WORKSPACE}"; "."; "g"))](\(.path | sub("${GITHUB_WORKSPACE}"; "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/${GITHUB_SHA}"; "g"))#L\(.start.line)) \n**Line Number:** \(.start.line) \n**Statement(s):** \n``` \n\(.extra.lines) \n``` \n**Rule:** \n\(.extra.message)\n\n"' >> /home/runner/reports/python-msg && \
+        echo $GITHUB_CONTEXT && \
+        cat /home/runner/reports/semgrep.out | jq -r '.results[] | "## Validation Issues Found (Python) :snake: \n**File:** [\(.path | sub("${{GITHUB_WORKSPACE}}"; "."; "g"))](\(.path | sub("${{GITHUB_WORKSPACE}}"; "${{GITHUB_SERVER_URL}}/${GITHUB_REPOSITORY}/blob/${{GITHUB_SHA}}"; "g"))#L\(.start.line)) \n**Line Number:** \(.start.line) \n**Statement(s):** \n``` \n\(.extra.lines) \n``` \n**Rule:** \n\(.extra.message)\n\n"' >> /home/runner/reports/python-msg && \
         echo "::set-output name=python-found-count::$(cat /home/runner/reports/semgrep.out | jq '.results | length')"
     - name: Fail if found
       if: steps.py_scan.outputs.python-found-count > 0
