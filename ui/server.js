@@ -27,8 +27,8 @@ app.get('/raw/:session/:id/:tool', function(req, res) {
     if (err) {
       return console.error('failed:', err);
     }
-    res.set('Content-Type', 'application/json');
-    res.send(body);
+    var obj = JSON.parse(body);
+    res.json(obj);
   });
 
 });
@@ -41,8 +41,8 @@ app.get('/status/:session/:id', function(req, res) {
     if (err) {
       return console.error('failed:', err);
     }
-    res.set('Content-Type', 'application/json');
-    res.send(body);
+    var obj = JSON.parse(body);
+    res.json(obj);
   });
 
 });
@@ -57,8 +57,8 @@ app.get('/results/:session/:id/:tool', function(req, res) {
     if (err) {
       return console.error('failed:', err);
     }
-    res.set('Content-Type', 'text/html');
-    res.send(body);
+    var obj = JSON.parse(body);
+    res.json(obj);
   });
 
 });
@@ -71,13 +71,12 @@ app.get('/ids/:session', function(req, res) {
 
   request.get({url:url}, function optionalCallback(err, httpResponse, body) {
     if (err) {
-      res.set('Content-Type', 'application/json');
-      res.send([]);
+      res.json([]);
       return console.error('failed:', err);
     }
     console.log(body);
-    res.set('Content-Type', 'application/json');
-    res.send(body);
+    var obj = JSON.parse(body);
+    res.json(obj);
   });
 
 });
@@ -94,7 +93,7 @@ app.get('/id/:session/:id/:tool/:pcap/:counter/:file', function(req, res) {
     const img = new Buffer(body, 'binary');
     res.set('Content-Type', 'image/png');
     res.set('Content-Length', img.length);
-    res.send(img);
+    res.send(img, 'binary');
   });
 
 });
@@ -105,13 +104,12 @@ app.get('/tools', function(req, res) {
 
   request.get({url:url}, function optionalCallback(err, httpResponse, body) {
     if (err) {
-      res.set('Content-Type', 'application/json');
-      res.send([]);
+      res.json([]);
       return console.error('failed:', err);
     }
     console.log(body);
-    res.set('Content-Type', 'application/json');
-    res.send(body);
+    var obj = JSON.parse(body);
+    res.json(obj);
   });
 
 });
