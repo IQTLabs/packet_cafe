@@ -58,7 +58,7 @@ app.get('/results/:session/:id/:tool', function(req, res) {
       return console.error('failed:', err);
     }
     res.set('Content-Type', 'text/html');
-    // nosemgrep: packet_cafe..github.workflows.config.direct-response-write
+    // nosemgrep
     res.send(body);
   });
 
@@ -94,7 +94,7 @@ app.get('/id/:session/:id/:tool/:pcap/:counter/:file', function(req, res) {
     const img = new Buffer(body, 'binary');
     res.set('Content-Type', 'image/png');
     res.set('Content-Length', img.length);
-    // nosemgrep: packet_cafe..github.workflows.config.direct-response-write
+    // nosemgrep
     res.send(img, 'binary');
   });
 
