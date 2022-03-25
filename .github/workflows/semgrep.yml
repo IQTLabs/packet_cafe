@@ -23,7 +23,8 @@ jobs:
         sudo apt-get update && \
         sudo apt install jq && \
         python3 -m pip install --upgrade pip && \
-        pip3 install semgrep && \
+        python3 -m pip install semgrep && \
+        python3 -m pip install --upgrade urllib3 && \
         mkdir /home/runner/reports/ && \
         semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-docker.yml  --json -o /home/runner/reports/semgrep.out \
         --severity ERROR ${GITHUB_WORKSPACE} &&\
@@ -68,7 +69,8 @@ jobs:
         sudo apt-get update && \
         sudo apt install jq && \
         python3 -m pip install --upgrade pip && \
-        pip3 install semgrep && \
+        python3 -m pip install --upgrade urllib3 && \
+        python3 -m pip install semgrep && \
         mkdir -p /home/runner/reports/ && \
         semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-python.yml  --json -o /home/runner/reports/semgrep.out \
         --severity ERROR ${GITHUB_WORKSPACE} && \
@@ -114,7 +116,8 @@ jobs:
         sudo apt-get update && \
         sudo apt install jq && \
         python3 -m pip install --upgrade pip && \
-        pip3 install semgrep && \
+        python3 -m pip install semgrep && \
+        python3 -m pip install --upgrade urllib3 && \
         mkdir -p /home/runner/reports/ && \
         semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-js.yml  --json -o /home/runner/reports/semgrep.out \
         --severity ERROR ${GITHUB_WORKSPACE} && \
