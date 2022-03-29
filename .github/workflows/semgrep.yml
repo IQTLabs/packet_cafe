@@ -26,8 +26,9 @@ jobs:
         python3 -m pip install semgrep && \
         python3 -m pip install --upgrade urllib3 && \
         mkdir /home/runner/reports/ && \
-        semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-docker.yml  --json -o /home/runner/reports/semgrep.out \
-        --severity ERROR ${GITHUB_WORKSPACE} &&\
+        cd ${GITHUB_WORKSPACE}/ && \
+        semgrep --config=.github/workflows/config/semgrep-docker.yml  --json -o /home/runner/reports/semgrep.out \
+        --severity ERROR ./ &&\
         echo "## Validation Issues Found (Docker) :whale: " >> /home/runner/reports/docker-msg && \
         cat /home/runner/reports/semgrep.out | jq -r --arg ws "$GITHUB_WORKSPACE" --arg url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_SHA" '.results[] | "**File:** [\(.path | sub($ws; "."; "g"))](\(.path | sub($ws; $url; "g"))#L\(.start.line)) \n**Line Number:** \(.start.line) \n**Statement(s):** \n``` \n\(.extra.lines) \n``` \n**Rule:** \n\(.extra.message)\n\n"' >> /home/runner/reports/docker-msg && \
         echo "::set-output name=found-count::$(cat /home/runner/reports/semgrep.out | jq '.results | length')"
@@ -69,11 +70,12 @@ jobs:
         sudo apt-get update && \
         sudo apt install jq && \
         python3 -m pip install --upgrade pip && \
-        python3 -m pip install --upgrade urllib3 && \
         python3 -m pip install semgrep && \
+        python3 -m pip install --upgrade urllib3 && \
         mkdir -p /home/runner/reports/ && \
-        semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-python.yml  --json -o /home/runner/reports/semgrep.out \
-        --severity ERROR ${GITHUB_WORKSPACE} && \
+        cd ${GITHUB_WORKSPACE}/ && \
+        semgrep --config=.github/workflows/config/semgrep-python.yml  --json -o /home/runner/reports/semgrep.out \
+        --severity ERROR ./ && \
         echo "## Validation Issues Found (Python) :snake: " >> /home/runner/reports/python-msg && \
         cat /home/runner/reports/semgrep.out | jq -r --arg ws "$GITHUB_WORKSPACE" --arg url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_SHA" '.results[] | "**File:** [\(.path | sub($ws; "."; "g"))](\(.path | sub($ws; $url; "g"))#L\(.start.line)) \n**Line Number:** \(.start.line) \n**Statement(s):** \n``` \n\(.extra.lines) \n``` \n**Rule:** \n\(.extra.message)\n\n"' >> /home/runner/reports/python-msg && \
         echo "::set-output name=python-found-count::$(cat /home/runner/reports/semgrep.out | jq '.results | length')"
@@ -119,8 +121,9 @@ jobs:
         python3 -m pip install semgrep && \
         python3 -m pip install --upgrade urllib3 && \
         mkdir -p /home/runner/reports/ && \
-        semgrep --config=${GITHUB_WORKSPACE}/.github/workflows/config/semgrep-js.yml  --json -o /home/runner/reports/semgrep.out \
-        --severity ERROR ${GITHUB_WORKSPACE} && \
+        cd ${GITHUB_WORKSPACE}/ && \
+        semgrep --config=.github/workflows/config/semgrep-js.yml  --json -o /home/runner/reports/semgrep.out \
+        --severity ERROR ./ && \
         echo "## Validation Issues Found (JavaScript) :atom_symbol: " >> /home/runner/reports/javascript-msg && \
         cat /home/runner/reports/semgrep.out | jq -r --arg ws "$GITHUB_WORKSPACE" --arg url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/$GITHUB_SHA" '.results[] | "**File:** [\(.path | sub($ws; "."; "g"))](\(.path | sub($ws; $url; "g"))#L\(.start.line)) \n**Line Number:** \(.start.line) \n**Statement(s):** \n``` \n\(.extra.lines) \n``` \n**Rule:** \n\(.extra.message)\n\n"' >> /home/runner/reports/javascript-msg && \
         echo "::set-output name=js-found-count::$(cat /home/runner/reports/semgrep.out | jq '.results | length')"
