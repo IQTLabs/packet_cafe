@@ -21,5 +21,5 @@ jobs:
         docker build -t packet_cafe/web-test -f ./web/Dockerfile.test ./web && \
         docker run packet_cafe/web-test > coverage.xml
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3.0.0
+      uses: codecov/codecov-action@v3.1.0
       if: github.repository == 'iqtlabs/packet_cafe'
