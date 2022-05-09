@@ -20,7 +20,7 @@
     "react": "17.0.2",
     "react-apexcharts": "1.4.0",
     "react-cookie": "4.1.1",
-    "react-data-table-component": "7.5.0",
+    "react-data-table-component": "7.5.1",
     "react-dom": "17.0.2",
     "react-redux": "8.0.1",
     "react-router-dom": "6.3.0",
