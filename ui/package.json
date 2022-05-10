@@ -6,7 +6,7 @@
     "@fortawesome/fontawesome-svg-core": "6.1.1",
     "@fortawesome/free-solid-svg-icons": "6.1.1",
     "@fortawesome/react-fontawesome": "0.1.18",
-    "apexcharts": "3.35.0",
+    "apexcharts": "3.35.2",
     "body-parser": "1.20.0",
     "cors": "2.8.5",
     "d3": "7.4.4",
