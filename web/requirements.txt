@@ -4,5 +4,5 @@ falcon-cors==1.1.7
 falcon-multipart==0.2.0
 jinja2==3.1.2
 pika==1.2.1
-python-magic==0.4.25
+python-magic==0.4.26
 redis==4.3.1
