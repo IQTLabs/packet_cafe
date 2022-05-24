@@ -13,6 +13,7 @@ RUN apk upgrade --no-cache && \
     python3-dev \
     yaml-dev
 RUN pip3 install -U pip
+RUN pip3 install -U pytest && \
 RUN pip3 install --no-cache-dir scikit-build
 RUN CXXFLAGS="-D_BSD_SOURCE" pip3 install --no-cache-dir ninja
 RUN pip3 install --no-cache-dir -r requirements-test.txt

@@ -13,7 +13,6 @@ jobs:
       run: |
         python3 -m pip install -U pip && \
         python3 -m pip install -U setuptools && \
-        python3 -m pip install -U pytest && \
         python3 -m pip install codecov && \
         docker build -t packet_cafe/ui -f ./ui/Dockerfile ./ui && \
         docker build -t packet_cafe/ui-test -f ./ui/Dockerfile.test ./ui && \
