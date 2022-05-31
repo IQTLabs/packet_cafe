@@ -97,11 +97,11 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "7.18.0",
+    "@babel/core": "7.18.2",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.17.12",
     "@babel/plugin-proposal-object-rest-spread": "7.18.0",
-    "@babel/plugin-transform-modules-commonjs": "7.18.0",
-    "@babel/preset-env": "7.18.0",
+    "@babel/plugin-transform-modules-commonjs": "7.18.2",
+    "@babel/preset-env": "7.18.2",
     "@babel/preset-react": "7.17.12",
     "@babel/register": "7.17.7",
     "chai": "4.3.6",
