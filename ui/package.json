@@ -110,6 +110,6 @@
     "mocha": "10.0.0",
     "nodemon": "2.0.16",
     "nyc": "15.1.0",
-    "typescript": "4.7.3"
+    "typescript": "4.7.4"
   }
 }
