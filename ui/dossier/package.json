@@ -4,9 +4,9 @@
   "description": "1st fork was broken (how to trigger rebuild?)\n\nSemantic-UI API\nhttps://react.semantic-ui.com ",
   "main": "index.js",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "6.1.1",
-    "@fortawesome/free-brands-svg-icons": "6.1.1",
-    "@fortawesome/free-solid-svg-icons": "6.1.1",
+    "@fortawesome/fontawesome-svg-core": "6.1.2",
+    "@fortawesome/free-brands-svg-icons": "6.1.2",
+    "@fortawesome/free-solid-svg-icons": "6.1.2",
     "@fortawesome/react-fontawesome": "0.2.0",
     "apexcharts": "3.35.4",
     "create-react-class": "15.7.0",
