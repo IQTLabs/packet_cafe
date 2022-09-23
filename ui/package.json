@@ -23,7 +23,7 @@
     "react-data-table-component": "7.5.3",
     "react-dom": "18.2.0",
     "react-redux": "8.0.4",
-    "react-router-dom": "6.4.0",
+    "react-router-dom": "6.4.1",
     "react-scripts": "5.0.1",
     "react-tabs": "5.1.0",
     "redux": "4.2.0",
