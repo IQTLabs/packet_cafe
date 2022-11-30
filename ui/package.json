@@ -26,7 +26,7 @@
     "react-redux": "8.0.5",
     "react-router-dom": "6.4.3",
     "react-scripts": "5.0.1",
-    "react-tabs": "5.1.0",
+    "react-tabs": "6.0.0",
     "redux": "4.2.0",
     "redux-actions": "2.6.5",
     "redux-mock-store": "1.5.4",
